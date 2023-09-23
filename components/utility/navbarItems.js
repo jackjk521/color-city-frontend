@@ -27,7 +27,7 @@ export const mainListItems = ({ setSelectedItem }) => (
       <ListItemText primary="Orders" />
     </ListItemButton>
 
-    <ListItemButton onClick={() => setSelectedItem("customers")}>
+    <ListItemButton onClick={() => setSelectedItem("inventory")}>
       <ListItemIcon>
         <InventoryIcon />
       </ListItemIcon>
@@ -53,25 +53,28 @@ export const mainListItems = ({ setSelectedItem }) => (
 export const secondaryListItems = (
   <React.Fragment>
     <ListSubheader component="div" inset>
-      Saved reports
+      Admin Modules
     </ListSubheader>
+
     <ListItemButton>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Current month" />
+      <ListItemText primary="Items" onClick={() => setSelectedItem("items")} />
     </ListItemButton>
+
     <ListItemButton>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Last quarter" />
+      <ListItemText primary="Employees" onClick={() => setSelectedItem("employees")} />
     </ListItemButton>
+
     <ListItemButton>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Year-end sale" />
+      <ListItemText primary="Supplier" onClick={() => setSelectedItem("supplier")} />
     </ListItemButton>
   </React.Fragment>
 );

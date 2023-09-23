@@ -43,11 +43,12 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 
 // Components
 import { mainListItems, secondaryListItems } from "./utility/navbarItems";
-import OrdersContent from "./Orders";
+import OrdersContent from "./purchases";
 import CustomersContent from "./Customers";
 import DashboardContent from "./dashboard";
 import Footer from "./footer";
 import CardGrid from "./utility/CardGrid"
+import CustomGrid from "./utility/GridLayout_4"
 
 const drawerWidth = 240;
 
@@ -113,9 +114,9 @@ export default function Layout({ children }) {
       case "dashboard":
         return <DashboardContent />;
       case "orders":
-        return <CardGrid/>;
-      case "customers":
-        return <CustomersContent />;
+        return <OrdersContent/>;
+      case "inventory":
+        return <CustomGrid />;
       default:
         return null;
     }
@@ -148,7 +149,7 @@ export default function Layout({ children }) {
                 color="inherit"
                 noWrap
                 sx={{ flexGrow: 1 }}>
-                Dashboard
+                {(selectedItem) == "" ? "Dashboard" : (selectedItem).toUpperCase()}
               </Typography>
 
               {/* Notifications area  */}
