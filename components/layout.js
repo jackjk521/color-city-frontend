@@ -45,15 +45,12 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 
 // Components
-import { mainListItems, secondaryListItems } from "./utility/navbarItems";
-// import Chart from './Chart';
-// import Deposits from './Deposits';
-// import Orders from './Orders';
-// import DashboardContent from './DashboardContent';
-import OrdersContent from "./OrdersContent";
-import CustomersContent from "./CustomersContent";
+import { mainListItems, secondaryListItems } from "./utility/NavBarItems";
+import OrdersContent from "./Orders";
+import CustomersContent from "./Customers";
 import DashboardContent from "./dashboard";
-import Footer from "../components/footer";
+import Footer from "./Footer";
+import CardGrid from "./utility/CardGrid"
 
 const drawerWidth = 240;
 
@@ -119,7 +116,7 @@ export default function Layout({ children }) {
       case "dashboard":
         return <DashboardContent />;
       case "orders":
-        return <OrdersContent />;
+        return <CardGrid/>;
       case "customers":
         return <CustomersContent />;
       default:
@@ -156,6 +153,8 @@ export default function Layout({ children }) {
                 sx={{ flexGrow: 1 }}>
                 Dashboard
               </Typography>
+
+              {/* Notifications area  */}
               <IconButton color="inherit">
                 <Badge badgeContent={4} color="secondary">
                   <NotificationsIcon />
@@ -196,7 +195,6 @@ export default function Layout({ children }) {
             <Toolbar />
             <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
               {/* Render the content component */}
-              {/* {children} */}
               {renderContent() == null ? children : renderContent()}
               <Footer sx={{ pt: 4 }} />
             </Container>

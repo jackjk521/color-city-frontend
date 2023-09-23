@@ -5,6 +5,7 @@ import ListItemText from "@mui/material/ListItemText";
 import ListSubheader from "@mui/material/ListSubheader";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import InventoryIcon from '@mui/icons-material/Inventory';
 import PeopleIcon from "@mui/icons-material/People";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import LayersIcon from "@mui/icons-material/Layers";
@@ -28,12 +29,12 @@ export const mainListItems = ({ setSelectedItem }) => (
 
     <ListItemButton onClick={() => setSelectedItem("customers")}>
       <ListItemIcon>
-        <PeopleIcon />
+        <InventoryIcon />
       </ListItemIcon>
-      <ListItemText primary="Customers" />
+      <ListItemText primary="Inventory" />
     </ListItemButton>
 
-    <ListItemButton onClick={() => setSelectedItem("reports")}>
+    {/* <ListItemButton onClick={() => setSelectedItem("reports")}>
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>
@@ -45,7 +46,8 @@ export const mainListItems = ({ setSelectedItem }) => (
         <LayersIcon />
       </ListItemIcon>
       <ListItemText primary="Integrations" />
-    </ListItemButton>
+    </ListItemButton> */}
+
   </React.Fragment>
 );
 export const secondaryListItems = (
