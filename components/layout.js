@@ -37,19 +37,16 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
 import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
-import Link from "@mui/material/Link";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 
 // Components
-import { mainListItems, secondaryListItems } from "./utility/NavBarItems";
+import { mainListItems, secondaryListItems } from "./utility/navbarItems";
 import OrdersContent from "./Orders";
 import CustomersContent from "./Customers";
 import DashboardContent from "./dashboard";
-import Footer from "./Footer";
+import Footer from "./footerr";
 import CardGrid from "./utility/CardGrid"
 
 const drawerWidth = 240;
