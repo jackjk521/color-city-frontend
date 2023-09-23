@@ -46,7 +46,7 @@ import { mainListItems, secondaryListItems } from "./utility/navbarItems";
 import OrdersContent from "./Orders";
 import CustomersContent from "./Customers";
 import DashboardContent from "./dashboard";
-import Footer from "./footerr";
+import Footer from "./footer";
 import CardGrid from "./utility/CardGrid"
 
 const drawerWidth = 240;
