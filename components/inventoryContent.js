@@ -5,17 +5,17 @@ import InventoryTable from "./utility/ResponsiveTable";
 import CustomTabPanel from "./utility/customTabPanel";
 import TableTemp from "./temp/ResponsiveTable copy";
 
-const columns = [
-  { id: 1, header: "Name", field: "name" },
-  { id: 2, header: "Age", field: "age" },
-  { id: 3, header: "Email", field: "email" },
-];
+// const columns = [
+//   { id: 1, header: "Name", field: "name" },
+//   { id: 2, header: "Age", field: "age" },
+//   { id: 3, header: "Email", field: "email" },
+// ];
 
-const data = [
-  { id: 1, name: "John Doe", age: 25, email: "johndoe@example.com" },
-  { id: 2, name: "Jane Smith", age: 32, email: "janesmith@example.com" },
-  { id: 3, name: "Alice Johnson", age: 28, email: "alicejohnson@example.com" },
-];
+// const data = [
+//   { id: 1, name: "John Doe", age: 25, email: "johndoe@example.com" },
+//   { id: 2, name: "Jane Smith", age: 32, email: "janesmith@example.com" },
+//   { id: 3, name: "Alice Johnson", age: 28, email: "alicejohnson@example.com" },
+// ];
 
 const InventoryContent = () => {
   const [value, setValue] = React.useState(0);

@@ -7,12 +7,11 @@ import Head from "next/head";
 import Box from "@mui/material/Box";
 
 // Components
-import DashboardContent from "@/components/dashboardContent";
+import InventoryContent from "@/components/inventoryContent";
 
-export default function Dashboard() {
-
+export default function Inventory() {
   return (
-    <DashboardContent />
+    <InventoryContent />
     // <Box sx={{ flexGrow: 1, backgroundColor: "#FFFFF" }}>
 
     // </Box>

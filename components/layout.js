@@ -22,9 +22,9 @@ import Grid from "@mui/material/Grid";
 
 // Components
 import { mainListItems, secondaryListItems } from "./utility/navbarItems";
-import PurchaseContent from "./purchases";
-import InventoryContent from "./inventory";
-import DashboardContent from "./dashboard";
+import PurchaseContent from "./purchasesContent";
+import InventoryContent from "./inventoryContent";
+import DashboardContent from "./dashboardContent";
 import Footer from "./footer";
 import CardGrid from "./utility/CardGrid";
 import CustomGrid from "./utility/GridLayout_4";
@@ -88,20 +88,20 @@ export default function Layout({ children }) {
   const [selectedItem, setSelectedItem] = React.useState("");
 
   // Render the content component based on the selected item
-  const renderContent = () => {
-    switch (selectedItem) {
-      case "dashboard":
-        return <DashboardContent />;
-      case "purchases":
-        return <PurchaseContent />;
-      case "inventory":
-        return <InventoryContent />;
-      case "suppliers":
-        return <InventoryContent />;
-      default:
-        return null;
-    }
-  };
+  // const renderContent = () => {
+  //   switch (selectedItem) {
+  //     case "dashboard":
+  //       return <DashboardContent />;
+  //     case "purchases":
+  //       return <Link href="/purchases">  <a>Go to Purchases</a> </Link>;
+  //     case "inventory":
+  //       return <InventoryContent />;
+  //     case "suppliers":
+  //       return <InventoryContent />;
+  //     default:
+  //       return null;
+  //   }
+  // };
 
   return (
     <>
@@ -185,7 +185,8 @@ export default function Layout({ children }) {
                 mb: 4,
               }}>
               {/* Render the content component */}
-              {renderContent() == null ? children : renderContent()}
+              {/* {renderContent() == null ? children : renderContent()} */}
+              {children}
               <Footer sx={{ pt: 4 }} />
             </Container>
           </Box>

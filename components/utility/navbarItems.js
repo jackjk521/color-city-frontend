@@ -1,41 +1,43 @@
 import * as React from "react";
+import Link from "next/link";
+
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import ListSubheader from "@mui/material/ListSubheader";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import InventoryIcon from '@mui/icons-material/Inventory';
+import InventoryIcon from "@mui/icons-material/Inventory";
 import PeopleIcon from "@mui/icons-material/People";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import LayersIcon from "@mui/icons-material/Layers";
 import AssignmentIcon from "@mui/icons-material/Assignment";
-import TransferWithinAStationIcon from '@mui/icons-material/TransferWithinAStation';
+import TransferWithinAStationIcon from "@mui/icons-material/TransferWithinAStation";
 
-export const mainListItems = ({ setSelectedItem }) => (
+export const mainListItems = () => (
   <React.Fragment>
-    <ListItemButton onClick={() => setSelectedItem("dashboard")}>
+    <ListItemButton component={Link} href="/">
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItemButton>
 
-    <ListItemButton onClick={() => setSelectedItem("purchases")}>
+    <ListItemButton component={Link} href="/purchases">
       <ListItemIcon>
         <ShoppingCartIcon />
       </ListItemIcon>
       <ListItemText primary="Purchases" />
     </ListItemButton>
 
-    <ListItemButton onClick={() => setSelectedItem("inventory")}>
+    <ListItemButton component={Link} href="/inventory">
       <ListItemIcon>
         <InventoryIcon />
       </ListItemIcon>
       <ListItemText primary="Inventory" />
     </ListItemButton>
 
-    <ListItemButton onClick={() => setSelectedItem("suppliers")}>
+    <ListItemButton component={Link} href="/suppliers">
       <ListItemIcon>
         <TransferWithinAStationIcon />
       </ListItemIcon>
@@ -55,7 +57,6 @@ export const mainListItems = ({ setSelectedItem }) => (
       </ListItemIcon>
       <ListItemText primary="Integrations" />
     </ListItemButton> */}
-
   </React.Fragment>
 );
 export const secondaryListItems = (
@@ -68,14 +69,22 @@ export const secondaryListItems = (
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Items" onClick={() => setSelectedItem("items")} />
+      <ListItemText
+        primary="Items"
+        component={Link}
+        href="/purchases"
+        // onClick={() => setSelectedItem("items")}
+      />
     </ListItemButton>
 
     <ListItemButton>
       <ListItemIcon>
         <PeopleIcon />
       </ListItemIcon>
-      <ListItemText primary="Employees" onClick={() => setSelectedItem("employees")} />
+      <ListItemText
+        primary="Employees"
+        // onClick={() => setSelectedItem("employees")}
+      />
     </ListItemButton>
 
     {/* <ListItemButton>
