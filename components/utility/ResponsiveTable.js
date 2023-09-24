@@ -27,6 +27,7 @@ import { visuallyHidden } from "@mui/utils";
 import Button from "@mui/material/Button";
 
 import Alert from "./alerts";
+import { SwapVert } from "@mui/icons-material";
 // Data Creation
 // function createData(name, calories, fat, carbs, protein) {
 //   return {
@@ -379,6 +380,9 @@ export default function EnhancedTable({ rows }) {
 
   // Alert Config
   const [open, setOpen] = React.useState(false);
+  const [severity, setSeverity] = React.useState("error");
+  const [message, setMessage] = React.useState("Default Message");
+
   const handleOpen = () => {
     setOpen(true);
 
@@ -392,31 +396,33 @@ export default function EnhancedTable({ rows }) {
     // Handle edit action
     // console.log(`Edit action for item ${id}`);
     setOpen(true);
-
+    setSeverity("warning"); // Use functional form of setState
+    setMessage("Warning Updating Data"); // Use functional form of setState
+    
     setTimeout(() => {
       setOpen(false);
-    }, 3000);
+      setSeverity("info");
+      setMessage("Default message");
+    }, 1500);
   };
 
   const handleDelete = () => {
     // Handle delete action
     // console.log(`Delete action for item ${id}`);
     setOpen(true);
+    setSeverity("error"); // Use functional form of setState
+    setMessage("Are you sure you want to delete the data?"); // Use functional form of setState
 
     setTimeout(() => {
       setOpen(false);
-    }, 3000);
+      setSeverity("info");
+      setMessage("Default message");
+    }, 1500);
   };
 
   return (
     <Box sx={{ width: "100%" }}>
-      {open && (
-        <Alert
-          open={open}
-          severity="success"
-          message="This is a success message!"
-        />
-      )}
+      {open && <Alert open={open} severity={severity} message={message} />}
 
       <Paper sx={{ width: "100%", mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
@@ -430,7 +436,7 @@ export default function EnhancedTable({ rows }) {
 
         {/* Rows Validation  */}
         {rows.length === 0 ? (
-          <div> No data available. </div>
+          <div> No data available. </div> // need to change this
         ) : (
           <>
             <TableContainer>
@@ -496,8 +502,8 @@ export default function EnhancedTable({ rows }) {
                         <TableCell align="left">
                           {" "}
                           <ActionFormatter
-                            id={row.id}
-                            alertOpen={open}
+                            id={row.title}
+                            // alertOpen={open}
                             handleEdit={handleEdit}
                             handleDelete={handleDelete}
                           />

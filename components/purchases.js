@@ -73,7 +73,7 @@ const PurchasesContent = () => {
               <CardGrid table={<PurchasesTable rows={rows} />} />
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
-              <CardGrid table={<PurchasesTable />} />
+              <CardGrid table={<PurchasesTable rows={rows}  />} />
             </CustomTabPanel>
           </Box>
         </Box>
