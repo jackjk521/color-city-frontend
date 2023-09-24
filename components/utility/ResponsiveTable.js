@@ -127,7 +127,7 @@ const headCells = [
   {
     id: "title",
     numeric: false,
-    disablePadding: true,
+    disablePadding: false,
     label: "title",
   },
   {
@@ -183,8 +183,8 @@ function EnhancedTableHead(props) {
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          {/* <Checkbox
+        {/* <TableCell padding="checkbox">
+          <Checkbox
             color="primary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
@@ -192,8 +192,8 @@ function EnhancedTableHead(props) {
             inputProps={{
               "aria-label": "select all desserts",
             }}
-          /> */}
-        </TableCell>
+          />
+        </TableCell> */}
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -475,7 +475,7 @@ export default function EnhancedTable({ rows }) {
                           component="th"
                           // id={labelId}
                           scope="row"
-                          align="right"
+                          align="center"
                           padding="none">
                           {row.title}
                         </TableCell>
@@ -493,7 +493,7 @@ export default function EnhancedTable({ rows }) {
                       <TableCell align="right">{row.fat}</TableCell>
                       <TableCell align="right">{row.carbs}</TableCell>
                       <TableCell align="right">{row.protein}</TableCell> */}
-                        <TableCell align="right">
+                        <TableCell align="left">
                           {" "}
                           <ActionFormatter
                             id={row.id}
