@@ -17,7 +17,6 @@ export default function CustomGrid_3() {
               height: 240,
             }}>
             {/* Content */}
-            Testing 
           </Paper>
         </Grid>
         {/* Recent Deposits */}

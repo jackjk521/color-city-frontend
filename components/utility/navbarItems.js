@@ -10,6 +10,7 @@ import PeopleIcon from "@mui/icons-material/People";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import LayersIcon from "@mui/icons-material/Layers";
 import AssignmentIcon from "@mui/icons-material/Assignment";
+import TransferWithinAStationIcon from '@mui/icons-material/TransferWithinAStation';
 
 export const mainListItems = ({ setSelectedItem }) => (
   <React.Fragment>
@@ -20,11 +21,11 @@ export const mainListItems = ({ setSelectedItem }) => (
       <ListItemText primary="Dashboard" />
     </ListItemButton>
 
-    <ListItemButton onClick={() => setSelectedItem("orders")}>
+    <ListItemButton onClick={() => setSelectedItem("purchases")}>
       <ListItemIcon>
         <ShoppingCartIcon />
       </ListItemIcon>
-      <ListItemText primary="Orders" />
+      <ListItemText primary="Purchases" />
     </ListItemButton>
 
     <ListItemButton onClick={() => setSelectedItem("inventory")}>
@@ -32,6 +33,13 @@ export const mainListItems = ({ setSelectedItem }) => (
         <InventoryIcon />
       </ListItemIcon>
       <ListItemText primary="Inventory" />
+    </ListItemButton>
+
+    <ListItemButton onClick={() => setSelectedItem("suppliers")}>
+      <ListItemIcon>
+        <TransferWithinAStationIcon />
+      </ListItemIcon>
+      <ListItemText primary="Suppliers" />
     </ListItemButton>
 
     {/* <ListItemButton onClick={() => setSelectedItem("reports")}>
@@ -65,16 +73,16 @@ export const secondaryListItems = (
 
     <ListItemButton>
       <ListItemIcon>
-        <AssignmentIcon />
+        <PeopleIcon />
       </ListItemIcon>
       <ListItemText primary="Employees" onClick={() => setSelectedItem("employees")} />
     </ListItemButton>
 
-    <ListItemButton>
+    {/* <ListItemButton>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
       <ListItemText primary="Supplier" onClick={() => setSelectedItem("supplier")} />
-    </ListItemButton>
+    </ListItemButton> */}
   </React.Fragment>
 );

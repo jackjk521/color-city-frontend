@@ -26,7 +26,8 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import Button from "@mui/material/Button";
 
-import Alert from "./alerts";
+import Alert from "../utility/alerts";
+
 // Data Creation
 // function createData(name, calories, fat, carbs, protein) {
 //   return {
@@ -184,7 +185,7 @@ function EnhancedTableHead(props) {
     <TableHead>
       <TableRow>
         <TableCell padding="checkbox">
-          {/* <Checkbox
+          <Checkbox
             color="primary"
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
@@ -192,7 +193,7 @@ function EnhancedTableHead(props) {
             inputProps={{
               "aria-label": "select all desserts",
             }}
-          /> */}
+          />
         </TableCell>
         {headCells.map((headCell) => (
           <TableCell
@@ -354,23 +355,24 @@ export default function EnhancedTable({ rows }) {
     setDense(event.target.checked);
   };
   // Event Handlers END
+
+  // Select All
+  const isSelected = (name) => selected.indexOf(name) !== -1;
+
   const [tableRows, setTableRows] = React.useState([]);
 
-  // // Select All
-  // const isSelected = (name) => selected.indexOf(name) !== -1;
+  // Avoid a layout jump when reaching the last page with empty rows.
+  const emptyRows =
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - tableRows.length) : 0;
 
-  // // Avoid a layout jump when reaching the last page with empty rows.
-  // const emptyRows =
-  //   page > 0 ? Math.max(0, (1 + page) * rowsPerPage - tableRows.length) : 0;
-
-  // const visibleRows = React.useMemo(
-  //   () =>
-  //     stableSort(tableRows, getComparator(order, orderBy)).slice(
-  //       page * rowsPerPage,
-  //       page * rowsPerPage + rowsPerPage
-  //     ),
-  //   [order, orderBy, page, rowsPerPage]
-  // );
+  const visibleRows = React.useMemo(
+    () =>
+      stableSort(tableRows, getComparator(order, orderBy)).slice(
+        page * rowsPerPage,
+        page * rowsPerPage + rowsPerPage
+      ),
+    [order, orderBy, page, rowsPerPage]
+  );
 
   React.useEffect(() => {
     // Update the tableRows state when the rows prop changes
@@ -447,21 +449,22 @@ export default function EnhancedTable({ rows }) {
                   rowCount={rows.length}
                 />
                 <TableBody>
-                  {tableRows.map((row, index) => {
-                    // const isItemSelected = isSelected(row.name);
-                    // const labelId = `enhanced-table-checkbox-${index}`;
+                  
+                  {visibleRows.map((row, index) => {
+                    const isItemSelected = isSelected(row.name);
+                    const labelId = `enhanced-table-checkbox-${index}`;
 
                     return (
                       <TableRow
                         hover
-                        // onClick={(event) => handleClick(event, row.name)}
-                        // role="checkbox"
-                        // aria-checked={isItemSelected}
+                        onClick={(event) => handleClick(event, row.name)}
+                        role="checkbox"
+                        aria-checked={isItemSelected}
                         tabIndex={-1}
-                        key={row.title}
-                        // selected={isItemSelected}
+                        key={row.name}
+                        selected={isItemSelected}
                         sx={{ cursor: "pointer" }}>
-                        {/* <TableCell padding="checkbox">
+                        <TableCell padding="checkbox">
                           <Checkbox
                             color="primary"
                             checked={isItemSelected}
@@ -469,18 +472,18 @@ export default function EnhancedTable({ rows }) {
                               "aria-labelledby": labelId,
                             }}
                           />
-                        </TableCell> */}
+                        </TableCell>
 
                         <TableCell
                           component="th"
-                          // id={labelId}
+                          id={labelId}
                           scope="row"
-                          align="right"
                           padding="none">
                           {row.title}
                         </TableCell>
                         <TableCell align="right">{row.price}</TableCell>
                         <TableCell align="right">{row.rating}</TableCell>
+
 
                         {/* <TableCell
                         component="th"
@@ -505,14 +508,11 @@ export default function EnhancedTable({ rows }) {
                       </TableRow>
                     );
                   })}
-
-                  {tableRows === undefined && (
-                    // <TableRow
-                    //   style={{
-                    //     height: (dense ? 33 : 53) * emptyRows,
-                    //   }}>
-                    <TableRow>
-                      Still Loading Data...
+                  {emptyRows > 0 && (
+                    <TableRow
+                      style={{
+                        height: (dense ? 33 : 53) * emptyRows,
+                      }}>
                       <TableCell colSpan={6} />
                     </TableRow>
                   )}
