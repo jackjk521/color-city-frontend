@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { TableCell, Button } from "@mui/material";
+import { TableCell, Button, Grid } from "@mui/material";
 
 import InventoryModalManager from "@/components/modals/inventory/inventoryModalManager";
 import PurchaseModalManager from "@/components/modals/purchases/purchaseModalManager";
@@ -83,24 +83,38 @@ export const PurchaseTableCells = ({ row }) => {
   const ActionFormatter = ({ row }) => {
     return (
       <>
-        <Button
-          onClick={() => handleView(row)}
-          variant="outlined"
-          color="success">
-          View
-        </Button>
-        <Button
-          onClick={() => handleEdit(row)}
-          variant="outlined"
-          color="primary">
-          Edit
-        </Button>
-        <Button
-          onClick={() => handleRemove(row)}
-          variant="outlined"
-          color="secondary">
-          Remove
-        </Button>
+        <Grid container spacing={2}>
+          <Grid item>
+            <Button
+              onClick={() => handleView(row)}
+              p={2}
+              variant="outlined"
+              color="success"
+              fullWidth>
+              View
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              onClick={() => handleEdit(row)}
+              p={2}
+              variant="outlined"
+              color="primary"
+              fullWidth>
+              Edit
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              onClick={() => handleRemove(row)}
+              p={2}
+              variant="outlined"
+              color="secondary"
+              fullWidth>
+              Remove
+            </Button>
+          </Grid>
+        </Grid>
       </>
     );
   };
@@ -108,11 +122,11 @@ export const PurchaseTableCells = ({ row }) => {
   return (
     <>
       {/* Modal Config  */}
-        <PurchaseModalManager
-          modalType={activeModal}
-          setActiveModal={setActiveModal}
-        />
-     
+      <PurchaseModalManager
+        modalType={activeModal}
+        setActiveModal={setActiveModal}
+      />
+
       {/* Table Cells  */}
       <TableCell component="th" scope="row" align="center" padding="none">
         {row.id}
@@ -162,7 +176,7 @@ export const InventoryTableHeaders = [
   },
 ];
 
-export const InventoryTableCells = ({ row, tableType }) => {
+export const InventoryTableCells = ({ row }) => {
   const [activeModal, setActiveModal] = React.useState(null);
   const openModal = (modalType) => {
     setActiveModal(modalType);
@@ -205,24 +219,38 @@ export const InventoryTableCells = ({ row, tableType }) => {
   const ActionFormatter = ({ row }) => {
     return (
       <>
-        <Button
-          onClick={() => handleView(row)}
-          variant="outlined"
-          color="success">
-          View
-        </Button>
-        <Button
-          onClick={() => handleEdit(row)}
-          variant="outlined"
-          color="primary">
-          Edit
-        </Button>
-        <Button
-          onClick={() => handleRemove(row)}
-          variant="outlined"
-          color="secondary">
-          Remove
-        </Button>
+        <Grid container spacing={2}>
+          <Grid item>
+            <Button
+              onClick={() => handleView(row)}
+              p={2}
+              variant="outlined"
+              color="success"
+              fullWidth>
+              View
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              onClick={() => handleEdit(row)}
+              p={2}
+              variant="outlined"
+              color="primary"
+              fullWidth>
+              Edit
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              onClick={() => handleRemove(row)}
+              p={2}
+              variant="outlined"
+              color="secondary"
+              fullWidth>
+              Remove
+            </Button>
+          </Grid>
+        </Grid>
       </>
     );
   };
@@ -230,12 +258,11 @@ export const InventoryTableCells = ({ row, tableType }) => {
   return (
     <>
       {/* Modal Config  */}
-      {tableType == "Inventory" && (
-        <InventoryModalManager
-          modalType={activeModal}
-          setActiveModal={setActiveModal}
-        />
-      )}
+      <InventoryModalManager
+        modalType={activeModal}
+        setActiveModal={setActiveModal}
+      />
+
       <TableCell component="th" scope="row" align="center" padding="none">
         {row.id}
       </TableCell>
@@ -327,24 +354,38 @@ export const SupplierTableCells = ({ row }) => {
   const ActionFormatter = ({ row }) => {
     return (
       <>
-        <Button
-          onClick={() => handleView(row)}
-          variant="outlined"
-          color="success">
-          View
-        </Button>
-        <Button
-          onClick={() => handleEdit(row)}
-          variant="outlined"
-          color="primary">
-          Edit
-        </Button>
-        <Button
-          onClick={() => handleRemove(row)}
-          variant="outlined"
-          color="secondary">
-          Remove
-        </Button>
+        <Grid container spacing={2}>
+          <Grid item>
+            <Button
+              onClick={() => handleView(row)}
+              p={2}
+              variant="outlined"
+              color="success"
+              fullWidth>
+              View
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              onClick={() => handleEdit(row)}
+              p={2}
+              variant="outlined"
+              color="primary"
+              fullWidth>
+              Edit
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              onClick={() => handleRemove(row)}
+              p={2}
+              variant="outlined"
+              color="secondary"
+              fullWidth>
+              Remove
+            </Button>
+          </Grid>
+        </Grid>
       </>
     );
   };
@@ -352,12 +393,11 @@ export const SupplierTableCells = ({ row }) => {
   return (
     <>
       {/* Modal Config  */}
-      {tableType == "Suppliers" && (
-        <SupplierModalManager
-          modalType={activeModal}
-          setActiveModal={setActiveModal}
-        />
-      )}
+      <SupplierModalManager
+        modalType={activeModal}
+        setActiveModal={setActiveModal}
+      />
+
       <TableCell component="th" scope="row" align="center" padding="none">
         {row.id}
       </TableCell>

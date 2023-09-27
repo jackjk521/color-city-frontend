@@ -6,21 +6,10 @@ import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import PropTypes from 'prop-types';
 
-const ReusableModal = ({ isOpen, onClose, title, children, actions, headerColor }) => {
+const ReusableModal = ({ isOpen, onClose, title, children, headerColor }) => {
   return (
-    <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="xs">
-      <DialogTitle style={{ backgroundColor: headerColor }}>
-        <span style={{ color: 'white' }}>{title}</span>
-      </DialogTitle>
-      <DialogContent>{children}</DialogContent>
-
-      {/* <DialogActions>
-        {actions || (
-          <Button onClick={onClose} color="primary">
-            Close
-          </Button>
-        )}
-      </DialogActions> */}
+    <Dialog open={isOpen} onClose={onClose} fullWidth maxWidth="md">
+      {children}
     </Dialog>
   );
 };

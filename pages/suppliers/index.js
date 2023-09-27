@@ -45,7 +45,7 @@ export default function Supplier({rows}) {
             <SupplierTable
               rows={rows}
               headCells={SupplierTableHeaders}
-              tableType={"Supplier"}
+              tableType={"Suppliers"}
             />
           }
         />
@@ -53,14 +53,14 @@ export default function Supplier({rows}) {
       <CustomTabPanel value={value} index={1}>
         <CardGrid
           table={
-            <SupplierTable rows={rows} headCells={SupplierTableHeaders} tableType={"Supplier"}/>
+            <SupplierTable rows={rows} headCells={SupplierTableHeaders} tableType={"Suppliers"}/>
           }
         />
       </CustomTabPanel>
       <CustomTabPanel value={value} index={2}>
         <CardGrid
           table={
-            <SupplierTable rows={rows} headCells={SupplierTableHeaders} tableType={"Supplier"}/>
+            <SupplierTable rows={rows} headCells={SupplierTableHeaders} tableType={"Suppliers"}/>
           }
         />
       </CustomTabPanel>
@@ -75,7 +75,7 @@ export async function getServerSideProps() {
     const data = await response.json();
     const newRows = data.products.map((item) => {
       const { id, title, price, rating } = item;
-      return createInventoryData(id, title, price, rating);
+      return createSupplierData(id, title, price, rating);
     });
     return {
       props: {

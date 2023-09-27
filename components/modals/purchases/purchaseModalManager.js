@@ -3,26 +3,42 @@ import ReusableModal from "../modal";
 
 // Modal Contents
 import AddPurchaseModal from "./add";
-import EditPurchaseModal from "./add";
-import RemovePurchaseModal from "./add";
+import ViewPurchaseModal from "./view";
+import EditPurchaseModal from "./edit";
+import RemovePurchaseModal from "./remove";
 
 const PurchaseModalManager = ({ modalType, setActiveModal }) => {
-  // const openModal = () => {
-  //   setActiveModal(modalType);
-  // };
 
   const closeModal = () => {
     setActiveModal(null);
   };
 
+  // Header Colors
+  const selectedHeaderColor = () => {
+    switch (modalType) {
+      case "add":
+        return "green";
+      case "view":
+        return "blue";
+      case "edit":
+        return "yellow";
+      case "remove":
+        return "red";
+      default:
+        return null;
+    }
+  };
+
   const renderModalContent = () => {
     switch (modalType) {
+      case "add":
+        return <AddPurchaseModal headerColor={selectedHeaderColor()}/>;
       case "view":
-        return <AddPurchaseModal />;
+        return <AddPurchaseModal headerColor={selectedHeaderColor()}/>;
       case "edit":
-        return <EditPurchaseModal />;
+        return <EditPurchaseModal headerColor={selectedHeaderColor()}/>;
       case "remove":
-        return <RemovePurchaseModal />;
+        return <RemovePurchaseModal headerColor={selectedHeaderColor()} />;
       default:
         return null;
     }
@@ -34,7 +50,8 @@ const PurchaseModalManager = ({ modalType, setActiveModal }) => {
         <ReusableModal
           isOpen={modalType !== null}
           onClose={closeModal}
-          title={modalType}>
+          title={modalType} 
+          >
           {renderModalContent()}
         </ReusableModal>
       )}

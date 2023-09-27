@@ -2,27 +2,41 @@ import React from "react";
 import ReusableModal from "../modal";
 
 // Modal Contents
-import AddInventoryModal from "./add";
-import EditInventoryModal from "./add";
-import RemoveInventoryModal from "./add";
+import AddPurchaseModal from "./add";
+import ViewPurchaseModal from "./view";
+import EditPurchaseModal from "./edit";
+import RemovePurchaseModal from "./remove";
 
 const InventoryModalManager = ({ modalType, setActiveModal }) => {
-  // const openModal = () => {
-  //   setActiveModal(modalType);
-  // };
 
   const closeModal = () => {
     setActiveModal(null);
   };
 
-  const renderModalContent = () => {
+  // Header Colors
+  const selectedHeaderColor = () => {
     switch (modalType) {
       case "view":
-        return <AddInventoryModal />;
+        return "blue";
       case "edit":
-        return <EditInventoryModal />;
+        return "yellow";
       case "remove":
-        return <RemoveInventoryModal />;
+        return "red";
+      default:
+        return null;
+    }
+  };
+
+  const renderModalContent = () => {
+    switch (modalType) {
+      case "add":
+        return <AddPurchaseModal headerColor={selectedHeaderColor()}/>;
+      case "view":
+        return <ViewPurchaseModal headerColor={selectedHeaderColor()}/>;
+      case "edit":
+        return <EditPurchaseModal headerColor={selectedHeaderColor()}/>;
+      case "remove":
+        return <RemovePurchaseModal headerColor={selectedHeaderColor()} />;
       default:
         return null;
     }
@@ -34,7 +48,8 @@ const InventoryModalManager = ({ modalType, setActiveModal }) => {
         <ReusableModal
           isOpen={modalType !== null}
           onClose={closeModal}
-          title={modalType}>
+          title={modalType} 
+          >
           {renderModalContent()}
         </ReusableModal>
       )}
