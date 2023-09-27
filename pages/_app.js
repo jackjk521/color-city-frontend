@@ -1,11 +1,16 @@
-import '../styles/globals.css';
+import "../styles/globals.css";
 // Components
-import Layout from '../components/layout';
+import Layout from "../components/layout";
+import { ManagedUIProvider } from "../contexts/managedUIProvider";
 
 export default function App({ Component, pageProps }) {
   return (
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
+    <>
+      <ManagedUIProvider>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </ManagedUIProvider>
+    </>
   );
 }

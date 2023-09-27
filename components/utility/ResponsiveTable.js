@@ -3,6 +3,8 @@ import PropTypes from "prop-types";
 import { alpha } from "@mui/material/styles";
 import {
   Box,
+  Fade,
+  Button,
   Table,
   TableBody,
   TableCell,
@@ -24,13 +26,25 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
-import Button from "@mui/material/Button";
 
-import Alert from "./alerts";
 import { SwapVert } from "@mui/icons-material";
 
+import Alert from "./alerts";
+import { handleEdit } from "../../utils/actionHandler";
+
 // Helper Functions
-import { PurchaseTableCells } from "@/utils/tableCells";
+import {
+  PurchaseTableCells,
+  InventoryTableCells,
+  SupplierTableCells,
+} from "@/utils/tableCells";
+
+import InventoryModalManager from "../modals/inventory/inventoryModalManager";
+import PurchaseModalManager from "../modals/purchases/purchaseModalManager";
+import SupplierModalManager from "../modals/suppliers/supplierModalManager";
+
+// import CustomModal from "../modals/inventory/remove";
+
 // Filters and Sorters START
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -60,21 +74,6 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 // Filters and Sorters END
-
-// Table Action Formatter START
-const ActionFormatter = ({ handleEdit, handleDelete }) => {
-  return (
-    <>
-      <Button onClick={handleEdit} variant="outlined" color="primary">
-        Edit
-      </Button>
-      <Button onClick={handleDelete} variant="outlined" color="secondary">
-        Delete
-      </Button>
-    </>
-  );
-};
-// Table Action Formatter END
 
 function EnhancedTableToolbar(props) {
   const { numSelected } = props;
@@ -133,7 +132,6 @@ EnhancedTableToolbar.propTypes = {
 // Select All Config END
 
 export default function EnhancedTable({ rows, headCells, tableType }) {
-  // console.log({ rows });
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
 
@@ -144,6 +142,7 @@ export default function EnhancedTable({ rows, headCells, tableType }) {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
   const [tableRows, setTableRows] = React.useState([]);
+  const [activeModal, setActiveModal] = React.useState(null);
 
   React.useEffect(() => {
     // Update the tableRows state when the rows prop changes
@@ -289,51 +288,31 @@ export default function EnhancedTable({ rows, headCells, tableType }) {
   //   [order, orderBy, page, rowsPerPage]
   // );
 
-  // Alert Config
-  const [open, setOpen] = React.useState(false);
-  const [severity, setSeverity] = React.useState("error");
-  const [message, setMessage] = React.useState("Default Message");
-
-  const handleOpen = () => {
-    setOpen(true);
-
-    setTimeout(() => {
-      setOpen(false);
-    }, 3000); // Set the delay in milliseconds
-  };
-
-  // Action Handlers
-  const handleEdit = () => {
-    // Handle edit action
-    // console.log(`Edit action for item ${id}`);
-    setOpen(true);
-    setSeverity("warning"); // Use functional form of setState
-    setMessage("Warning Updating Data"); // Use functional form of setState
-
-    setTimeout(() => {
-      setOpen(false);
-      setSeverity("info");
-      setMessage("Default message");
-    }, 1500);
-  };
-
-  const handleDelete = () => {
-    // Handle delete action
-    // console.log(`Delete action for item ${id}`);
-    setOpen(true);
-    setSeverity("error"); // Use functional form of setState
-    setMessage("Are you sure you want to delete the data?"); // Use functional form of setState
-
-    setTimeout(() => {
-      setOpen(false);
-      setSeverity("info");
-      setMessage("Default message");
-    }, 1500);
+  const openModal = (modalType) => {
+    setActiveModal(modalType);
   };
 
   return (
     <Box sx={{ width: "100%" }}>
-      {open && <Alert open={open} severity={severity} message={message} />}
+      {/* Modals Configs  */}
+      {/* {tableType == "Inventory" && (
+        <InventoryModalManager
+          modalType={activeModal}
+          setActiveModal={setActiveModal}
+        />
+      )}
+        {tableType == "Purchases" && (
+        <PurchaseModalManager
+          modalType={activeModal}
+          setActiveModal={setActiveModal}
+        />
+      )}
+        {tableType == "Suppliers" && (
+        <SupplierModalManager
+          modalType={activeModal}
+          setActiveModal={setActiveModal}
+        />
+      )} */}
 
       <Paper sx={{ width: "100%", mb: 2 }}>
         <EnhancedTableToolbar numSelected={selected.length} />
@@ -392,26 +371,13 @@ export default function EnhancedTable({ rows, headCells, tableType }) {
                           <PurchaseTableCells row={row} />
                         )}
 
-                        {/* <TableCell
-                        component="th"
-                        id={labelId}
-                        scope="row"
-                        padding="none">
-                        {row.name}
-                      </TableCell>
-                      <TableCell align="right">{row.calories}</TableCell>
-                      <TableCell align="right">{row.fat}</TableCell>
-                      <TableCell align="right">{row.carbs}</TableCell>
-                      <TableCell align="right">{row.protein}</TableCell> */}
-                        <TableCell align="left">
-                          {" "}
-                          <ActionFormatter
-                            id={row.id}
-                            // alertOpen={open}
-                            handleEdit={handleEdit}
-                            handleDelete={handleDelete}
-                          />
-                        </TableCell>
+                        {tableType == "Inventory" && (
+                          <InventoryTableCells row={row} />
+                        )}
+
+                        {tableType == "Suppliers" && (
+                          <SupplierTableCells row={row} />
+                        )}
                       </TableRow>
                     );
                   })}
