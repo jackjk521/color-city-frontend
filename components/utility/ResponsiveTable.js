@@ -131,7 +131,7 @@ EnhancedTableToolbar.propTypes = {
 };
 // Select All Config END
 
-export default function EnhancedTable({ rows, headCells, tableType }) {
+export default function EnhancedTable({ rows, headCells, tableType, setAlertStatus }) {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
 
@@ -368,7 +368,7 @@ export default function EnhancedTable({ rows, headCells, tableType }) {
                         </TableCell> */}
 
                         {tableType == "Purchases" && (
-                          <PurchaseTableCells row={row} />
+                          <PurchaseTableCells row={row} setAlertStatus={setAlertStatus}/>
                         )}
 
                         {tableType == "Inventory" && (

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import ReusableModal from "../modal";
 
 // Modal Contents
@@ -7,11 +7,30 @@ import ViewPurchaseModal from "./view";
 import EditPurchaseModal from "./edit";
 import RemovePurchaseModal from "./remove";
 
-const PurchaseModalManager = ({ modalType, setActiveModal }) => {
+const PurchaseModalManager = ({ modalType, setActiveModal,  setAlertStatus }) => {
+  // const [alertStatus, setAlertStatus] = useState({
+  //   status: "",
+  //   msg: "",
+  //   vertical: "top",
+  //   horizontal: "center",
+  // });
 
   const closeModal = () => {
     setActiveModal(null);
   };
+
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     setAlertStatus({
+  //       status: "",
+  //       msg: "",
+  //       vertical: "top",
+  //       horizontal: "center",
+  //     });
+  //   }, 1500);
+
+  //   return () => clearTimeout(timer);
+  // }, [alertStatus]);
 
   // Header Colors
   const selectedHeaderColor = () => {
@@ -32,13 +51,37 @@ const PurchaseModalManager = ({ modalType, setActiveModal }) => {
   const renderModalContent = () => {
     switch (modalType) {
       case "add":
-        return <AddPurchaseModal headerColor={selectedHeaderColor()}/>;
+        return (
+          <AddPurchaseModal
+            headerColor={selectedHeaderColor()}
+            closeModal={closeModal}
+            setAlertStatus={setAlertStatus}
+          />
+        );
       case "view":
-        return <AddPurchaseModal headerColor={selectedHeaderColor()}/>;
+        return (
+          <AddPurchaseModal
+            headerColor={selectedHeaderColor()}
+            closeModal={closeModal}
+            setAlertStatus={setAlertStatus}
+          />
+        );
       case "edit":
-        return <EditPurchaseModal headerColor={selectedHeaderColor()}/>;
+        return (
+          <EditPurchaseModal
+            headerColor={selectedHeaderColor()}
+            closeModal={closeModal}
+            setAlertStatus={setAlertStatus}
+          />
+        );
       case "remove":
-        return <RemovePurchaseModal headerColor={selectedHeaderColor()} />;
+        return (
+          <RemovePurchaseModal
+            headerColor={selectedHeaderColor()}
+            closeModal={closeModal}
+            setAlertStatus={setAlertStatus}
+          />
+        );
       default:
         return null;
     }
@@ -50,12 +93,13 @@ const PurchaseModalManager = ({ modalType, setActiveModal }) => {
         <ReusableModal
           isOpen={modalType !== null}
           onClose={closeModal}
-          title={modalType} 
-          >
+          title={modalType}>
           {renderModalContent()}
         </ReusableModal>
       )}
       {modalType == null && <></>}
+
+    
     </>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   TextField,
   Button,
@@ -8,8 +8,13 @@ import {
   DialogTitle,
   DialogContent,
 } from "@mui/material";
+import { SuccessAlert } from "../../../utils/alertHandler";
 
-export default function AddPurchaseModal({ headerColor }) {
+export default function AddPurchaseModal({
+  headerColor,
+  closeModal,
+  setAlertStatus,
+}) {
   const [purchaseOrder, setPurchaseOrder] = useState({
     orderNumber: "",
     supplier: "",
@@ -22,21 +27,33 @@ export default function AddPurchaseModal({ headerColor }) {
     setPurchaseOrder((prevOrder) => ({ ...prevOrder, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // TODO: Handle form submission
-    console.log(purchaseOrder);
-    // Reset form fields
-    setPurchaseOrder({
-      orderNumber: "",
-      supplier: "",
-      totalAmount: "",
-      shippingAddress: "",
-    });
+  const handleSubmit = async () => {
+    try {
+      // Submit your form data or perform an action here
+      setPurchaseOrder({
+        orderNumber: "",
+        supplier: "",
+        totalAmount: "",
+        shippingAddress: "",
+      });
+
+      closeModal();
+      setAlertStatus((prevOrder) => ({
+        ...prevOrder,
+        status: "Success",
+        msg: "Successfully created a purchase",
+      }));
+    } catch (error) {
+      // If there's an error:
+      // Set an error message to display
+      console.error();
+    }
   };
 
   return (
     <>
+      {/* <SuccessAlert msg={"Successfully added purchase"} /> */}
+
       <DialogTitle style={{ backgroundColor: headerColor }}>
         <Typography variant="h4" align="center" gutterBottom>
           Add Purchase Order

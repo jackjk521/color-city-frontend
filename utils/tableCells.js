@@ -40,7 +40,7 @@ export const PurchaseTableHeaders = [
   },
 ];
 
-export const PurchaseTableCells = ({ row }) => {
+export const PurchaseTableCells = ({ row, setAlertStatus }) => {
   const [activeModal, setActiveModal] = React.useState(null);
   const openModal = (modalType) => {
     setActiveModal(modalType);
@@ -125,6 +125,7 @@ export const PurchaseTableCells = ({ row }) => {
       <PurchaseModalManager
         modalType={activeModal}
         setActiveModal={setActiveModal}
+        setAlertStatus={setAlertStatus}
       />
 
       {/* Table Cells  */}
