@@ -17,42 +17,14 @@ import CustomTabPanel from "../../components/utility/customTabPanel";
 import { createPurchaseData } from "@/utils/createData";
 import { PurchaseTableHeaders } from "@/utils/tableCells";
 
-// Alert
-import { SuccessAlert } from "@/utils/alertHandler";
-
 export default function Purchases({ rows }) {
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const [alertStatus, setAlertStatus] = React.useState({
-    status: "",
-    msg: "",
-    vertical: "top",
-    horizontal: "center",
-  });
-
-  React.useEffect(() => {
-    const timer = setTimeout(() => {
-      setAlertStatus({
-        status: "",
-        msg: "",
-        vertical: "top",
-        horizontal: "center",
-      });
-    }, 1500);
-
-    return () => clearTimeout(timer);
-  }, [alertStatus]);
-
   return (
     <>
-      {/* Alert config  */}
-        {alertStatus.status === "Success" && (
-        <SuccessAlert alertStatus={alertStatus} />
-      )}
-
       <PurchasesContent>
         <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
           <Tabs
@@ -73,7 +45,6 @@ export default function Purchases({ rows }) {
                 rows={rows}
                 headCells={PurchaseTableHeaders}
                 tableType={"Purchases"}
-                setAlertStatus={setAlertStatus}
               />
             }
           />

@@ -8,12 +8,11 @@ import {
   DialogTitle,
   DialogContent,
 } from "@mui/material";
-import { SuccessAlert } from "../../../utils/alertHandler";
+import Swal from 'sweetalert2'
 
 export default function AddPurchaseModal({
   headerColor,
   closeModal,
-  setAlertStatus,
 }) {
   const [purchaseOrder, setPurchaseOrder] = useState({
     orderNumber: "",
@@ -38,14 +37,22 @@ export default function AddPurchaseModal({
       });
 
       closeModal();
-      setAlertStatus((prevOrder) => ({
-        ...prevOrder,
-        status: "Success",
-        msg: "Successfully created a purchase",
-      }));
+      Swal.fire({
+        title: "Success",
+        text: "Successful",
+        icon: "success",
+        // confirmButtonText: "Cool",
+      });
+   
     } catch (error) {
       // If there's an error:
       // Set an error message to display
+      Swal.fire({
+        title: "Error!",
+        text: "Do you want to continue",
+        icon: "error",
+        confirmButtonText: "Cool",
+      });
       console.error();
     }
   };
