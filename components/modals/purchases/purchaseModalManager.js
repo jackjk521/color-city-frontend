@@ -8,29 +8,9 @@ import EditPurchaseModal from "./edit";
 import RemovePurchaseModal from "./remove";
 
 const PurchaseModalManager = ({ modalType, setActiveModal,  setAlertStatus }) => {
-  // const [alertStatus, setAlertStatus] = useState({
-  //   status: "",
-  //   msg: "",
-  //   vertical: "top",
-  //   horizontal: "center",
-  // });
-
   const closeModal = () => {
     setActiveModal(null);
   };
-
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     setAlertStatus({
-  //       status: "",
-  //       msg: "",
-  //       vertical: "top",
-  //       horizontal: "center",
-  //     });
-  //   }, 1500);
-
-  //   return () => clearTimeout(timer);
-  // }, [alertStatus]);
 
   // Header Colors
   const selectedHeaderColor = () => {

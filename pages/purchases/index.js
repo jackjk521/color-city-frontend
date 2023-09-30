@@ -13,11 +13,16 @@ import PurchasesTable from "../../components/utility/ResponsiveTable";
 import CardGrid from "../../components/utility/2CardGrid";
 import CustomTabPanel from "../../components/utility/customTabPanel";
 
+import CustomTable from "../../components/utility/customDisplayTable";
+
 // Helper Functions
 import { createPurchaseData } from "@/utils/createData";
 import { PurchaseTableHeaders } from "@/utils/tableCells";
 
+import { PurchasesColumns } from "@/utils/tableHeaders";
+
 export default function Purchases({ rows }) {
+  // console.log(rows);
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -41,13 +46,15 @@ export default function Purchases({ rows }) {
         <CustomTabPanel value={value} index={0}>
           <CardGrid
             table={
-              <PurchasesTable
-                rows={rows}
-                headCells={PurchaseTableHeaders}
-                tableType={"Purchases"}
-              />
+              <CustomTable tableHeaders={PurchasesColumns} data={rows} />
+              // <PurchasesTable
+              //   rows={rows}
+              //   headCells={PurchaseTableHeaders}
+              //   tableType={"Purchases"}
+              // />
             }
           />
+          {/* <CustomTable tableHeaders={PurchasesColumns} data={rows} /> */}
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
           <CardGrid

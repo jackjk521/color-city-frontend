@@ -27,11 +27,6 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 
-import { SwapVert } from "@mui/icons-material";
-
-import Alert from "./alerts";
-import { handleEdit } from "../../utils/actionHandler";
-
 // Helper Functions
 import {
   PurchaseTableCells,
@@ -39,9 +34,6 @@ import {
   SupplierTableCells,
 } from "@/utils/tableCells";
 
-import InventoryModalManager from "../modals/inventory/inventoryModalManager";
-import PurchaseModalManager from "../modals/purchases/purchaseModalManager";
-import SupplierModalManager from "../modals/suppliers/supplierModalManager";
 
 // import CustomModal from "../modals/inventory/remove";
 
@@ -148,6 +140,7 @@ export default function EnhancedTable({ rows, headCells, tableType }) {
     // Update the tableRows state when the rows prop changes
     setTableRows(rows);
   }, [rows]);
+  
   // Search Bar Filter
   // const [searchText, setSearchText] = React.useState("");
   // const [filteredData, setFilteredData] = React.useState(data);
