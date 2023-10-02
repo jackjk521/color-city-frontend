@@ -4,6 +4,8 @@ import Head from "next/head";
 // import { Inter } from '@next/font/google';
 // import styles from "../styles/Home.module.css";
 
+import useSWR from "swr";
+
 // Material UI
 import { Box, Tabs, Tab } from "@mui/material";
 
@@ -13,13 +15,20 @@ import PurchasesTable from "../../components/utility/ResponsiveTable";
 import CardGrid from "../../components/utility/2CardGrid";
 import CustomTabPanel from "../../components/utility/customTabPanel";
 
-import CustomTable from "../../components/utility/customDisplayTable";
+import CustomTable from "../../components/utility/tables/customDisplayTable";
 
 // Helper Functions
 import { createPurchaseData } from "@/utils/createData";
 import { PurchaseTableHeaders } from "@/utils/tableCells";
 
-import { PurchasesColumns } from "@/utils/tableHeaders";
+import { PurchasesColumns } from "../../components/utility/tables/tableColumns";
+
+const url = "https://dummyjson.com/products";
+const fetcher = async (url) => {
+  const response = await fetch(url);
+  const data = await response.json();
+  return data.products;
+};
 
 export default function Purchases({ rows }) {
   // console.log(rows);
@@ -28,6 +37,9 @@ export default function Purchases({ rows }) {
     setValue(newValue);
   };
 
+  const { data , error } = useSWR(url, fetcher, { fallbackData: rows });
+
+  // console.log(data)
   return (
     <>
       <PurchasesContent>
@@ -44,24 +56,15 @@ export default function Purchases({ rows }) {
 
         {/* Different Panel Views  */}
         <CustomTabPanel value={value} index={0}>
-          <CardGrid
-            table={
-              <CustomTable tableHeaders={PurchasesColumns} data={rows} />
-              // <PurchasesTable
-              //   rows={rows}
-              //   headCells={PurchaseTableHeaders}
-              //   tableType={"Purchases"}
-              // />
-            }
-          />
+          <CardGrid>
+            <CustomTable tableHeaders={PurchasesColumns} data={data} />
+          </CardGrid>
           {/* <CustomTable tableHeaders={PurchasesColumns} data={rows} /> */}
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-          <CardGrid
-            table={
-              <PurchasesTable rows={rows} headCells={PurchaseTableHeaders} />
-            }
-          />
+          <CardGrid>
+            <PurchasesTable rows={rows} headCells={PurchaseTableHeaders} />
+          </CardGrid>
         </CustomTabPanel>
       </PurchasesContent>
     </>
@@ -69,17 +72,11 @@ export default function Purchases({ rows }) {
 }
 
 export async function getServerSideProps() {
-  const url = "https://dummyjson.com/products";
   try {
-    const response = await fetch(url);
-    const data = await response.json();
-    const newRows = data.products.map((item) => {
-      const { id, title, price, rating } = item;
-      return createPurchaseData(id, title, price, rating);
-    });
+    const initialData = await fetcher(url);
     return {
       props: {
-        rows: newRows,
+        rows: initialData,
       },
     };
   } catch (error) {
