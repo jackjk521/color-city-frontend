@@ -7,7 +7,7 @@ import ViewPurchaseModal from "./view";
 import EditPurchaseModal from "./edit";
 import RemovePurchaseModal from "./remove";
 
-const PurchaseModalManager = ({ modalType, setActiveModal,  setAlertStatus }) => {
+const PurchaseModalManager = ({ modalType, setActiveModal }) => {
   const closeModal = () => {
     setActiveModal(null);
   };
@@ -35,7 +35,6 @@ const PurchaseModalManager = ({ modalType, setActiveModal,  setAlertStatus }) =>
           <AddPurchaseModal
             headerColor={selectedHeaderColor()}
             closeModal={closeModal}
-            setAlertStatus={setAlertStatus}
           />
         );
       case "view":
@@ -43,7 +42,6 @@ const PurchaseModalManager = ({ modalType, setActiveModal,  setAlertStatus }) =>
           <AddPurchaseModal
             headerColor={selectedHeaderColor()}
             closeModal={closeModal}
-            setAlertStatus={setAlertStatus}
           />
         );
       case "edit":
@@ -51,7 +49,6 @@ const PurchaseModalManager = ({ modalType, setActiveModal,  setAlertStatus }) =>
           <EditPurchaseModal
             headerColor={selectedHeaderColor()}
             closeModal={closeModal}
-            setAlertStatus={setAlertStatus}
           />
         );
       case "remove":
@@ -59,7 +56,6 @@ const PurchaseModalManager = ({ modalType, setActiveModal,  setAlertStatus }) =>
           <RemovePurchaseModal
             headerColor={selectedHeaderColor()}
             closeModal={closeModal}
-            setAlertStatus={setAlertStatus}
           />
         );
       default:
@@ -73,13 +69,12 @@ const PurchaseModalManager = ({ modalType, setActiveModal,  setAlertStatus }) =>
         <ReusableModal
           isOpen={modalType !== null}
           onClose={closeModal}
-          title={modalType}>
+          title={modalType}
+        >
           {renderModalContent()}
         </ReusableModal>
       )}
       {modalType == null && <></>}
-
-    
     </>
   );
 };

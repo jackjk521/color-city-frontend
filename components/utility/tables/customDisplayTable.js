@@ -8,7 +8,6 @@ import { useMediaQuery } from "@mui/material";
 import TableOptions from "./customTableOptions";
 import CustomColumns from "./customColumns";
 import ActionFormatter from "./actionFormatter";
-import CustomTableOptions from "./customTableOptions";
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -18,10 +17,10 @@ const CompactHeaderCell = (props) => (
 );
 
 const CustomTable = ({ tableHeaders, data }) => {
-  console.log(data);
+  // console.log(data);
   const [compact, setCompact] = useState(false);
   const [autoHeight, setAutoHeight] = useState(true);
-
+  const [tableOptions, setTableOptions] = useState(false);
   const [columnKeys, setColumnKeys] = useState(
     tableHeaders.map((column) => column.key)
   );
@@ -66,31 +65,43 @@ const CustomTable = ({ tableHeaders, data }) => {
     return i >= start && i < end;
   });
 
-  const isMobile = useMediaQuery("(max-width: 600px)"); // Adjust the breakpoint as needed
+  const isMobile = useMediaQuery("(min-width: 320px) and (max-width: 850px)");
 
   const handleButtonClick = () => {
     onClick(rowData);
   };
 
-  const responsiveColumns = isMobile  ? columns.filter((column) => column.key === "title" || column.key === "actions")
-  : columns;
+  const responsiveColumns = isMobile
+    ? columns.filter(
+        (column) => column.key === "title" || column.key === "actions"
+      )
+    : columns;
+
+  const handleToggle = () => {
+    setTableOptions(!tableOptions);
+  };
 
   return (
     <Box className="bg-primary">
       {/* Customize Data and Table Structure  */}
-      <TableOptions
-        compact={compact}
-        autoHeight={autoHeight}
-        setCompact={setCompact}
-        setAutoHeight={setAutoHeight}
-      />
-      <Divider />
-      {/* Customize Columns to Show  */}
-      <CustomColumns
-        tableHeaders={tableHeaders}
-        columnKeys={columnKeys}
-        setColumnKeys={setColumnKeys}
-      />
+      <Toggle onClick={handleToggle} />
+      {tableOptions && (
+        <Box>
+          <TableOptions
+            compact={compact}
+            autoHeight={autoHeight}
+            setCompact={setCompact}
+            setAutoHeight={setAutoHeight}
+          />
+          <Divider />
+          {/* Customize Columns to Show  */}
+          <CustomColumns
+            tableHeaders={tableHeaders}
+            columnKeys={columnKeys}
+            setColumnKeys={setColumnKeys}
+          />
+        </Box>
+      )}
 
       <Divider />
       <Box style={{ height: autoHeight ? "auto" : 400 }}>
@@ -130,30 +141,30 @@ const CustomTable = ({ tableHeaders, data }) => {
             );
           })}
         </Table>
+
         <Pagination
           prev
           next
-          first
-          last
           ellipsis
           boundaryLinks
-          maxButtons={5}
-          size="md"
+          maxButtons={1}
+          size="sm"
           layout={
             isMobile
-              ? ["total", "-", "limit", "|", "next"]
+              ? ["total", "-", "limit", "|", "pager"]
               : ["total", "-", "limit", "|", "pager", "skip"]
           }
           total={data.length}
-          limitOptions={[5, 15]}
+          limitOptions={[5, 15]} // edit this
           limit={limit}
           activePage={page}
           onChangePage={setPage}
           onChangeLimit={handleChangeLimit}
+          className="pagination-container" // edit this with our own styling
         />
       </Box>
     </Box>
   );
-}
+};
 
 export default CustomTable;

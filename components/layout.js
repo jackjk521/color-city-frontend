@@ -1,6 +1,7 @@
 import * as React from "react";
-// import { BrowserRouter as Routes, Route } from "react-router-dom";
+
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 // Material UI
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
@@ -84,24 +85,21 @@ export default function Layout({ children }) {
     setOpen(!open);
   };
 
-  // Rendering the component depending on what navBar item is selected
-  const [selectedItem, setSelectedItem] = React.useState("");
+  const router = useRouter();
 
-  // Render the content component based on the selected item
-  // const renderContent = () => {
-  //   switch (selectedItem) {
-  //     case "dashboard":
-  //       return <DashboardContent />;
-  //     case "purchases":
-  //       return <Link href="/purchases">  <a>Go to Purchases</a> </Link>;
-  //     case "inventory":
-  //       return <InventoryContent />;
-  //     case "suppliers":
-  //       return <InventoryContent />;
-  //     default:
-  //       return null;
-  //   }
-  // };
+  const getPageTitle = () => {
+    const path = router.pathname;
+    switch (path) {
+      case "/purchases":
+        return "Purchases";
+      case "/inventory":
+        return "Inventory";
+      default:
+        return "Dashboard";
+    }
+  };
+
+  const pageTitle = getPageTitle();
 
   return (
     <>
@@ -118,7 +116,8 @@ export default function Layout({ children }) {
             <Toolbar
               sx={{
                 pr: "24px", // keep right padding when drawer closed
-              }}>
+              }}
+            >
               <IconButton
                 edge="start"
                 color="inherit"
@@ -127,7 +126,8 @@ export default function Layout({ children }) {
                 sx={{
                   marginRight: "36px",
                   ...(open && { display: "none" }),
-                }}>
+                }}
+              >
                 <MenuIcon />
               </IconButton>
               <Typography
@@ -135,8 +135,9 @@ export default function Layout({ children }) {
                 variant="h6"
                 color="inherit"
                 noWrap
-                sx={{ flexGrow: 1 }}>
-                {selectedItem == "" ? "Dashboard" : selectedItem.toUpperCase()}
+                sx={{ flexGrow: 1 }}
+              >
+                {pageTitle.toUpperCase()}
               </Typography>
 
               {/* Notifications area  */}
@@ -154,14 +155,15 @@ export default function Layout({ children }) {
                 alignItems: "center",
                 justifyContent: "flex-end",
                 px: [1],
-              }}>
+              }}
+            >
               <IconButton onClick={toggleDrawer}>
                 <ChevronLeftIcon />
               </IconButton>
             </Toolbar>
             <Divider />
             <List component="nav">
-              {mainListItems({ setSelectedItem })}
+              {mainListItems()}
               <Divider sx={{ my: 1 }} />
               {secondaryListItems}
             </List>
@@ -176,14 +178,16 @@ export default function Layout({ children }) {
               flexGrow: 1,
               height: "100vh",
               overflow: "auto",
-            }}>
+            }}
+          >
             <Toolbar />
             <Container
               maxWidth="lg"
               sx={{
                 mt: 4,
                 mb: 4,
-              }}>
+              }}
+            >
               {/* Render the content component */}
               {/* {renderContent() == null ? children : renderContent()} */}
               {children}

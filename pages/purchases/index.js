@@ -7,7 +7,7 @@ import Head from "next/head";
 import useSWR from "swr";
 
 // Material UI
-import { Box, Tabs, Tab } from "@mui/material";
+import { Box, Tabs, Tab, Button, Grid, Divider } from "@mui/material";
 
 // Components
 import PurchasesContent from "../../components/purchasesContent";
@@ -22,6 +22,7 @@ import { createPurchaseData } from "@/utils/createData";
 import { PurchaseTableHeaders } from "@/utils/tableCells";
 
 import { PurchasesColumns } from "../../components/utility/tables/tableColumns";
+import { PurchaseModalManager } from "../../components/modals/purchases/purchaseModalManager";
 
 const url = "https://dummyjson.com/products";
 const fetcher = async (url) => {
@@ -36,23 +37,35 @@ export default function Purchases({ rows }) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
+  const [value, setValue] = React.useState(0);
 
-  const { data , error } = useSWR(url, fetcher, { fallbackData: rows });
+  const { data, error } = useSWR(url, fetcher, { fallbackData: rows });
 
   // console.log(data)
   return (
     <>
       <PurchasesContent>
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            aria-label="basic tabs example">
-            <Tab label="Branches" />
-            <Tab label="Suppliers" />
-            {/* {...a11yProps(0)} */}
-          </Tabs>
-        </Box>
+        <PurchaseModalManager />
+        <Grid container justifyContent="space-between">
+          <Grid item>
+            <Tabs
+              value={value}
+              onChange={handleChange}
+              aria-label="basic tabs example"
+            >
+              <Tab label="Branches" />
+              <Tab label="Suppliers" />
+              {/* {...a11yProps(0)} */}
+            </Tabs>
+          </Grid>{" "}
+          <Grid item>
+            <Button variant="contained" color="success">
+              {" "}
+              Add Purchase{" "}
+            </Button>
+          </Grid>
+        </Grid>
+        <Divider />
 
         {/* Different Panel Views  */}
         <CustomTabPanel value={value} index={0}>
