@@ -21,7 +21,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 
 // Components
 import { mainListItems, secondaryListItems } from "./utility/navbarItems";
-import Header from "./header"
+import Header from "./header";
 import Footer from "./footer";
 
 const drawerWidth = 240;
