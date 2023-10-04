@@ -1,11 +1,10 @@
 import * as React from "react";
-import SingleColumnGrid from "./utility/GridLayout3_1"
+import SingleColumnGrid from "../utility/grids/GridLayout3_1";
 
 export default function Dashboard() {
-
   return (
     <>
-      <SingleColumnGrid / >
+      <SingleColumnGrid />
     </>
   );
 }

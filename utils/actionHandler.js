@@ -1,29 +1,21 @@
 // For general use
-// Purchases
-export const addPurchaseModal = () => {
-  // Handle edit action
-  // console.log(`Edit action for item ${id}`);
-  setOpen(true);
-  setSeverity("warning"); // Use functional form of setState
-  setMessage("Warning Updating Data"); // Use functional form of setState
 
-  setTimeout(() => {
-    setOpen(false);
-    setSeverity("info");
-    setMessage("Default message");
-  }, 1500);
-};
+// Purchases
 
 export const addPurchase = () => {
-  // Handle edit action
-  // console.log(`Edit action for item ${id}`);
-  setOpen(true);
-  setSeverity("warning"); // Use functional form of setState
-  setMessage("Warning Updating Data"); // Use functional form of setState
+  // Handle add action
 
-  setTimeout(() => {
-    setOpen(false);
-    setSeverity("info");
-    setMessage("Default message");
-  }, 1500);
+};
+
+export const viewPurchase = () => {
+  // Handle add action
+
+};
+export const editPurchase = () => {
+  // Handle add action
+
+};
+export const removePurchase = () => {
+  // Handle add action
+
 };

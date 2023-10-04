@@ -10,19 +10,15 @@ import useSWR from "swr";
 import { Box, Tabs, Tab, Button, Grid, Divider } from "@mui/material";
 
 // Components
-import PurchasesContent from "../../components/purchasesContent";
-import PurchasesTable from "../../components/utility/ResponsiveTable";
-import CardGrid from "../../components/utility/2CardGrid";
+import PurchasesContent from "../../components/purchases/purchasesContent";
+import CardGrid from "../../components/utility/grids/2CardGrid";
 import CustomTabPanel from "../../components/utility/customTabPanel";
 
 import CustomTable from "../../components/utility/tables/customDisplayTable";
 
 // Helper Functions
-import { createPurchaseData } from "@/utils/createData";
-import { PurchaseTableHeaders } from "@/utils/tableCells";
-
 import { PurchasesColumns } from "../../components/utility/tables/tableColumns";
-import { PurchaseModalManager } from "../../components/modals/purchases/purchaseModalManager";
+import PurchaseModalManager from "../../components/purchases/modals/purchaseModalManager";
 
 const url = "https://dummyjson.com/products";
 const fetcher = async (url) => {
@@ -37,29 +33,38 @@ export default function Purchases({ rows }) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-  const [value, setValue] = React.useState(0);
-
+  const [activeModal, setActiveModal] = React.useState(null);
+  const openModal = (modalType) => {
+    setActiveModal(modalType);
+  };
   const { data, error } = useSWR(url, fetcher, { fallbackData: rows });
 
   // console.log(data)
   return (
     <>
       <PurchasesContent>
-        <PurchaseModalManager />
+        {/* Modal Config */}
+        <PurchaseModalManager
+          activeModal={activeModal}
+          setActiveModal={setActiveModal}
+        />
+
         <Grid container justifyContent="space-between">
           <Grid item>
             <Tabs
               value={value}
               onChange={handleChange}
-              aria-label="basic tabs example"
-            >
+              aria-label="basic tabs example">
               <Tab label="Branches" />
               <Tab label="Suppliers" />
               {/* {...a11yProps(0)} */}
             </Tabs>
           </Grid>{" "}
           <Grid item>
-            <Button variant="contained" color="success">
+            <Button
+              variant="contained"
+              color="success"
+              onClick={() => openModal("add")}>
               {" "}
               Add Purchase{" "}
             </Button>
@@ -70,13 +75,17 @@ export default function Purchases({ rows }) {
         {/* Different Panel Views  */}
         <CustomTabPanel value={value} index={0}>
           <CardGrid>
-            <CustomTable tableHeaders={PurchasesColumns} data={data} />
+            <CustomTable
+              tableHeaders={PurchasesColumns}
+              data={data}
+              tableType="Purchases"
+            />
           </CardGrid>
           {/* <CustomTable tableHeaders={PurchasesColumns} data={rows} /> */}
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
           <CardGrid>
-            <PurchasesTable rows={rows} headCells={PurchaseTableHeaders} />
+            {/* <PurchasesTable rows={rows} headCells={PurchaseTableHeaders} /> */}
           </CardGrid>
         </CustomTabPanel>
       </PurchasesContent>

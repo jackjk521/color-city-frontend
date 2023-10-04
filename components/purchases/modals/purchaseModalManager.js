@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ReusableModal from "../modal";
+import ReusableModal from "../../utility/modal";
 
 // Modal Contents
 import AddPurchaseModal from "./add";
@@ -7,14 +7,14 @@ import ViewPurchaseModal from "./view";
 import EditPurchaseModal from "./edit";
 import RemovePurchaseModal from "./remove";
 
-const PurchaseModalManager = ({ modalType, setActiveModal }) => {
+const PurchaseModalManager = ({ activeModal, setActiveModal }) => {
   const closeModal = () => {
     setActiveModal(null);
   };
 
   // Header Colors
   const selectedHeaderColor = () => {
-    switch (modalType) {
+    switch (activeModal) {
       case "add":
         return "green";
       case "view":
@@ -29,7 +29,7 @@ const PurchaseModalManager = ({ modalType, setActiveModal }) => {
   };
 
   const renderModalContent = () => {
-    switch (modalType) {
+    switch (activeModal) {
       case "add":
         return (
           <AddPurchaseModal
@@ -39,7 +39,7 @@ const PurchaseModalManager = ({ modalType, setActiveModal }) => {
         );
       case "view":
         return (
-          <AddPurchaseModal
+          <ViewPurchaseModal
             headerColor={selectedHeaderColor()}
             closeModal={closeModal}
           />
@@ -65,16 +65,16 @@ const PurchaseModalManager = ({ modalType, setActiveModal }) => {
 
   return (
     <>
-      {modalType != null && (
+      {activeModal != null && (
         <ReusableModal
-          isOpen={modalType !== null}
+          isOpen={activeModal !== null}
           onClose={closeModal}
-          title={modalType}
+          title={activeModal}
         >
           {renderModalContent()}
         </ReusableModal>
       )}
-      {modalType == null && <></>}
+      {activeModal == null && <></>}
     </>
   );
 };

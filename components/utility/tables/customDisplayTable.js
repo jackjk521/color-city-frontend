@@ -7,7 +7,9 @@ import { useMediaQuery } from "@mui/material";
 
 import TableOptions from "./customTableOptions";
 import CustomColumns from "./customColumns";
-import ActionFormatter from "./actionFormatter";
+import PurchaseActionFormatter from "../../purchases/actionFormatter";
+
+import { transformData, handleSortColumn } from "./sorters_filters";
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -16,11 +18,16 @@ const CompactHeaderCell = (props) => (
   <HeaderCell {...props} style={{ padding: 4 }} />
 );
 
-const CustomTable = ({ tableHeaders, data }) => {
+const CustomTable = ({ tableHeaders, data, tableType }) => {
   // console.log(data);
   const [compact, setCompact] = useState(false);
   const [autoHeight, setAutoHeight] = useState(true);
   const [tableOptions, setTableOptions] = useState(false);
+
+  const [sortColumn, setSortColumn] = React.useState();
+  const [sortType, setSortType] = React.useState();
+  const [loading, setLoading] = React.useState(false);
+
   const [columnKeys, setColumnKeys] = useState(
     tableHeaders.map((column) => column.key)
   );
@@ -46,6 +53,18 @@ const CustomTable = ({ tableHeaders, data }) => {
     }
   };
 
+  const SwitchHeaderCell = ({ children }) => {
+    // Custom formatting logic
+
+    return (
+      <HeaderCell>
+        <Typography fontSize={2} color="primary">
+          {children}
+        </Typography>
+      </HeaderCell>
+    );
+  };
+
   const CustomCell = compact ? CompactCell : SwitchCell;
   const CustomHeaderCell = compact ? CompactHeaderCell : HeaderCell;
 
@@ -59,17 +78,14 @@ const CustomTable = ({ tableHeaders, data }) => {
     setLimit(dataKey);
   };
 
-  const pages = data.filter((v, i) => {
-    const start = limit * (page - 1);
-    const end = start + limit;
-    return i >= start && i < end;
-  });
+  // const pages = transformData(sortColumn, sortType, data).filter((v, i) => {
+  //   const start = limit * (page - 1);
+  //   const end = start + limit;
+  //   return i >= start && i < end;
+  // });
+  const pages = transformData(sortColumn, sortType, data, limit, page);
 
   const isMobile = useMediaQuery("(min-width: 320px) and (max-width: 850px)");
-
-  const handleButtonClick = () => {
-    onClick(rowData);
-  };
 
   const responsiveColumns = isMobile
     ? columns.filter(
@@ -79,6 +95,16 @@ const CustomTable = ({ tableHeaders, data }) => {
 
   const handleToggle = () => {
     setTableOptions(!tableOptions);
+  };
+
+  const handleSort = () => {
+    handleSortColumn(
+      sortColumn,
+      sortType,
+      setLoading,
+      setSortColumn,
+      setSortType
+    );
   };
 
   return (
@@ -112,13 +138,18 @@ const CustomTable = ({ tableHeaders, data }) => {
           data={pages}
           headerHeight={compact ? 30 : 50}
           rowHeight={compact ? 30 : 60}
-          responsive
-        >
+          sortColumn={sortColumn}
+          sortType={sortType}
+          onSortColumn={handleSort}
+          loading={loading}
+          responsive>
           {responsiveColumns.map((column) => {
             const { key, label, ...rest } = column;
             return (
-              <Column {...rest} key={key}>
-                <CustomHeaderCell>{label}</CustomHeaderCell>
+              <Column {...rest} key={key} sortable>
+                <CustomHeaderCell style={{ fontSize: "1rem" }}>
+                  {label}
+                </CustomHeaderCell>
                 {compact ? (
                   <CustomCell dataKey={key} />
                 ) : (
@@ -126,10 +157,11 @@ const CustomTable = ({ tableHeaders, data }) => {
                     {(rowData) => {
                       if (key === "actions") {
                         return (
-                          <ActionFormatter
-                            rowData={rowData}
-                            onClick={handleButtonClick}
-                          />
+                          tableType === "Purchases" && (
+                            <PurchaseActionFormatter
+                              rowData={rowData}
+                            />
+                          )
                         );
                       } else {
                         return <CustomCell dataKey={key} rowData={rowData} />;

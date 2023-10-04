@@ -2,9 +2,9 @@ import * as React from "react";
 
 import { TableCell, Button, Grid } from "@mui/material";
 
-import InventoryModalManager from "@/components/modals/inventory/inventoryModalManager";
-import PurchaseModalManager from "@/components/modals/purchases/purchaseModalManager";
-import SupplierModalManager from "@/components/modals/suppliers/supplierModalManager";
+import InventoryModalManager from "../components/inventory/modals/inventoryModalManager";
+import PurchaseModalManager from "../components/purchases/modals/purchaseModalManager";
+import SupplierModalManager from "../components/suppliers/modals/supplierModalManager";
 
 // Purchases
 export const PurchaseTableHeaders = [

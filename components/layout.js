@@ -19,16 +19,10 @@ import Container from "@mui/material/Container";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import Grid from "@mui/material/Grid";
 
 // Components
 import { mainListItems, secondaryListItems } from "./utility/navbarItems";
-import PurchaseContent from "./purchasesContent";
-import InventoryContent from "./inventoryContent";
-import DashboardContent from "./dashboardContent";
 import Footer from "./footer";
-import CardGrid from "./utility/CardGrid";
-import CustomGrid from "./utility/GridLayout_4";
 
 const drawerWidth = 240;
 
@@ -116,8 +110,7 @@ export default function Layout({ children }) {
             <Toolbar
               sx={{
                 pr: "24px", // keep right padding when drawer closed
-              }}
-            >
+              }}>
               <IconButton
                 edge="start"
                 color="inherit"
@@ -126,8 +119,7 @@ export default function Layout({ children }) {
                 sx={{
                   marginRight: "36px",
                   ...(open && { display: "none" }),
-                }}
-              >
+                }}>
                 <MenuIcon />
               </IconButton>
               <Typography
@@ -135,8 +127,7 @@ export default function Layout({ children }) {
                 variant="h6"
                 color="inherit"
                 noWrap
-                sx={{ flexGrow: 1 }}
-              >
+                sx={{ flexGrow: 1 }}>
                 {pageTitle.toUpperCase()}
               </Typography>
 
@@ -155,8 +146,7 @@ export default function Layout({ children }) {
                 alignItems: "center",
                 justifyContent: "flex-end",
                 px: [1],
-              }}
-            >
+              }}>
               <IconButton onClick={toggleDrawer}>
                 <ChevronLeftIcon />
               </IconButton>
@@ -178,16 +168,14 @@ export default function Layout({ children }) {
               flexGrow: 1,
               height: "100vh",
               overflow: "auto",
-            }}
-          >
+            }}>
             <Toolbar />
             <Container
               maxWidth="lg"
               sx={{
                 mt: 4,
                 mb: 4,
-              }}
-            >
+              }}>
               {/* Render the content component */}
               {/* {renderContent() == null ? children : renderContent()} */}
               {children}

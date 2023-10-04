@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Grid, Tabs, Tab, useMediaQuery } from "@mui/material";
-import CardGrid from "./utility/CardGrid";
+import CardGrid from "../utility/grids/2CardGrid";
 
 const InventoryContent = ({ children }) => {
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));

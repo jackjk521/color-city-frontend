@@ -7,10 +7,9 @@ import Head from "next/head";
 import Box from "@mui/material/Box";
 
 // Components
-import DashboardContent from "@/components/dashboardContent";
+import DashboardContent from "@/components/dashboard/dashboardContent";
 
 export default function Dashboard() {
-
   return (
     <DashboardContent />
     // <Box sx={{ flexGrow: 1, backgroundColor: "#FFFFF" }}>

@@ -8,9 +8,9 @@ import Head from "next/head";
 import { Box, Tabs, Tab } from "@mui/material";
 
 // Components
-import InventoryContent from "../../components/inventoryContent";
-import InventoryTable from "../../components/utility/ResponsiveTable";
-import CardGrid from "../../components/utility/2CardGrid";
+import InventoryContent from "../../components/inventory/inventoryContent";
+import InventoryTable from "../../components/utility/tables/ResponsiveTable";
+import CardGrid from "../../components/utility/grids/2CardGrid";
 import CustomTabPanel from "../../components/utility/customTabPanel";
 
 // Helper Functions

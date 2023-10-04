@@ -1,5 +1,5 @@
 import React from "react";
-import ReusableModal from "../modal";
+import ReusableModal from "../../utility/modal";
 
 // Modal Contents
 import AddPurchaseModal from "./add";
@@ -7,7 +7,7 @@ import ViewPurchaseModal from "./view";
 import EditPurchaseModal from "./edit";
 import RemovePurchaseModal from "./remove";
 
-const InventoryModalManager = ({ modalType, setActiveModal }) => {
+const SupplierModalManager = ({ modalType, setActiveModal }) => {
 
   const closeModal = () => {
     setActiveModal(null);
@@ -58,4 +58,4 @@ const InventoryModalManager = ({ modalType, setActiveModal }) => {
   );
 };
 
-export default InventoryModalManager;
+export default SupplierModalManager;
