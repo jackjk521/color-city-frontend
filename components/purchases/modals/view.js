@@ -8,19 +8,31 @@ import {
   DialogActions,
   DialogTitle,
   DialogContent,
+  IconButton, 
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 export default function ViewPurchaseModal({ order, headerColor }) {
   return (
     <>
-      <DialogTitle style={{ backgroundColor: headerColor }}>
-        <Typography variant="h4" align="center">
+      <DialogTitle style={{ backgroundColor: headerColor }} mb={3}>
+        <Typography color="white" variant="h5" align="left">
           View Purchase Order
         </Typography>
       </DialogTitle>
+      <IconButton
+        aria-label="close"
+        onClick={closeModal}
+        sx={{
+          position: "absolute",
+          right: 10,
+          top: 10,
+        }}>
+        <CloseIcon />
+      </IconButton>
       <DialogContent>
-        <Container maxWidth="md">
-          <Grid container spacing={2}>
+        <Container maxWidth="lg">
+          <Grid container spacing={2} mt={1}>
             <Grid item xs={12}>
               <TextField
                 fullWidth

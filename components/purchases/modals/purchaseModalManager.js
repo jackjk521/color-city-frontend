@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
-import ReusableModal from "../../utility/modal";
+import LargeModal from "../../utility/modals/largeModal";
+import SmallModal from "../../utility/modals/smallModal";
+
 
 // Modal Contents
 import AddPurchaseModal from "./add";
@@ -20,9 +22,9 @@ const PurchaseModalManager = ({ activeModal, setActiveModal }) => {
       case "view":
         return "blue";
       case "edit":
-        return "yellow";
+        return "#ff9100";
       case "remove":
-        return "red";
+        return "#b71c1c";
       default:
         return null;
     }
@@ -65,15 +67,24 @@ const PurchaseModalManager = ({ activeModal, setActiveModal }) => {
 
   return (
     <>
-      {activeModal != null && (
-        <ReusableModal
+      {(activeModal != null) && (activeModal != "remove") && (
+        <LargeModal
           isOpen={activeModal !== null}
           onClose={closeModal}
-          title={activeModal}
-        >
+          title={activeModal}>
           {renderModalContent()}
-        </ReusableModal>
+        </LargeModal>
       )}
+
+      {activeModal == "remove" && (
+        <SmallModal
+          isOpen={activeModal !== null}
+          onClose={closeModal}
+          title={activeModal}>
+          {renderModalContent()}
+        </SmallModal>
+      )}
+
       {activeModal == null && <></>}
     </>
   );

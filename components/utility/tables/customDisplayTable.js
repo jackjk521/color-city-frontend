@@ -1,15 +1,26 @@
 import React, { useState } from "react";
-import { Table, Toggle, TagPicker, Pagination } from "rsuite";
-import { Box, Typography, Switch, Divider, Chip } from "@mui/material";
-import "rsuite/dist/rsuite.min.css";
 
-import { useMediaQuery } from "@mui/material";
+import { format } from "date-fns";
+import numeral from "numeral";
+
+import { Table, Toggle, TagPicker, Pagination } from "rsuite";
+import {
+  Box,
+  Typography,
+  Switch,
+  Divider,
+  Chip,
+  useMediaQuery,
+} from "@mui/material";
+import "rsuite/dist/rsuite.min.css";
 
 import TableOptions from "./customTableOptions";
 import CustomColumns from "./customColumns";
-import PurchaseActionFormatter from "../../purchases/actionFormatter";
+import PurchaseActionFormatter, {
+  PurchaseCells,
+} from "../../purchases/actionFormatter";
 
-import { transformData, handleSortColumn } from "./sorters_filters";
+import { handleSortColumn } from "./sorters_filters";
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -36,18 +47,14 @@ const CustomTable = ({ tableHeaders, data, tableType }) => {
     columnKeys.some((key) => key === column.key)
   );
 
-  const SwitchCell = ({ rowData, dataKey }) => {
-    // Custom formatting logic
+  const SwitchCell = ({ rowData, dataKey}) => {
+    // export this out and passed to the table
+    switch (tableType) {
+      case "Purchases":
+        return <PurchaseCells rowData={rowData} dataKey={dataKey} />;
+      case "Inventory":
+        return <PurchaseCells rowData={rowData} dataKey={dataKey} />;
 
-    switch (dataKey) {
-      case "id":
-        return rowData.id;
-      case "title":
-        return rowData.title;
-      case "price":
-        return `$${rowData.price.toFixed(2)}`; // Format price as currency
-      case "rating":
-        return `${rowData.rating}/5`; // Display rating out of 5
       default:
         return rowData[dataKey];
     }
@@ -78,12 +85,12 @@ const CustomTable = ({ tableHeaders, data, tableType }) => {
     setLimit(dataKey);
   };
 
-  // const pages = transformData(sortColumn, sortType, data).filter((v, i) => {
-  //   const start = limit * (page - 1);
-  //   const end = start + limit;
-  //   return i >= start && i < end;
-  // });
-  const pages = transformData(sortColumn, sortType, data, limit, page);
+  const pages = data.filter((v, i) => {
+    const start = limit * (page - 1);
+    const end = start + limit;
+    return i >= start && i < end;
+  });
+  // const pages = transformData(sortColumn, sortType, data, limit, page);
 
   const isMobile = useMediaQuery("(min-width: 320px) and (max-width: 850px)");
 
@@ -146,6 +153,7 @@ const CustomTable = ({ tableHeaders, data, tableType }) => {
           {responsiveColumns.map((column) => {
             const { key, label, ...rest } = column;
             return (
+              // to edit as it is not as scalable
               <Column {...rest} key={key} sortable>
                 <CustomHeaderCell style={{ fontSize: "1rem" }}>
                   {label}
@@ -158,9 +166,7 @@ const CustomTable = ({ tableHeaders, data, tableType }) => {
                       if (key === "actions") {
                         return (
                           tableType === "Purchases" && (
-                            <PurchaseActionFormatter
-                              rowData={rowData}
-                            />
+                            <PurchaseActionFormatter rowData={rowData} />
                           )
                         );
                       } else {

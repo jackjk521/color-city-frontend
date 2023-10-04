@@ -1,5 +1,5 @@
 import React from "react";
-import ReusableModal from "../../utility/modal";
+import ReusableModal from "../../utility/modals/largeModal";
 
 // Modal Contents
 import AddPurchaseModal from "./add";
@@ -8,7 +8,6 @@ import EditPurchaseModal from "./edit";
 import RemovePurchaseModal from "./remove";
 
 const InventoryModalManager = ({ modalType, setActiveModal }) => {
-
   const closeModal = () => {
     setActiveModal(null);
   };
@@ -30,11 +29,11 @@ const InventoryModalManager = ({ modalType, setActiveModal }) => {
   const renderModalContent = () => {
     switch (modalType) {
       case "add":
-        return <AddPurchaseModal headerColor={selectedHeaderColor()}/>;
+        return <AddPurchaseModal headerColor={selectedHeaderColor()} />;
       case "view":
-        return <ViewPurchaseModal headerColor={selectedHeaderColor()}/>;
+        return <ViewPurchaseModal headerColor={selectedHeaderColor()} />;
       case "edit":
-        return <EditPurchaseModal headerColor={selectedHeaderColor()}/>;
+        return <EditPurchaseModal headerColor={selectedHeaderColor()} />;
       case "remove":
         return <RemovePurchaseModal headerColor={selectedHeaderColor()} />;
       default:
@@ -48,8 +47,7 @@ const InventoryModalManager = ({ modalType, setActiveModal }) => {
         <ReusableModal
           isOpen={modalType !== null}
           onClose={closeModal}
-          title={modalType} 
-          >
+          title={modalType}>
           {renderModalContent()}
         </ReusableModal>
       )}

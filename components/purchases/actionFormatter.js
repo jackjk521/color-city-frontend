@@ -8,11 +8,29 @@ import {
 } from "../utility/tables/actionButtonList";
 import PurchaseModalManager from "../../components/purchases/modals/purchaseModalManager";
 
-// import {
-//   viewPurchase,
-//   editPurchase,
-//   removePurchase,
-// } from "../../utils/actionHandler";
+// Formatters
+import { format } from "date-fns";
+import numeral from "numeral";
+const formattedDate = (date) => {
+  return format(date, "mm/dd/yy"); // Using date-fns for date formatting
+};
+const formattedNumber = (number) => {
+  return numeral(number).format("$0,0.00");
+};
+
+export const PurchaseCells = ({ rowData, dataKey }) => {
+// Custom formatting logic
+const formatConfig = {
+  id: (value) => value,
+  title: (value) => value,
+  price: (value) =>
+    typeof value === "number" ? formattedNumber(value) : value,
+  rating: (value) => (typeof value === "number" ? `${value}/5` : value),
+};
+
+const formatValue = formatConfig[dataKey] || ((value) => value);
+return formatValue(rowData[dataKey]);
+}
 
 const ActionFormatter = ({ onClick }) => {
   const [activeModal, setActiveModal] = React.useState(null);

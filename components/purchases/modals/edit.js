@@ -7,9 +7,11 @@ import {
   Typography,
   DialogTitle,
   DialogContent,
+  IconButton
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
-export default function EditPurchaseModal({ headerColor }) {
+export default function EditPurchaseModal({ headerColor, closeModal }) {
   const [purchaseOrder, setPurchaseOrder] = useState({
     orderNumber: "",
     supplier: "",
@@ -37,15 +39,25 @@ export default function EditPurchaseModal({ headerColor }) {
 
   return (
     <>
-      <DialogTitle style={{ backgroundColor: headerColor }}>
-        <Typography variant="h4" align="center">
+    <DialogTitle style={{ backgroundColor: headerColor }}>
+        <Typography color="white" variant="h5" align="left">
           Edit Purchase Order
         </Typography>
       </DialogTitle>
-      <DialogContent>
-        <Container maxWidth="md">
+      <IconButton
+        aria-label="close"
+        onClick={closeModal}
+        sx={{
+          position: "absolute",
+          right: 10,
+          top: 10,
+        }}>
+        <CloseIcon />
+      </IconButton>
+      <DialogContent sx={{ paddingTop: 0 }}>
+        <Container maxWidth="lg">
           <form onSubmit={handleSubmit}>
-            <Grid container spacing={3}>
+            <Grid container spacing={3} mt={1}>
               <Grid item xs={12} sm={6}>
                 <TextField
                   required
