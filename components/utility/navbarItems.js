@@ -65,16 +65,11 @@ export const secondaryListItems = (
       Admin Modules
     </ListSubheader>
 
-    <ListItemButton>
+    <ListItemButton component={Link} href="/items">
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText
-        primary="Items"
-        component={Link}
-        href="/purchases"
-        // onClick={() => setSelectedItem("items")}
-      />
+      <ListItemText primary="Items" />
     </ListItemButton>
 
     <ListItemButton>

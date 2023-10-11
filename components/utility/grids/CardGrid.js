@@ -1,6 +1,6 @@
 import { Box, Grid, Typography } from "@mui/material";
 
-const CardGrid = ({ table }) => {
+const CardGrid = ({ children }) => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={4}>
@@ -25,7 +25,7 @@ const CardGrid = ({ table }) => {
         </Box>
       </Grid>
       <Grid item xs={12}>
-        {table}
+        {children}
       </Grid>
     </Grid>
   );

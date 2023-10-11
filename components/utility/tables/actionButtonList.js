@@ -4,26 +4,26 @@ import { Button, Grid } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-export const ViewBtn = ({ handleView }) => {
+export const ViewBtn = ({ openView }) => {
   return (
-    <Button color="primary" variant="contained" onClick={handleView}>
+    <Button color="primary" variant="contained" onClick={openView}>
       {" "}
       View
     </Button>
   );
 };
 
-export const EditBtn = ({ handleEdit }) => {
+export const EditBtn = ({ openEdit }) => {
   return (
-    <Button color="warning" variant="contained" onClick={handleEdit}>
+    <Button color="warning" variant="contained" onClick={openEdit}>
       <EditIcon />
     </Button>
   );
 };
 
-export const RemoveBtn = ({ handleRemove }) => {
+export const RemoveBtn = ({ openRemove }) => {
   return (
-    <Button color="error" variant="contained" onClick={handleRemove}>
+    <Button color="error" variant="contained" onClick={openRemove}>
       <DeleteIcon />
     </Button>
   );

@@ -20,6 +20,8 @@ import PurchaseActionFormatter, {
   PurchaseCells,
 } from "../../purchases/actionFormatter";
 
+import ItemActionFormatter, { ItemCells } from "../../items/actionFormatter";
+
 import { handleSortColumn } from "./sorters_filters";
 
 const { Column, HeaderCell, Cell } = Table;
@@ -47,14 +49,15 @@ const CustomTable = ({ tableHeaders, data, tableType }) => {
     columnKeys.some((key) => key === column.key)
   );
 
-  const SwitchCell = ({ rowData, dataKey}) => {
+  const SwitchCell = ({ rowData, dataKey }) => {
     // export this out and passed to the table
     switch (tableType) {
       case "Purchases":
         return <PurchaseCells rowData={rowData} dataKey={dataKey} />;
       case "Inventory":
         return <PurchaseCells rowData={rowData} dataKey={dataKey} />;
-
+      case "Items":
+        return <ItemCells rowData={rowData} dataKey={dataKey} />;
       default:
         return rowData[dataKey];
     }
@@ -165,9 +168,12 @@ const CustomTable = ({ tableHeaders, data, tableType }) => {
                     {(rowData) => {
                       if (key === "actions") {
                         return (
-                          tableType === "Purchases" && (
+                          (tableType === "Purchases" && (
                             <PurchaseActionFormatter rowData={rowData} />
-                          )
+                          )) ||
+                          (tableType === "Items" && (
+                            <ItemActionFormatter rowData={rowData} />
+                          ))
                         );
                       } else {
                         return <CustomCell dataKey={key} rowData={rowData} />;
