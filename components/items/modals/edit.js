@@ -22,6 +22,7 @@ export default function EditPurchaseModal({
   itemData,
   setItemData,
   closeModal,
+  mutate,
 }) {
   // console.log(itemData);
 
@@ -32,10 +33,30 @@ export default function EditPurchaseModal({
     setItemData((prevOrder) => ({ ...prevOrder, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Handle form submission
-
+    const item_id = itemData.item_id;
+    try {
+      const response = await apiClient.put(`/item/${item_id}/`, itemData);
+      if (response.status === 200) {
+        closeModal();
+        Swal.fire({
+          title: "Succcess",
+          text: "Successfully updated an item",
+          icon: "success",
+        });
+        mutate();
+      }
+    } catch (error) {
+      // Handle the error
+      console.error(error);
+      Swal.fire({
+        title: "Error",
+        text: error,
+        icon: "error",
+      });
+      throw error;
+    }
     // Reset form fields
     setItemData({
       item_id: "",
@@ -69,7 +90,8 @@ export default function EditPurchaseModal({
           position: "absolute",
           right: 10,
           top: 10,
-        }}>
+        }}
+      >
         <CloseIcon />
       </IconButton>
       <DialogContent sx={{ paddingTop: 0 }}>
@@ -77,15 +99,15 @@ export default function EditPurchaseModal({
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2} mt={1}>
               <Grid item xs={12} md={3}>
-                <TextField
-                  fullWidth
-                  label="Item Number"
-                  name="item_number"
-                  value={itemData.item_number}
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                />
+                {/* <TextField
+                    fullWidth
+                    label="Item Number"
+                    name="item_number"
+                    value={itemData.item_number}
+                    InputProps={{
+                      readOnly: true,
+                    }}
+                  /> */}
               </Grid>
               <Grid item xs={12} md={4}>
                 <TextField

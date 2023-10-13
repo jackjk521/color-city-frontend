@@ -11,7 +11,9 @@ import DashboardContent from "@/components/dashboard/dashboardContent";
 
 export default function Dashboard() {
   return (
-    <DashboardContent />
+    <DashboardContent>
+          {/* <BasicTable/> */}
+    </DashboardContent>
     // <Box sx={{ flexGrow: 1, backgroundColor: "#FFFFF" }}>
 
     // </Box>

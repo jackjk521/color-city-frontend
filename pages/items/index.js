@@ -2,7 +2,7 @@ import * as React from "react";
 import useSWR from "swr";
 
 // Material UI
-import { Box, Tabs, Tab, Button, Grid, Divider } from "@mui/material";
+import { Button, Grid, Divider } from "@mui/material";
 
 import Swal from "sweetalert2";
 
@@ -11,17 +11,18 @@ import ItemsContent from "../../components/items/itemsContent";
 import CardGrid from "../../components/utility/grids/CardGrid";
 import CustomTabPanel from "../../components/utility/customTabPanel";
 
-import CustomTable from "../../components/utility/tables/customDisplayTable";
+// Table
+import BasicReactTable from "@/components/utility/tables/basicReactTable";
+import { ItemColumns } from "../../components/utility/tables/tableColumns";
 
 // Helper Functions
-import { ItemsColumns } from "../../components/utility/tables/tableColumns";
 import ItemModalManager from "../../components/items/modals/itemModalManager";
-import apiClient from "../../components/utility/api/apiClient"
+import ActionFormatter from "@/components/items/actionFormatter";
+import apiClient from "../../components/utility/api/apiClient";
 
-const url = "/items";
-const fetcher = async (url) => {
+const fetcher = async () => {
   try {
-    const response = await apiClient.get(url);
+    const response = await apiClient.get("/items");
     if (response.status !== 200) {
       const error = new Error();
       error.info = response.data;
@@ -42,7 +43,7 @@ const fetcher = async (url) => {
 };
 
 export default function Items({ rows }) {
-  // console.log(rows);
+  // const [data, setData] = React.useState(rows);
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -51,32 +52,24 @@ export default function Items({ rows }) {
   const openModal = (modalType) => {
     setActiveModal(modalType);
   };
-  // const [data, setData] = React.useState(null);
-  // const [isLoading, setIsLoading] = React.useState(false);
-  // const [error, setError] = React.useState(null);
-  const { data: fetchedData, error: fetchedError } = useSWR(url, fetcher, {
+
+  const {
+    data: fetchedData,
+    mutate,
+    error: fetchedError,
+  } = useSWR("/items", fetcher, {
     fallbackData: rows,
   });
 
   // React.useEffect(() => {
-  //   if (fetchedData) {
-  //     setData(fetchedData);
-  //     setIsLoading(false);
-  //   }
+  //   const interval = setInterval(() => {
+  //     fetcher();
+  //   }, 5000); // Set the interval to 1 minute
 
-  //   if (fetchedError) {
-  //     setError(fetchedError);
-  //     setIsLoading(false);
-  //   }
-  // }, [fetchedData, fetchedError]);
-
-  // if (isLoading) {
-  //   return <div>Loading...</div>;
-  // }
-
-  // if (error) {
-  //   return <div>Error: {error.message}</div>;
-  // }
+  //   return () => {
+  //     clearInterval(interval); // Cleanup the interval on component unmount
+  //   };
+  // }, []);
 
   // console.log(data)
   return (
@@ -94,7 +87,8 @@ export default function Items({ rows }) {
             <Button
               variant="contained"
               color="success"
-              onClick={() => openModal("add")}>
+              onClick={() => openModal("add")}
+            >
               {" "}
               Add Item{" "}
             </Button>
@@ -105,10 +99,11 @@ export default function Items({ rows }) {
         {/* Different Panel Views  */}
         <CustomTabPanel value={value} index={0}>
           <CardGrid>
-            <CustomTable
-              tableHeaders={ItemsColumns}
-              data={fetchedData}
-              tableType="Items"
+            <BasicReactTable
+              data_columns={ItemColumns}
+              fetched_data={fetchedData}
+              action_formatter={ActionFormatter}
+              mutate={mutate}
             />
           </CardGrid>
         </CustomTabPanel>
@@ -119,7 +114,7 @@ export default function Items({ rows }) {
 
 export async function getServerSideProps({ req, res }) {
   try {
-    const initialData = await fetcher(url);
+    const initialData = await fetcher("/items");
     return {
       props: {
         rows: initialData,

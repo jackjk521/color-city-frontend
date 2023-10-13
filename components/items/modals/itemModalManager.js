@@ -2,14 +2,20 @@ import React, { useState, useEffect } from "react";
 import LargeModal from "../../utility/modals/largeModal";
 import SmallModal from "../../utility/modals/smallModal";
 
-
 // Modal Contents
 import AddItemModal from "./add";
 import ViewItemModal from "./view";
 import EditItemModal from "./edit";
 import RemoveItemModal from "./remove";
 
-const ItemModalManager = ({ itemData, setItemData, activeModal, setActiveModal, rowData }) => {
+const ItemModalManager = ({
+  itemData,
+  setItemData,
+  activeModal,
+  setActiveModal,
+  rowData,
+  mutate,
+}) => {
   const closeModal = () => {
     setActiveModal(null);
   };
@@ -37,6 +43,8 @@ const ItemModalManager = ({ itemData, setItemData, activeModal, setActiveModal, 
           <AddItemModal
             headerColor={selectedHeaderColor()}
             closeModal={closeModal}
+            mutate={mutate}
+
           />
         );
       case "view":
@@ -55,6 +63,7 @@ const ItemModalManager = ({ itemData, setItemData, activeModal, setActiveModal, 
             closeModal={closeModal}
             itemData={itemData}
             setItemData={setItemData}
+            mutate={mutate}
           />
         );
       case "remove":
@@ -63,6 +72,8 @@ const ItemModalManager = ({ itemData, setItemData, activeModal, setActiveModal, 
             headerColor={selectedHeaderColor()}
             closeModal={closeModal}
             rowData={rowData}
+            mutate={mutate}
+
           />
         );
       default:
@@ -72,11 +83,12 @@ const ItemModalManager = ({ itemData, setItemData, activeModal, setActiveModal, 
 
   return (
     <>
-      {(activeModal != null) && (activeModal != "remove") && (
+      {activeModal != null && activeModal != "remove" && (
         <LargeModal
           isOpen={activeModal !== null}
           onClose={closeModal}
-          title={activeModal}>
+          title={activeModal}
+        >
           {renderModalContent()}
         </LargeModal>
       )}
@@ -85,7 +97,8 @@ const ItemModalManager = ({ itemData, setItemData, activeModal, setActiveModal, 
         <SmallModal
           isOpen={activeModal !== null}
           onClose={closeModal}
-          title={activeModal}>
+          title={activeModal}
+        >
           {renderModalContent()}
         </SmallModal>
       )}

@@ -16,49 +16,80 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import apiClient from "@/components/utility/api/apiClient";
 import Swal from "sweetalert2";
+import {
+  ItemNumberField,
+  BrandsDropdown,
+  CategoriesDropdown,
+} from "@/components/utility/get_data";
 
-export default function AddModal({ headerColor, closeModal }) {
-  const [itemOrder, setItemOrder] = useState({
-    orderNumber: "",
-    supplier: "",
-    totalAmount: "",
-    shippingAddress: "",
+export default function AddModal({
+  headerColor,
+  closeModal,
+  mutate
+}) {
+
+  const [itemData, setItemData] = useState({
+    item_number: "",
+    item_name: "",
+    brand: "",
+    total_quantity: "",
+    category: "",
+    unit: "",
+    package: "",
+    item_price_w_vat: "",
+    item_price_wo_vat: "",
+    retail_price: "",
+    catalyst: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setItemOrder((prevOrder) => ({ ...prevOrder, [name]: value }));
+    setItemData((prevOrder) => ({ ...prevOrder, [name]: value }));
   };
 
-  const handleSubmit = async () => {
-    try {
-      // Submit your form data or perform an action here
-      setItemOrder({
-        orderNumber: "",
-        supplier: "",
-        totalAmount: "",
-        shippingAddress: "",
-      });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
-      closeModal();
-      Swal.fire({
-        title: "Success",
-        text: "Successful",
-        icon: "success",
-        // confirmButtonText: "Cool",
-      });
+    try {
+      const response = await apiClient.post(`/items`, itemData);
+      if (response.status === 201) {
+        closeModal()
+        Swal.fire({
+          title: "Succcess",
+          text: "Successfully added an item",
+          icon: "success",
+        });
+        mutate();
+      }
     } catch (error) {
-      // If there's an error:
-      // Set an error message to display
+      // Handle the error
+      console.error(error);
       Swal.fire({
-        title: "Error!",
-        text: "Do you want to continue",
+        title: "Error",
+        text: error,
         icon: "error",
-        confirmButtonText: "Cool",
       });
-      console.error();
+      throw error;
     }
+    // Reset form fields
+    setItemData({
+      item_id: "",
+      item_number: "",
+      item_name: "",
+      brand: "",
+      brand_name: "",
+      total_quantity: "",
+      category: "",
+      unit: "",
+      package: '',
+      item_price_w_vat: "",
+      item_price_wo_vat: "",
+      retail_price: "",
+      catalyst: 0,
+      created_at: "",
+    });
   };
 
   return (
@@ -81,165 +112,95 @@ export default function AddModal({ headerColor, closeModal }) {
 
       <DialogContent sx={{ paddingTop: 0 }}>
         <Container maxWidth="lg">
-          {/* Form Start  */}
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2} mt={1}>
-              <Grid item xs={12}>
-                <Typography>Category One</Typography>
+              <Grid item xs={12} md={3}>
+                <ItemNumberField/>
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} md={4}>
                 <TextField
                   required
                   fullWidth
-                  label="Order Number"
-                  name="orderNumber"
-                  value={itemOrder.orderNumber}
+                  label="Item Name"
+                  name="item_name"
                   onChange={handleChange}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} md={3}>
+                <BrandsDropdown selectedBrand={itemData.brand} handleChange={handleChange} />
+              </Grid>
+              <Grid item xs={12} md={2}>
                 <TextField
                   required
                   fullWidth
-                  label="Supplier"
-                  name="supplier"
-                  value={itemOrder.supplier}
+                  name="total_quantity"
+                  label="Total Quantity"
                   onChange={handleChange}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  label="Total Amount"
-                  name="totalAmount"
-                  value={itemOrder.totalAmount}
-                  onChange={handleChange}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">Php</InputAdornment>
-                    ),
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  label="Shipping Address"
-                  name="shippingAddress"
-                  value={itemOrder.shippingAddress}
-                  onChange={handleChange}
-                />
-              </Grid>
+            </Grid>
 
-              <Grid item xs={12}>
-                {/* <Typography> Category Two </Typography> */}
+            <Grid container spacing={2} mt={1}>
+              <Grid item xs={12} md={2}>
+                <CategoriesDropdown
+                  selectedCategory={itemData.category}
+                  handleChange={handleChange}
+                />
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">
-                    Total Amount
-                  </InputLabel>
-                  <Select
-                    fullWidth
-                    label="Total Amount"
-                    name="totalAmount"
-                    id="demo-simple-select"
-                    value={10000}
-                    onChange={handleChange}>
-                    <MenuItem value={10000}>10,000</MenuItem>
-                    <MenuItem value={20000}>20,000</MenuItem>
-                    <MenuItem value={30000}>30,000</MenuItem>
-                  </Select>
-                  <FormHelperText>With label + helper text</FormHelperText>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} md={1}>
                 <TextField
                   required
                   fullWidth
-                  label="Supplier"
-                  name="supplier"
-                  value={itemOrder.supplier}
+                  name="unit"
+                  label="Unit"
                   onChange={handleChange}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} md={1}>
                 <TextField
                   required
                   fullWidth
-                  label="Total Amount"
-                  name="totalAmount"
-                  value={itemOrder.totalAmount}
+                  name="package"
+                  label="Package"
                   onChange={handleChange}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">Php</InputAdornment>
-                    ),
-                  }}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} md={2}>
                 <TextField
                   required
                   fullWidth
-                  label="Shipping Address"
-                  name="shippingAddress"
-                  value={itemOrder.shippingAddress}
+                  name="catalyst"
+                  label="Catalyst"
                   onChange={handleChange}
                 />
               </Grid>
-
-              <Grid item xs={12}>
-                <Typography> Category One </Typography>
-              </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} md={2}>
                 <TextField
                   required
                   fullWidth
-                  label="Order Number"
-                  name="orderNumber"
-                  value={itemOrder.orderNumber}
+                  name="item_price_w_vat"
+                  label="Item Price W/ Vat"
                   onChange={handleChange}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} md={2}>
                 <TextField
                   required
                   fullWidth
-                  label="Supplier"
-                  name="supplier"
-                  value={itemOrder.supplier}
+                  name="item_price_wo_vat"
+                  label="Item Price W/O Vat"
                   onChange={handleChange}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+              <Grid item xs={12} md={2}>
                 <TextField
                   required
                   fullWidth
-                  label="Total Amount"
-                  name="totalAmount"
-                  value={itemOrder.totalAmount}
-                  onChange={handleChange}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">Php</InputAdornment>
-                    ),
-                  }}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  label="Shipping Address"
-                  name="shippingAddress"
-                  value={itemOrder.shippingAddress}
+                  name="retail_price"
+                  label="Retail Price"
                   onChange={handleChange}
                 />
               </Grid>
-
               <Grid item xs={12}>
                 <Button type="submit" variant="contained" color="primary">
                   Submit

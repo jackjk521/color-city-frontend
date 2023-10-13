@@ -1,6 +1,5 @@
 import * as React from "react";
-import { Grid, useMediaQuery } from "@mui/material";
-import { Box } from "@mui/material";
+import { Box, IconButton, Grid, useMediaQuery } from "@mui/material";
 import {
   ViewBtn,
   EditBtn,
@@ -13,6 +12,9 @@ import Swal from "sweetalert2";
 // Formatters
 import { format } from "date-fns";
 import numeral from "numeral";
+
+import { Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
+
 const formattedDate = (date) => {
   return format(date, "mm/dd/yy"); // Using date-fns for date formatting
 };
@@ -20,23 +22,24 @@ const formattedNumber = (number) => {
   return numeral(number).format("$0,0.00");
 };
 
-export const ItemCells = ({ rowData, dataKey }) => {
-  // Custom formatting logic
-  const formatConfig = {
-    item_id: (value) => value,
-    item_name: (value) => value,
-    brand: (value) => value,
-    item_price_w_vat: (value) =>
-      typeof value === "number" ? formattedNumber(value) : value,
-    retail_price: (value) =>
-      typeof value === "number" ? formattedNumber(value) : value,
-  };
+// export const ItemCells = ({ rowData, dataKey }) => {
+//   // Custom formatting logic
+//   const formatConfig = {
+//     item_id: (value) => value,
+//     item_name: (value) => value,
+//     brand: (value) => value,
+//     item_price_w_vat: (value) =>
+//       typeof value === "number" ? formattedNumber(value) : value,
+//     retail_price: (value) =>
+//       typeof value === "number" ? formattedNumber(value) : value,
+//   };
 
-  const formatValue = formatConfig[dataKey] || ((value) => value);
-  return formatValue(rowData[dataKey]);
-};
+//   const formatValue = formatConfig[dataKey] || ((value) => value);
+//   return formatValue(rowData[dataKey]);
+// };
 
-const ActionFormatter = ({ onClick, rowData }) => {
+const ActionFormatter = ({ rowData, mutate }) => {
+  // console.log(rowData)
   const [activeModal, setActiveModal] = React.useState(null);
   const openModal = (modalType) => {
     setActiveModal(modalType);
@@ -90,25 +93,21 @@ const ActionFormatter = ({ onClick, rowData }) => {
   const openEdit = () => {
     // open edit logic
     // console.log(rowData);
-    openModal("edit");
-
     setItemData({
       item_id: rowData.item_id,
       item_number: rowData.item_number,
       item_name: rowData.item_name,
       brand: rowData.brand,
-      brand_name: rowData.brand_name,
       total_quantity: rowData.total_quantity,
       category: rowData.category,
-      category_name: rowData.category_name,
       unit: rowData.unit,
       package: rowData.package,
       item_price_w_vat: rowData.item_price_w_vat,
       item_price_wo_vat: rowData.item_price_wo_vat,
       retail_price: rowData.retail_price,
       catalyst: rowData.catalyst,
-      created_at: rowData.created_at,
     });
+    openModal("edit");
   };
 
   const openRemove = async () => {
@@ -125,24 +124,20 @@ const ActionFormatter = ({ onClick, rowData }) => {
         itemData={itemData}
         setItemData={setItemData}
         rowData={rowData}
+        mutate={mutate}
       />
 
       {isMobile || isTablet ? (
         <Box>
-          <ViewBtn openView={onClick} />
+          <ViewBtn openView={openView} />
         </Box>
       ) : (
-        <Grid container spacing={2}>
-          <Grid item>
-            <ViewBtn openView={openView} />
-          </Grid>
-          <Grid item>
-            <EditBtn openEdit={openEdit} />
-          </Grid>
-          <Grid item>
-            <RemoveBtn openRemove={openRemove} />
-          </Grid>
-        </Grid>
+        <Box sx={{ display: "flex", flexWrap: "nowrap", gap: "8px" }}>
+          <ViewBtn openView={openView} />
+          <EditBtn openEdit={openEdit} />
+          <RemoveBtn openRemove={openRemove} />
+        </Box>
+
       )}
     </>
   );

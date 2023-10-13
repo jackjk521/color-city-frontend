@@ -12,21 +12,26 @@ import CloseIcon from "@mui/icons-material/Close";
 import apiClient from "@/components/utility/api/apiClient";
 import Swal from "sweetalert2";
 
-export default function RemoveModal({ headerColor, closeModal, rowData }) {
-  
+export default function RemoveModal({
+  headerColor,
+  closeModal,
+  rowData,
+  mutate,
+}) {
   const handleRemove = async (e) => {
     // console.log(rowData);
-    const item_id = rowData.item_id;
     e.preventDefault();
+    const item_id = rowData.item_id;
     try {
       const response = await apiClient.delete(`/item/${item_id}/`);
       if (response.status === 200) {
-        closeModal()
+        closeModal();
         Swal.fire({
           title: "Succcess",
           text: "Successfully deleted an item",
           icon: "success",
         });
+        mutate();
       }
     } catch (error) {
       // Handle the error

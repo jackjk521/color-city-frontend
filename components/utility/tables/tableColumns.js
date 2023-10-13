@@ -43,56 +43,41 @@ export const PurchasesColumns = [
 ];
 
 // Items
-export const ItemsColumns = [
+export const ItemColumns = [
+  // {
+  //   accessorKey: 'name.firstName', //access nested data with dot notation
+  //   header: 'First Name',
+  //   size: 150,
+  // },
   {
-    key: "item_id",
-    label: "ID",
-    fixed: true,
-    width: 70,
-    align: "center",
-    responsive: true,
+    accessorKey: 'item_id', // Primary key
+    header: 'ID',
+    size: 50,
   },
   {
-    key: "item_name",
-    label: "Item Name",
-    align: "left",
-    flexGrow: 1,
-    responsive: true,
+    accessorKey: 'item_name', //normal accessorKey
+    header: 'Name',
+    size: 200,
   },
   {
-    key: "brand_name",
-    label: "Brand",
-    align: "left",
-    flexGrow: 1,
-    responsive: true,
+    accessorKey: 'brand_name',
+    header: 'Brand',
+    size: 150,
   },
   {
-    key: "category_name",
-    label: "Category",
-    align: "left",
-    flexGrow: 1,
-    responsive: true,
+    accessorKey: 'category_name',
+    header: 'Category',
+    size: 150,
   },
   {
-    key: "item_price_w_vat",
-    label: "Item Price",
-    align: "right",
-    flexGrow: 1,
-    responsive: true,
+    accessorKey: 'item_price_w_vat',
+    header: 'Item Price',
+    size: 150,
   },
   {
-    key: "retail_price",
-    label: "Retail Price",
-    align: "right",
-    flexGrow: 1,
-    responsive: true,
+    accessorKey: 'retail_price',
+    header: 'Retail Price',
+    size: 150,
   },
-  {
-    key: "actions",
-    label: "Actions",
-    align: "center",
-    flexGrow: 2,
-    responsive: true,
-  },
-];
 
+]
