@@ -79,6 +79,7 @@ export default function Items({ rows }) {
         <ItemModalManager
           activeModal={activeModal}
           setActiveModal={setActiveModal}
+          mutate={mutate}
         />
 
         <Grid container justifyContent="space-between">

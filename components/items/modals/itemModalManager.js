@@ -44,7 +44,6 @@ const ItemModalManager = ({
             headerColor={selectedHeaderColor()}
             closeModal={closeModal}
             mutate={mutate}
-
           />
         );
       case "view":

@@ -81,3 +81,66 @@ export const ItemColumns = [
   },
 
 ]
+
+// Brands
+export const BrandsColumns = [
+
+  {
+    accessorKey: 'brand_id', // Primary key
+    header: 'ID',
+    size: 50,
+  },
+  {
+    accessorKey: 'brand_name', //normal accessorKey
+    header: 'Name',
+    size: 200,
+  },
+  {
+    accessorKey: 'supplier_name', //normal accessorKey
+    header: 'Supplier',
+    size: 200,
+  },
+
+]
+
+// Categories
+export const CategoriesColumns = [
+
+  {
+    accessorKey: 'category_id', // Primary key
+    header: 'ID',
+    size: 50,
+  },
+  {
+    accessorKey: 'category_name', //normal accessorKey
+    header: 'Name',
+    size: 200,
+  },
+
+]
+
+// Suppliers
+export const SuppliersColumns = [
+
+  {
+    accessorKey: 'supplier_id', // Primary key
+    header: 'ID',
+    size: 50,
+  },
+  {
+    accessorKey: 'supplier_name', //normal accessorKey
+    header: 'Name',
+    size: 200,
+  },
+  {
+    accessorKey: 'contact_num', //normal accessorKey
+    header: 'Contact',
+    size: 200,
+  },
+
+]
+
+
+
+
+
