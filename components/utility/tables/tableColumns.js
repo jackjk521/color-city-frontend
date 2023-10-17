@@ -79,8 +79,16 @@ export const ItemColumns = [
     header: 'Retail Price',
     size: 150,
   },
-
 ]
+
+export const ItemColumnVisibility = {
+  item_id: true, 
+  item_name: false,
+  brand_name: false, 
+  category_name: false, 
+  item_price_w_vat: false, 
+  retail_price: false,
+}
 
 // Brands
 export const BrandsColumns = [
@@ -102,6 +110,11 @@ export const BrandsColumns = [
   },
 
 ]
+export const BrandColumnsVisibility = {
+  brand_id: true, 
+  brand_name: false,
+  supplier_name: false, 
+}
 
 // Categories
 export const CategoriesColumns = [
@@ -118,6 +131,11 @@ export const CategoriesColumns = [
   },
 
 ]
+export const CategoryColumnsVisibility = {
+  category_id: true, 
+  category_name: false,
+}
+
 
 // Suppliers
 export const SuppliersColumns = [
@@ -139,6 +157,13 @@ export const SuppliersColumns = [
   },
 
 ]
+
+export const SupplierColumnsVisibility = {
+  supplier_id: true, 
+  supplier_name: false,
+  contact_num: false, 
+}
+
 
 
 

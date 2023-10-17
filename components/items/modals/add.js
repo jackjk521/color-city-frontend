@@ -156,23 +156,24 @@ export default function AddModal({
                   onChange={handleChange}
                 />
               </Grid>
-              <Grid item xs={12} md={1}>
-                <TextField
-                  required
-                  fullWidth
-                  name="package"
-                  label="Package"
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12} md={2}>
-                <TextField
-                  required
-                  fullWidth
-                  name="catalyst"
-                  label="Catalyst"
-                  onChange={handleChange}
-                />
+              <Grid item xs={12} md={3}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">
+                    Package
+                  </InputLabel>
+                  <Select
+                    fullWidth
+                    label="Package"
+                    name="package"
+                    id="demo-simple-select"
+                    onChange={handleChange}>
+                    <MenuItem value={"L"}>Liter/s</MenuItem>
+                    <MenuItem value={"GL"}>Gallons</MenuItem>
+                    <MenuItem value={"PC"}>Piece</MenuItem>
+                    <MenuItem value={"PCS"}>Pieces</MenuItem>
+                    <MenuItem value={"SHTS"}>Sheets</MenuItem>
+                  </Select>
+                </FormControl>
               </Grid>
               <Grid item xs={12} md={2}>
                 <TextField

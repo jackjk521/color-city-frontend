@@ -13,7 +13,10 @@ import CustomTabPanel from "../../components/utility/customTabPanel";
 
 // Table
 import BasicReactTable from "@/components/utility/tables/basicReactTable";
-import { ItemColumns } from "../../components/utility/tables/tableColumns";
+import {
+  ItemColumns,
+  ItemColumnVisibility,
+} from "../../components/utility/tables/tableColumns";
 
 // Helper Functions
 import ItemModalManager from "../../components/items/modals/itemModalManager";
@@ -88,8 +91,7 @@ export default function Items({ rows }) {
             <Button
               variant="contained"
               color="success"
-              onClick={() => openModal("add")}
-            >
+              onClick={() => openModal("add")}>
               {" "}
               Add Item{" "}
             </Button>
@@ -102,6 +104,7 @@ export default function Items({ rows }) {
           <CardGrid>
             <BasicReactTable
               data_columns={ItemColumns}
+              column_visibility={ItemColumnVisibility}
               fetched_data={fetchedData}
               action_formatter={ActionFormatter}
               mutate={mutate}

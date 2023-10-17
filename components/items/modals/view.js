@@ -12,8 +12,8 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 
-export default function ViewModal({ itemData, headerColor, closeModal }) {
-  console.log(itemData);
+export default function ViewModal({ data, headerColor, closeModal }) {
+  console.log(data);
   return (
     <>
       <DialogTitle style={{ backgroundColor: headerColor }} mb={3}>
@@ -39,7 +39,7 @@ export default function ViewModal({ itemData, headerColor, closeModal }) {
               <TextField
                 fullWidth
                 label="Item ID"
-                value={itemData.item_id}
+                value={data.item_id}
                 InputProps={{
                   readOnly: true,
                 }}
@@ -49,7 +49,7 @@ export default function ViewModal({ itemData, headerColor, closeModal }) {
               <TextField
                 fullWidth
                 label="Item Number"
-                value={itemData.item_number}
+                value={data.item_number}
                 InputProps={{
                   readOnly: true,
                 }}
@@ -59,7 +59,7 @@ export default function ViewModal({ itemData, headerColor, closeModal }) {
               <TextField
                 fullWidth
                 label="Item Name"
-                value={itemData.item_name}
+                value={data.item_name}
                 InputProps={{
                   readOnly: true,
                 }}
@@ -69,7 +69,7 @@ export default function ViewModal({ itemData, headerColor, closeModal }) {
               <TextField
                 fullWidth
                 label="Brand"
-                value={itemData.brand_name}
+                value={data.brand_name}
                 InputProps={{
                   readOnly: true,
                 }}
@@ -79,7 +79,7 @@ export default function ViewModal({ itemData, headerColor, closeModal }) {
               <TextField
                 fullWidth
                 label="Total Quantity"
-                value={itemData.total_quantity}
+                value={data.total_quantity}
                 InputProps={{
                   readOnly: true,
                 }}
@@ -92,7 +92,7 @@ export default function ViewModal({ itemData, headerColor, closeModal }) {
               <TextField
                 fullWidth
                 label="Category"
-                value={itemData.category_name}
+                value={data.category_name}
                 InputProps={{
                   readOnly: true,
                 }}
@@ -102,7 +102,7 @@ export default function ViewModal({ itemData, headerColor, closeModal }) {
               <TextField
                 fullWidth
                 label="Unit"
-                value={itemData.unit}
+                value={data.unit}
                 InputProps={{
                   readOnly: true,
                 }}
@@ -112,7 +112,7 @@ export default function ViewModal({ itemData, headerColor, closeModal }) {
               <TextField
                 fullWidth
                 label="Package"
-                value={itemData.package}
+                value={data.package}
                 InputProps={{
                   readOnly: true,
                 }}
@@ -122,7 +122,7 @@ export default function ViewModal({ itemData, headerColor, closeModal }) {
               <TextField
                 fullWidth
                 label="Catalyst"
-                value={itemData.catalyst}
+                value={data.catalyst}
                 InputProps={{
                   readOnly: true,
                 }}
@@ -132,7 +132,7 @@ export default function ViewModal({ itemData, headerColor, closeModal }) {
               <TextField
                 fullWidth
                 label="Item Price W/ Vat"
-                value={itemData.item_price_w_vat}
+                value={data.item_price_w_vat}
                 InputProps={{
                   readOnly: true,
                 }}
@@ -142,7 +142,7 @@ export default function ViewModal({ itemData, headerColor, closeModal }) {
               <TextField
                 fullWidth
                 label="Item Price W/O Vat"
-                value={itemData.item_price_wo_vat}
+                value={data.item_price_wo_vat}
                 InputProps={{
                   readOnly: true,
                 }}
@@ -152,7 +152,7 @@ export default function ViewModal({ itemData, headerColor, closeModal }) {
               <TextField
                 fullWidth
                 label="Retail Price"
-                value={itemData.retail_price}
+                value={data.retail_price}
                 InputProps={{
                   readOnly: true,
                 }}

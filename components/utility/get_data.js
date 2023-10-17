@@ -10,6 +10,8 @@ import apiClient from "./api/apiClient";
 import Swal from "sweetalert2";
 
 // Api calls to get data
+
+// Get all brands
 export const get_brands = async () => {
   try {
     const response = await apiClient.get(`/brands`);
@@ -27,7 +29,7 @@ export const get_brands = async () => {
     throw error;
   }
 };
-
+// Get Categories
 export const get_categories = async () => {
   try {
     const response = await apiClient.get(`/categories`);
@@ -46,6 +48,26 @@ export const get_categories = async () => {
   }
 };
 
+// Get Suppliers
+export const get_suppliers = async () => {
+  try {
+    const response = await apiClient.get(`/suppliers`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    // Handle the error
+    console.error(error);
+    Swal.fire({
+      title: "Error",
+      text: error,
+      icon: "error",
+    });
+    throw error;
+  }
+};
+
+// Item Number Generation
 export const get_item_number = async () => {
   try {
     const response = await apiClient.get(`/gen_item_number`);
@@ -63,6 +85,27 @@ export const get_item_number = async () => {
     throw error;
   }
 };
+
+// Items with category catalyst
+export const get_items_by_catalyst = async () => {
+  try {
+    const response = await apiClient.get(`/items/?category=4`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    // Handle the error
+    console.error(error);
+    Swal.fire({
+      title: "Error",
+      text: error,
+      icon: "error",
+    });
+    throw error;
+  }
+};
+
+// Generate components
 
 // Auto generate text fields
 export function ItemNumberField() {
@@ -103,11 +146,6 @@ export function BrandsDropdown({ selectedBrand, handleChange }) {
         console.error(error);
       });
   }, []);
-
-  // const handleBrandChange = (event) => {
-  //   setSelectedBrand(event.target.value);
-  // //   console.log(event.target.value)
-  // };
 
   return (
     <FormControl fullWidth>
@@ -157,6 +195,74 @@ export function CategoriesDropdown({ selectedCategory, handleChange }) {
         {categories.map((category) => (
           <MenuItem key={category.category_id} value={category.category_id}>
             {category.category_name}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  );
+}
+
+export function SuppliersDropdown({ selectedSupplier, handleChange }) {
+  const [suppliers, setSuppliers] = useState([]);
+
+  useEffect(() => {
+    get_suppliers()
+      .then((suppliers) => {
+        setSuppliers(suppliers);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  return (
+    <FormControl fullWidth>
+      <InputLabel id="suppliers-label">Suppliers</InputLabel>
+      <Select
+        fullWidth
+        labelId="suppliers-label"
+        label="suppliers"
+        id="suppliers-select"
+        name="supplier"
+        value={selectedSupplier || ""}
+        onChange={handleChange}>
+        {suppliers.map((supplier) => (
+          <MenuItem key={supplier.supplier_id} value={supplier.supplier_id}>
+            {supplier.supplier_name}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  );
+}
+
+export function CatalystsDropdown({ selectedItem, handleChange }) {
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    get_items()
+      .then((items) => {
+        setItems(items);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  return (
+    <FormControl fullWidth>
+      <InputLabel id="items-label">Catalysts</InputLabel>
+      <Select
+        fullWidth
+        labelId="items-label"
+        label="items"
+        id="items-select"
+        name="supplier"
+        value={selectedItem || ""}
+        onChange={handleChange}>
+        {items.map((item) => (
+          <MenuItem key={item.item_id} value={item.item_id}>
+            {item.item_name}
           </MenuItem>
         ))}
       </Select>

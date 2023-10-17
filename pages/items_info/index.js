@@ -14,15 +14,25 @@ import CustomTabPanel from "../../components/utility/customTabPanel";
 // Table
 import BasicReactTable from "@/components/utility/tables/basicReactTable";
 import {
-  ItemColumns,
   BrandsColumns,
   CategoriesColumns,
   SuppliersColumns,
+  BrandColumnsVisibility,
+  CategoryColumnsVisibility,
+  SupplierColumnsVisibility,
 } from "../../components/utility/tables/tableColumns";
 
 // Helper Functions
 import ItemModalManager from "../../components/items/modals/itemModalManager";
+import BrandModalManager from "@/components/brands/modals/brandModalManager";
+import CategoryModalManager from "@/components/categories/modals/categoryModalManager";
+import SupplierModalManager from "@/components/suppliers/modals/supplierModalManager";
+
 import ActionFormatter from "@/components/items/actionFormatter";
+import BrandActionFormatter from "@/components/brands/actionFormatter";
+import CategoryActionFormatter from "@/components/categories/actionFormatter";
+import SupplierActionFormatter from "@/components/suppliers/actionFormatter";
+
 import {
   brandsFetcher,
   categoriesFetcher,
@@ -72,16 +82,42 @@ export default function ItemsInfo({ brands, categories, suppliers }) {
     fallbackData: suppliers,
   });
 
+  const modalComponents = {
+    0: (
+      <BrandModalManager
+        activeModal={activeModal}
+        setActiveModal={setActiveModal}
+        mutate={brandsMutate}
+      />
+    ),
+    1: (
+      <CategoryModalManager
+        activeModal={activeModal}
+        setActiveModal={setActiveModal}
+        mutate={categoriesMutate}
+      />
+    ),
+    2: (
+      <SupplierModalManager
+        activeModal={activeModal}
+        setActiveModal={setActiveModal}
+        mutate={suppliersMutate}
+      />
+    ),
+  };
+
+  const tabName = {
+    0: "Brand",
+    1: "Category",
+    2: "Supplier",
+  };
+
   // console.log(data)
   return (
     <>
       <ItemsContent>
         {/* Modal Config */}
-        {/* <ItemModalManager
-          activeModal={activeModal}
-          setActiveModal={setActiveModal}
-          mutate={mutate}
-        /> */}
+        {modalComponents[value]}
 
         <Grid container justifyContent="space-between">
           <Grid item>
@@ -97,13 +133,13 @@ export default function ItemsInfo({ brands, categories, suppliers }) {
             </Tabs>
           </Grid>{" "}
           <Grid item>
-            {/* <Button
+            <Button
               variant="contained"
               color="success"
               onClick={() => openModal("add")}>
               {" "}
-              Add Item{" "}
-            </Button> */}
+              Add {tabName[value]}{" "}
+            </Button>
           </Grid>
         </Grid>
         <Divider />
@@ -115,7 +151,8 @@ export default function ItemsInfo({ brands, categories, suppliers }) {
           tabName: "Brands",
           tabData: brandsData,
           dataColumns: BrandsColumns,
-          actionFormatter: ActionFormatter,
+          column_visibility: BrandColumnsVisibility,
+          actionFormatter: BrandActionFormatter,
           tabMutate: brandsMutate,
         })}
         {renderTabContent({
@@ -124,7 +161,8 @@ export default function ItemsInfo({ brands, categories, suppliers }) {
           tabName: "Categories",
           tabData: categoriesData,
           dataColumns: CategoriesColumns,
-          actionFormatter: ActionFormatter,
+          column_visibility: CategoryColumnsVisibility,
+          actionFormatter: CategoryActionFormatter,
           tabMutate: categoriesMutate,
         })}
         {renderTabContent({
@@ -133,7 +171,8 @@ export default function ItemsInfo({ brands, categories, suppliers }) {
           tabName: "Suppliers",
           tabData: suppliersData,
           dataColumns: SuppliersColumns,
-          actionFormatter: ActionFormatter,
+          column_visibility: SupplierColumnsVisibility,
+          actionFormatter: SupplierActionFormatter,
           tabMutate: suppliersMutate,
         })}
       </ItemsContent>

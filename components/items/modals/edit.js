@@ -1,6 +1,12 @@
 import React, { useState } from "react";
 import {
   TextField,
+  InputAdornment,
+  FormControl,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormHelperText,
   Button,
   Grid,
   Container,
@@ -19,25 +25,25 @@ import {
 
 export default function EditPurchaseModal({
   headerColor,
-  itemData,
-  setItemData,
+  data,
+  setData,
   closeModal,
   mutate,
 }) {
-  // console.log(itemData);
+  // console.log(data);
 
   // Get all categories
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setItemData((prevOrder) => ({ ...prevOrder, [name]: value }));
+    setData((prevOrder) => ({ ...prevOrder, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const item_id = itemData.item_id;
+    const item_id = data.item_id;
     try {
-      const response = await apiClient.put(`/item/${item_id}/`, itemData);
+      const response = await apiClient.put(`/item/${item_id}/`, data);
       if (response.status === 200) {
         closeModal();
         Swal.fire({
@@ -58,7 +64,7 @@ export default function EditPurchaseModal({
       throw error;
     }
     // Reset form fields
-    setItemData({
+    setData({
       item_id: "",
       item_number: "",
       item_name: "",
@@ -80,7 +86,7 @@ export default function EditPurchaseModal({
     <>
       <DialogTitle style={{ backgroundColor: headerColor }}>
         <Typography color="white" variant="h5" align="left">
-          Edit Data
+          Edit Item
         </Typography>
       </DialogTitle>
       <IconButton
@@ -98,30 +104,19 @@ export default function EditPurchaseModal({
         <Container maxWidth="lg">
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2} mt={1}>
-              <Grid item xs={12} md={3}>
-                {/* <TextField
-                    fullWidth
-                    label="Item Number"
-                    name="item_number"
-                    value={itemData.item_number}
-                    InputProps={{
-                      readOnly: true,
-                    }}
-                  /> */}
-              </Grid>
               <Grid item xs={12} md={4}>
                 <TextField
                   required
                   fullWidth
                   label="Item Name"
                   name="item_name"
-                  value={itemData.item_name}
+                  value={data.item_name}
                   onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12} md={3}>
                 <BrandsDropdown
-                  selectedBrand={itemData.brand}
+                  selectedBrand={data.brand}
                   handleChange={handleChange}
                 />
               </Grid>
@@ -131,44 +126,56 @@ export default function EditPurchaseModal({
                   fullWidth
                   name="total_quantity"
                   label="Total Quantity"
-                  value={itemData.total_quantity}
+                  value={data.total_quantity}
                   onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12} md={3}>
+                <CategoriesDropdown
+                  selectedCategory={data.category}
+                  handleChange={handleChange}
                 />
               </Grid>
             </Grid>
 
             <Grid container spacing={2} mt={1}>
-              <Grid item xs={12} md={2}>
-                <CategoriesDropdown
-                  selectedCategory={itemData.category}
-                  handleChange={handleChange}
-                />
-              </Grid>
+             
               <Grid item xs={12} md={1}>
                 <TextField
                   required
                   fullWidth
                   name="unit"
                   label="Unit"
-                  value={itemData.unit}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12} md={1}>
-                <TextField
-                  required
-                  fullWidth
-                  label="Package"
-                  value={itemData.package}
+                  value={data.unit}
                   onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12} md={2}>
+              <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">
+                    Package
+                  </InputLabel>
+                  <Select
+                    fullWidth
+                    label="Package"
+                    name="package"
+                    id="demo-simple-select"
+                    value={data.package}
+                    onChange={handleChange}>
+                    <MenuItem value={"L"}>Liter/s</MenuItem>
+                    <MenuItem value={"GL"}>Gallons</MenuItem>
+                    <MenuItem value={"PC"}>Piece</MenuItem>
+                    <MenuItem value={"PCS"}>Pieces</MenuItem>
+                    <MenuItem value={"SHTS"}>Sheets</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} md={3}>
                 <TextField
                   required
                   fullWidth
                   label="Catalyst"
-                  value={itemData.catalyst}
+                  value={data.catalyst}
                   onChange={handleChange}
                 />
               </Grid>
@@ -178,7 +185,7 @@ export default function EditPurchaseModal({
                   fullWidth
                   name="item_price_w_vat"
                   label="Item Price W/ Vat"
-                  value={itemData.item_price_w_vat}
+                  value={data.item_price_w_vat}
                   onChange={handleChange}
                 />
               </Grid>
@@ -188,7 +195,7 @@ export default function EditPurchaseModal({
                   fullWidth
                   name="item_price_wo_vat"
                   label="Item Price W/O Vat"
-                  value={itemData.item_price_wo_vat}
+                  value={data.item_price_wo_vat}
                   onChange={handleChange}
                 />
               </Grid>
@@ -198,7 +205,7 @@ export default function EditPurchaseModal({
                   fullWidth
                   name="retail_price"
                   label="Retail Price"
-                  value={itemData.retail_price}
+                  value={data.retail_price}
                   onChange={handleChange}
                 />
               </Grid>

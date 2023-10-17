@@ -8,7 +8,7 @@ import ViewModal from "./view";
 import EditModal from "./edit";
 import RemoveModal from "./remove";
 
-const SupplierModalManager = ({
+const CategoryModalManager = ({
   data,
   setData,
   activeModal,
@@ -107,4 +107,4 @@ const SupplierModalManager = ({
   );
 };
 
-export default SupplierModalManager;
+export default CategoryModalManager;

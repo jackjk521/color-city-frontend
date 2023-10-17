@@ -7,6 +7,7 @@ export function renderTabContent({
   tabName,
   tabData,
   dataColumns,
+  column_visibility,
   actionFormatter,
   tabMutate,
 }) {
@@ -23,6 +24,7 @@ export function renderTabContent({
       {/* <h2>{tabName}</h2> */}
       <BasicReactTable
         data_columns={dataColumns}
+        column_visibility={column_visibility}
         fetched_data={tabData}
         action_formatter={actionFormatter}
         mutate={tabMutate}

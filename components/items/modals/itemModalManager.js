@@ -9,8 +9,8 @@ import EditItemModal from "./edit";
 import RemoveItemModal from "./remove";
 
 const ItemModalManager = ({
-  itemData,
-  setItemData,
+  data,
+  setData,
   activeModal,
   setActiveModal,
   rowData,
@@ -51,7 +51,7 @@ const ItemModalManager = ({
           <ViewItemModal
             headerColor={selectedHeaderColor()}
             closeModal={closeModal}
-            itemData={itemData}
+            data={data}
             rowData={rowData}
           />
         );
@@ -60,8 +60,8 @@ const ItemModalManager = ({
           <EditItemModal
             headerColor={selectedHeaderColor()}
             closeModal={closeModal}
-            itemData={itemData}
-            setItemData={setItemData}
+            data={data}
+            setData={setData}
             mutate={mutate}
           />
         );

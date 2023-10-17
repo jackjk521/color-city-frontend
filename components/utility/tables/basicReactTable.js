@@ -3,9 +3,11 @@ import {
   MaterialReactTable,
   useMaterialReactTable,
 } from "material-react-table";
+import { useMediaQuery } from "@mui/material";
 
 const BasicReactTable = ({
   data_columns,
+  column_visibility,
   fetched_data,
   action_formatter,
   mutate,
@@ -22,18 +24,39 @@ const BasicReactTable = ({
   //   data,
   // });
 
+  const isMobile = useMediaQuery("(max-width: 600px)");
+  const isTablet = useMediaQuery("(max-width: 820px)");
+
   return (
     <>
-      <MaterialReactTable
-        columns={columns}
-        data={data}
-        enableRowActions
-        positionActionsColumn="last"
-        renderRowActions={({ row }) =>
-          action_formatter({ rowData: row.original, mutate: mutate })
-        }
-        // state={{ isLoading: true }}
-      />
+      {isMobile || isTablet ? (
+        <>
+          <MaterialReactTable
+            columns={columns}
+            data={data}
+            initialState={{
+              columnVisibility: column_visibility,
+            }}
+            enableRowActions
+            positionActionsColumn="last"
+            renderRowActions={({ row }) =>
+              action_formatter({ rowData: row.original, mutate: mutate })
+            }
+            // state={{ isLoading: true }}
+          />
+        </>
+      ) : (
+        <MaterialReactTable
+          columns={columns}
+          data={data}
+          enableRowActions
+          positionActionsColumn="last"
+          renderRowActions={({ row }) =>
+            action_formatter({ rowData: row.original, mutate: mutate })
+          }
+          // state={{ isLoading: true }}
+        />
+      )}
     </>
   );
 };
