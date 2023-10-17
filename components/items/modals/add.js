@@ -41,7 +41,7 @@ export default function AddModal({
     item_price_w_vat: "",
     item_price_wo_vat: "",
     retail_price: "",
-    catalyst: "",
+    catalyst: 0,
   });
 
   const handleChange = (e) => {
@@ -53,7 +53,7 @@ export default function AddModal({
     e.preventDefault();
 
     try {
-      const response = await apiClient.post(`/items`, itemData);
+      const response = await apiClient.post(`/items/`, itemData);
       if (response.status === 201) {
         closeModal()
         Swal.fire({

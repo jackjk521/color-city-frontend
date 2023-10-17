@@ -240,7 +240,7 @@ export function CatalystsDropdown({ selectedItem, handleChange }) {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
-    get_items()
+    get_items_by_catalyst()
       .then((items) => {
         setItems(items);
       })
@@ -257,14 +257,20 @@ export function CatalystsDropdown({ selectedItem, handleChange }) {
         labelId="items-label"
         label="items"
         id="items-select"
-        name="supplier"
+        name="catalyst"
         value={selectedItem || ""}
         onChange={handleChange}>
-        {items.map((item) => (
-          <MenuItem key={item.item_id} value={item.item_id}>
-            {item.item_name}
+        {items.length > 0 ? (
+          items.map((item) => (
+            <MenuItem key={item.item_id} value={item.item_id}>
+              {item.item_name}
+            </MenuItem>
+          ))
+        ) : (
+          <MenuItem key={0} value={0}>
+            NO ITEMS
           </MenuItem>
-        ))}
+        )}
       </Select>
     </FormControl>
   );

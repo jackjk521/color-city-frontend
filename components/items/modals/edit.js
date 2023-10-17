@@ -21,6 +21,7 @@ import Swal from "sweetalert2";
 import {
   BrandsDropdown,
   CategoriesDropdown,
+  CatalystsDropdown,
 } from "@/components/utility/get_data";
 
 export default function EditPurchaseModal({
@@ -96,8 +97,7 @@ export default function EditPurchaseModal({
           position: "absolute",
           right: 10,
           top: 10,
-        }}
-      >
+        }}>
         <CloseIcon />
       </IconButton>
       <DialogContent sx={{ paddingTop: 0 }}>
@@ -139,7 +139,6 @@ export default function EditPurchaseModal({
             </Grid>
 
             <Grid container spacing={2} mt={1}>
-             
               <Grid item xs={12} md={1}>
                 <TextField
                   required
@@ -151,10 +150,8 @@ export default function EditPurchaseModal({
                 />
               </Grid>
               <Grid item xs={12} md={2}>
-              <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">
-                    Package
-                  </InputLabel>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Package</InputLabel>
                   <Select
                     fullWidth
                     label="Package"
@@ -171,12 +168,9 @@ export default function EditPurchaseModal({
                 </FormControl>
               </Grid>
               <Grid item xs={12} md={3}>
-                <TextField
-                  required
-                  fullWidth
-                  label="Catalyst"
-                  value={data.catalyst}
-                  onChange={handleChange}
+                <CatalystsDropdown
+                  selectedItem={data.catalyst}
+                  handleChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12} md={2}>

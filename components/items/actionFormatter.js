@@ -57,7 +57,7 @@ const ActionFormatter = ({ rowData, mutate }) => {
     item_price_w_vat: "",
     item_price_wo_vat: "",
     retail_price: "",
-    catalyst: "",
+    catalyst: 0,
     created_at: "",
   });
 
