@@ -8,57 +8,69 @@ import {
   DialogActions,
   DialogTitle,
   DialogContent,
+  IconButton,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
-export default function ViewPurchaseModal({ order, headerColor }) {
+export default function ViewModal({ data, headerColor, closeModal }) {
+  console.log(data);
   return (
     <>
-      <DialogTitle style={{ backgroundColor: headerColor }}>
-        <Typography variant="h4" align="center">
-          View Purchase Order
+      <DialogTitle style={{ backgroundColor: headerColor }} mb={3}>
+        <Typography color="white" variant="h5" align="left">
+          View Brand
         </Typography>
       </DialogTitle>
+      <IconButton
+        aria-label="close"
+        onClick={closeModal}
+        sx={{
+          position: "absolute",
+          right: 10,
+          top: 10,
+        }}>
+        <CloseIcon />
+      </IconButton>
       <DialogContent>
-        <Container maxWidth="md">
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Order Number"
-                value={order.orderNumber}
-                disabled
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Supplier"
-                value={order.supplier}
-                disabled
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Total Amount"
-                value={order.totalAmount}
-                disabled
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                fullWidth
-                label="Shipping Address"
-                value={order.shippingAddress}
-                disabled
-              />
-            </Grid>
+        <Container maxWidth="sm">
+          {/* Fields Start  */}
+          <Grid container spacing={2} mt={1}>
+          <Grid item xs={12} md={4}>
+                <TextField
+                  fullWidth
+                  label="Supplier Name"
+                  name="supplier_name"
+                  value={data.supplier_name}
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <TextField
+                  fullWidth
+                  label="Contact Number"
+                  name="contact_num"
+                  value={data.contact_num}
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                />
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <TextField
+                  fullWidth
+                  label="Discount Rate"
+                  name="discount_rate"
+                  value={data.discount_rate}
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                />
+              </Grid>
           </Grid>
-          <DialogActions>
-            <Button onClick={handleViewModalClose} color="primary">
-              Close
-            </Button>
-          </DialogActions>
+
+          <Grid container spacing={2} mt={2}></Grid>
         </Container>
       </DialogContent>
     </>

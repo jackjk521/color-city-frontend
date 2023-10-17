@@ -18,31 +18,33 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import apiClient from "@/components/utility/api/apiClient";
 import Swal from "sweetalert2";
-import { SuppliersDropdown } from "@/components/utility/get_data";
+import {
+  SuppliersDropdown,
+} from "@/components/utility/get_data";
 
 export default function AddModal({ headerColor, closeModal, mutate }) {
-  const [supplierData, setSupplierData] = React.useState({
-    supplier_id: "",
+  const [brandData, setBrandData] = useState({
+    brand_id: "",
+    brand_name: "",
+    supplier: "",
     supplier_name: "",
-    contact_num: "",
-    discount_rate: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setSupplierData((prevOrder) => ({ ...prevOrder, [name]: value }));
+    setBrandData((prevOrder) => ({ ...prevOrder, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const response = await apiClient.post(`/suppliers`, supplierData);
+      const response = await apiClient.post(`/brands`, brandData);
       if (response.status === 201) {
         closeModal();
         Swal.fire({
           title: "Succcess",
-          text: "Successfully added a supplier",
+          text: "Successfully added a brand",
           icon: "success",
         });
         mutate();
@@ -58,11 +60,11 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
       throw error;
     }
     // Reset form fields
-    setSupplierData({
-      supplier_id: "",
+    setBrandData({
+      brand_id: "",
+      brand_name: "",
+      supplier: "",
       supplier_name: "",
-      contact_num: "",
-      discount_rate: "",
     });
   };
 
@@ -70,7 +72,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
     <>
       <DialogTitle style={{ backgroundColor: headerColor }}>
         <Typography color="white" variant="h5" align="left">
-          Add Supplier
+          Add Brand
         </Typography>
       </DialogTitle>
       <IconButton
@@ -88,31 +90,21 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
         <Container maxWidth="sm">
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2} mt={1}>
-              <Grid item xs={12} md={4}>
+              <Grid item xs={12} md={6}>
                 <TextField
                   required
                   fullWidth
-                  label="Supplier Name"
-                  name="supplier_name"
+                  label="Brand Name"
+                  name="brand_name"
+                  // value={brandData.brand_name}
                   onChange={handleChange}
+
                 />
               </Grid>
-              <Grid item xs={12} md={4}>
-                <TextField
-                  required
-                  fullWidth
-                  label="Contact Number"
-                  name="contact_num"
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12} md={4}>
-                <TextField
-                  required
-                  fullWidth
-                  label="Discount Rate"
-                  name="discount_rate"
-                  onChange={handleChange}
+              <Grid item xs={12} md={6}>
+              <SuppliersDropdown
+                  selectedSupplier={brandData.supplier}
+                  handleChange={handleChange}
                 />
               </Grid>
 

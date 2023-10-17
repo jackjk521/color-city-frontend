@@ -1,8 +1,8 @@
 import React from "react";
-import { Box, Grid, Tabs, Tab, useMediaQuery } from "@mui/material";
-import CardGrid from "../utility/grids/CardGrid";
+import { Box, Grid, useMediaQuery } from "@mui/material";
 
-const SupplierContent = ({ children }) => {
+const ItemsContent = ({ children }) => {
+
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
 
   return (
@@ -23,4 +23,4 @@ const SupplierContent = ({ children }) => {
   );
 };
 
-export default SupplierContent;
+export default ItemsContent;

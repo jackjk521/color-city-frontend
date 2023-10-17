@@ -3,12 +3,12 @@ import LargeModal from "../../utility/modals/largeModal";
 import SmallModal from "../../utility/modals/smallModal";
 
 // Modal Contents
-import AddModal from "./add";
-import ViewModal from "./view";
-import EditModal from "./edit";
-import RemoveModal from "./remove";
+import AddItemModal from "./add";
+import ViewItemModal from "./view";
+import EditItemModal from "./edit";
+import RemoveItemModal from "./remove";
 
-const SupplierModalManager = ({
+const ItemModalManager = ({
   data,
   setData,
   activeModal,
@@ -40,7 +40,7 @@ const SupplierModalManager = ({
     switch (activeModal) {
       case "add":
         return (
-          <AddModal
+          <AddItemModal
             headerColor={selectedHeaderColor()}
             closeModal={closeModal}
             mutate={mutate}
@@ -48,7 +48,7 @@ const SupplierModalManager = ({
         );
       case "view":
         return (
-          <ViewModal
+          <ViewItemModal
             headerColor={selectedHeaderColor()}
             closeModal={closeModal}
             data={data}
@@ -57,7 +57,7 @@ const SupplierModalManager = ({
         );
       case "edit":
         return (
-          <EditModal
+          <EditItemModal
             headerColor={selectedHeaderColor()}
             closeModal={closeModal}
             data={data}
@@ -67,7 +67,7 @@ const SupplierModalManager = ({
         );
       case "remove":
         return (
-          <RemoveModal
+          <RemoveItemModal
             headerColor={selectedHeaderColor()}
             closeModal={closeModal}
             rowData={rowData}
@@ -82,7 +82,7 @@ const SupplierModalManager = ({
 
   return (
     <>
-      {/* {activeModal != null && activeModal != "remove" && (
+      {activeModal != null && activeModal != "remove" && (
         <LargeModal
           isOpen={activeModal !== null}
           onClose={closeModal}
@@ -90,9 +90,9 @@ const SupplierModalManager = ({
         >
           {renderModalContent()}
         </LargeModal>
-      )} */}
+      )}
 
-      {activeModal && (
+      {activeModal == "remove" && (
         <SmallModal
           isOpen={activeModal !== null}
           onClose={closeModal}
@@ -107,4 +107,4 @@ const SupplierModalManager = ({
   );
 };
 
-export default SupplierModalManager;
+export default ItemModalManager;

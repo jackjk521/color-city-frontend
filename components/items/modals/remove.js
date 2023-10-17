@@ -21,14 +21,14 @@ export default function RemoveModal({
   const handleRemove = async (e) => {
     // console.log(rowData);
     e.preventDefault();
-    const supplier_id = rowData.supplier_id;
+    const item_id = rowData.item_id;
     try {
-      const response = await apiClient.delete(`/supplier/${supplier_id}/`);
+      const response = await apiClient.delete(`/item/${item_id}/`);
       if (response.status === 200) {
         closeModal();
         Swal.fire({
           title: "Succcess",
-          text: "Successfully deleted a supplier",
+          text: "Successfully deleted an item",
           icon: "success",
         });
         mutate();
@@ -49,7 +49,7 @@ export default function RemoveModal({
     <>
       <DialogTitle style={{ backgroundColor: headerColor }} mb={3}>
         <Typography color="white" variant="h5" align="left">
-          Remove Supplier
+          Remove Item
         </Typography>
       </DialogTitle>
       <IconButton
@@ -65,7 +65,7 @@ export default function RemoveModal({
       <DialogContent sx={{ paddingTop: 0 }}>
         <Container maxWidth="sm" mt={1}>
           <Typography variant="body1" gutterBottom>
-            Are you sure you want to remove this supplier?
+            Are you sure you want to remove this item?
           </Typography>
           <DialogActions>
             <Button variant="contained" color="success" onClick={handleRemove}>

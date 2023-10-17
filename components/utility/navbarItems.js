@@ -1,6 +1,7 @@
 import * as React from "react";
 import Link from "next/link";
 
+import { List, Collapse } from "@mui/material";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
@@ -13,36 +14,44 @@ import BarChartIcon from "@mui/icons-material/BarChart";
 import LayersIcon from "@mui/icons-material/Layers";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import TransferWithinAStationIcon from "@mui/icons-material/TransferWithinAStation";
+import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import { styled } from '@mui/system';
+
+const HoverListItemButton = styled(ListItemButton)(({ theme }) => ({
+  '&:hover': {
+    backgroundColor: theme.palette.action.hover,
+  },
+}));
 
 export const mainListItems = () => (
   <React.Fragment>
-    <ListItemButton component={Link} href="/">
+    <HoverListItemButton component={Link} href="/">
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
-    </ListItemButton>
+    </HoverListItemButton>
 
-    <ListItemButton component={Link} href="/purchases">
+    <HoverListItemButton component={Link} href="/purchases">
       <ListItemIcon>
         <ShoppingCartIcon />
       </ListItemIcon>
       <ListItemText primary="Purchases" />
-    </ListItemButton>
+    </HoverListItemButton>
 
-    <ListItemButton component={Link} href="/inventory">
+    <HoverListItemButton component={Link} href="/inventory">
       <ListItemIcon>
         <InventoryIcon />
       </ListItemIcon>
       <ListItemText primary="Inventory" />
-    </ListItemButton>
+    </HoverListItemButton>
 
-    <ListItemButton component={Link} href="/suppliers">
+    <HoverListItemButton component={Link} href="/suppliers">
       <ListItemIcon>
         <TransferWithinAStationIcon />
       </ListItemIcon>
       <ListItemText primary="Suppliers" />
-    </ListItemButton>
+    </HoverListItemButton>
 
     {/* <ListItemButton onClick={() => setSelectedItem("reports")}>
       <ListItemIcon>
@@ -59,39 +68,48 @@ export const mainListItems = () => (
     </ListItemButton> */}
   </React.Fragment>
 );
-export const secondaryListItems = (
-  <React.Fragment>
-    <ListSubheader component="div" inset>
-      Admin Modules
-    </ListSubheader>
 
-    <ListItemButton>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText
-        primary="Items"
-        component={Link}
-        href="/purchases"
-        // onClick={() => setSelectedItem("items")}
-      />
-    </ListItemButton>
+export function secondaryListItems() {
+  const [isItemsOpen, setItemsOpen] = React.useState(false);
 
-    <ListItemButton>
-      <ListItemIcon>
-        <PeopleIcon />
-      </ListItemIcon>
-      <ListItemText
-        primary="Employees"
-        // onClick={() => setSelectedItem("employees")}
-      />
-    </ListItemButton>
+  const handleItemsClick = () => {
+    setItemsOpen(!isItemsOpen);
+  };
 
-    {/* <ListItemButton>
-      <ListItemIcon>
-        <AssignmentIcon />
-      </ListItemIcon>
-      <ListItemText primary="Supplier" onClick={() => setSelectedItem("supplier")} />
-    </ListItemButton> */}
-  </React.Fragment>
-);
+  return (
+    <List component="nav">
+      <ListSubheader component="div" inset>
+        Admin Modules
+      </ListSubheader>
+
+      <HoverListItemButton onClick={handleItemsClick}>
+        <ListItemIcon>
+          <AssignmentIcon />
+        </ListItemIcon>
+        <ListItemText primary="Items" />
+        {isItemsOpen ? <ExpandLess /> : <ExpandMore />}
+      </HoverListItemButton>
+
+      <Collapse in={isItemsOpen} timeout="auto" unmountOnExit>
+        <List component="div">
+          <HoverListItemButton component={Link} href="/items">
+            <ListItemText primary="Items" />
+          </HoverListItemButton>
+          <HoverListItemButton component={Link} href="/items_info">
+            <ListItemText primary="Categories" />
+            <ListItemText primary="Brands" />
+            <ListItemText primary="Suppliers" />
+          </HoverListItemButton>
+  
+        </List>
+      </Collapse>
+
+      <HoverListItemButton>
+        <ListItemIcon>
+          <PeopleIcon />
+        </ListItemIcon>
+        <ListItemText primary="Employees" />
+      </HoverListItemButton>
+    </List>
+  );
+}

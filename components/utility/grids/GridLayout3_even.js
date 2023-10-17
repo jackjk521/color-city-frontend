@@ -2,13 +2,14 @@ import * as React from "react";
 import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 
-export default function CustomGrid_3({children}) {
+export default function CustomGrid_3({categories, brands, suppliers}) {
   return (
     <>
       {" "}
       <Grid container spacing={3}>
-        {/* Chart */}
-        <Grid item xs={12} md={8} lg={9}>
+
+        {/* Categories  */}
+        <Grid item xs={12} md={6}>
           <Paper
             sx={{
               p: 2,
@@ -19,8 +20,9 @@ export default function CustomGrid_3({children}) {
             {/* Content */}
           </Paper>
         </Grid>
-        {/* Recent Deposits */}
-        <Grid item xs={12} md={4} lg={3}>
+
+        {/* Brands */}
+        <Grid item xs={12} md={6}>
           <Paper
             sx={{
               p: 2,
@@ -31,7 +33,8 @@ export default function CustomGrid_3({children}) {
             {/* Content */}
           </Paper>
         </Grid>
-        {/* Recent Orders */}
+
+        {/* Suppliers */}
         <Grid item xs={12}>
           <Paper
             sx={{
@@ -40,8 +43,6 @@ export default function CustomGrid_3({children}) {
               flexDirection: "column",
               height: 240,
             }}>
-            {/* Content */}
-            {children}
           </Paper>
         </Grid>
       </Grid>
