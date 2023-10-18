@@ -15,10 +15,10 @@ import LayersIcon from "@mui/icons-material/Layers";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import TransferWithinAStationIcon from "@mui/icons-material/TransferWithinAStation";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
-import { styled } from '@mui/system';
+import { styled } from "@mui/system";
 
 const HoverListItemButton = styled(ListItemButton)(({ theme }) => ({
-  '&:hover': {
+  "&:hover": {
     backgroundColor: theme.palette.action.hover,
   },
 }));
@@ -100,10 +100,14 @@ export function secondaryListItems() {
             <ListItemText primary="Brands" />
             <ListItemText primary="Suppliers" />
           </HoverListItemButton>
-  
         </List>
       </Collapse>
-
+      <HoverListItemButton component={Link} href="/branches">
+        <ListItemIcon>
+          <PeopleIcon />
+        </ListItemIcon>
+        <ListItemText primary="Branches" />
+      </HoverListItemButton>
       <HoverListItemButton>
         <ListItemIcon>
           <PeopleIcon />
