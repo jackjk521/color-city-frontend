@@ -14,7 +14,7 @@ import apiClient from "@/components/utility/api/apiClient";
 import Swal from "sweetalert2";
 import { SuppliersDropdown } from "@/components/utility/get_data";
 
-export default function EditPurchaseModal({
+export default function EditModal({
   headerColor,
   data,
   setData,

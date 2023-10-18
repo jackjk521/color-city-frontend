@@ -179,3 +179,41 @@ export const BranchColumnsVisibility = {
   branch_name: false,
   address: false,
 };
+
+// Users
+export const UsersColumns = [
+  {
+    accessorKey: "user_id", // Primary key
+    header: "ID",
+    size: 50,
+  },
+  {
+    accessorKey: "last_name", //normal accessorKey
+    header: "Surname",
+    size: 200,
+  },
+  {
+    accessorKey: "user_name", //normal accessorKey
+    header: "User Name",
+    size: 200,
+  },
+  {
+    accessorKey: "branch_name", //normal accessorKey
+    header: "Assigned Branch",
+    size: 200,
+  },
+  {
+    accessorKey: "user_role", //normal accessorKey
+    header: "Role",
+    size: 200,
+  },
+
+ 
+];
+export const UserColumnsVisibility = {
+  user_id: true,
+  last_name: false,
+  user_name: false,
+  branch_name: false,
+  user_role: false,
+};

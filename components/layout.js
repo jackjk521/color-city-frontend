@@ -92,6 +92,8 @@ export default function Layout({ children }) {
         return "Items";
       case "/branches":
         return "Branches";
+      case "/users":
+        return "Users";
       default:
         return "Dashboard";
     }
