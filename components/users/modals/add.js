@@ -25,7 +25,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
     user_id: "",
     branch: "",
     branch_name: "",
-    user_name: "",
+    username: "",
     password: "",
     user_role: "",
     first_name: "",
@@ -64,10 +64,15 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
     }
     // Reset form fields
     setUserData({
-      supplier_id: "",
-      supplier_name: "",
-      contact_num: "",
-      discount_rate: "",
+      user_id: "",
+      branch: "",
+      branch_name: "",
+      username: "",
+      password: "",
+      user_role: "",
+      first_name: "",
+      last_name: "",
+      age: "",
     });
   };
 
@@ -98,7 +103,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                   required
                   fullWidth
                   label="User Name"
-                  name="user_name"
+                  name="username"
                   onChange={handleChange}
                 />
               </Grid>

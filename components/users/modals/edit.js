@@ -40,7 +40,7 @@ export default function EditModal({
     e.preventDefault();
     const user_id = data.user_id;
     try {
-      const response = await apiClient.put(`/user_id/${user_id}/`, data);
+      const response = await apiClient.put(`/user/${user_id}/`, data);
       if (response.status === 200) {
         closeModal();
         Swal.fire({
@@ -65,7 +65,7 @@ export default function EditModal({
       user_id: "",
       branch: "",
       branch_name: "",
-      user_name: "",
+      username: "",
       password: "",
       user_role: "",
       first_name: "",
@@ -100,8 +100,8 @@ export default function EditModal({
                   required
                   fullWidth
                   label="User Name"
-                  name="user_name"
-                  value={data.user_name}
+                  name="username"
+                  value={data.username}
                   onChange={handleChange}
                 />
               </Grid>

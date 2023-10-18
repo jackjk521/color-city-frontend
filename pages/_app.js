@@ -3,16 +3,26 @@ import "../styles/main_styles.css";
 
 // Components
 import Layout from "../components/layout";
-import { ManagedUIProvider } from "../contexts/managedUIProvider";
+import LoginLayout from "../components/login_layout";
+import { UserProvider } from "@/contexts/userContext";
 
-export default function App({ Component, pageProps }) {
+export default function App({ Component, pageProps, router }) {
+  const isLoginPage = router.pathname === "/login";
+
   return (
     <>
-      <ManagedUIProvider>
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </ManagedUIProvider>
+      <UserProvider>
+        {!isLoginPage && (
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        )}
+        {isLoginPage && (
+          <LoginLayout>
+            <Component {...pageProps} />
+          </LoginLayout>
+        )}
+      </UserProvider>
     </>
   );
 }

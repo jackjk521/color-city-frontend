@@ -22,6 +22,7 @@ import {
 import UserModalManager from "../../components/users/modals/userModalManager";
 import ActionFormatter from "../../components/users/actionFormatter";
 import apiClient from "../../components/utility/api/apiClient";
+import withAuth from "@/components/utility/with_auth";
 
 const fetcher = async () => {
   try {
@@ -45,7 +46,7 @@ const fetcher = async () => {
   }
 };
 
-export default function Users({ rows }) {
+function Users({ rows }) {
   // const [data, setData] = React.useState(rows);
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
@@ -124,3 +125,5 @@ export async function getServerSideProps({ req, res }) {
     };
   }
 }
+
+export default withAuth(Users)

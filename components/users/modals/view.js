@@ -39,8 +39,8 @@ export default function ViewModal({ data, headerColor, closeModal }) {
               <TextField
                 fullWidth
                 label="User Name"
-                name="user_name"
-                value={data.user_name}
+                name="username"
+                value={data.username}
                 InputProps={{
                   readOnly: true,
                 }}

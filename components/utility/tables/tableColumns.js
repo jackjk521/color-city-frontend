@@ -193,8 +193,8 @@ export const UsersColumns = [
     size: 200,
   },
   {
-    accessorKey: "user_name", //normal accessorKey
-    header: "User Name",
+    accessorKey: "username", //normal accessorKey
+    header: "Username",
     size: 200,
   },
   {

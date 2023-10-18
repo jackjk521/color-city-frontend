@@ -22,6 +22,7 @@ import {
 import ItemModalManager from "../../components/items/modals/itemModalManager";
 import ActionFormatter from "@/components/items/actionFormatter";
 import apiClient from "../../components/utility/api/apiClient";
+import withAuth from "@/components/utility/with_auth";
 
 const fetcher = async () => {
   try {
@@ -45,7 +46,7 @@ const fetcher = async () => {
   }
 };
 
-export default function Items({ rows }) {
+ function Items({ rows }) {
   // const [data, setData] = React.useState(rows);
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
@@ -133,3 +134,5 @@ export async function getServerSideProps({ req, res }) {
     };
   }
 }
+
+export default withAuth(Items)
