@@ -67,6 +67,25 @@ export const get_suppliers = async () => {
   }
 };
 
+// Get Branches
+export const get_branches = async () => {
+  try {
+    const response = await apiClient.get(`/branches`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    // Handle the error
+    console.error(error);
+    Swal.fire({
+      title: "Error",
+      text: error,
+      icon: "error",
+    });
+    throw error;
+  }
+};
+
 // Item Number Generation
 export const get_item_number = async () => {
   try {
@@ -269,6 +288,46 @@ export function CatalystsDropdown({ selectedItem, handleChange }) {
         ) : (
           <MenuItem key={0} value={0}>
             NO ITEMS
+          </MenuItem>
+        )}
+      </Select>
+    </FormControl>
+  );
+}
+
+export function BranchesDropdown({ selectedBranch, handleChange }) {
+  const [branches, setItems] = useState([]);
+
+  useEffect(() => {
+    get_branches()
+      .then((branches) => {
+        setItems(branches);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  return (
+    <FormControl fullWidth>
+      <InputLabel id="branches-label">Branches</InputLabel>
+      <Select
+        fullWidth
+        labelId="branches-label"
+        label="Branches"
+        id="branches-select"
+        name="branch"
+        value={selectedBranch || ""}
+        onChange={handleChange}>
+        {branches.length > 0 ? (
+          branches.map((branch) => (
+            <MenuItem key={branch.branch_id} value={branch.branch_id}>
+              {branch.branch_name}
+            </MenuItem>
+          ))
+        ) : (
+          <MenuItem key={0} value={0}>
+            NO BRANCHES
           </MenuItem>
         )}
       </Select>

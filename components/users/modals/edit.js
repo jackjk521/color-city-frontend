@@ -18,11 +18,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import apiClient from "@/components/utility/api/apiClient";
 import Swal from "sweetalert2";
-import {
-  BrandsDropdown,
-  CategoriesDropdown,
-  CatalystsDropdown,
-} from "@/components/utility/get_data";
+import { BranchesDropdown } from "@/components/utility/get_data";
 
 export default function EditModal({
   headerColor,
@@ -42,14 +38,14 @@ export default function EditModal({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const item_id = data.item_id;
+    const user_id = data.user_id;
     try {
-      const response = await apiClient.put(`/item/${item_id}/`, data);
+      const response = await apiClient.put(`/user/${user_id}/`, data);
       if (response.status === 200) {
         closeModal();
         Swal.fire({
           title: "Succcess",
-          text: "Successfully updated an item",
+          text: "Successfully updated an user",
           icon: "success",
         });
         mutate();
@@ -66,20 +62,15 @@ export default function EditModal({
     }
     // Reset form fields
     setData({
-      item_id: "",
-      item_number: "",
-      item_name: "",
-      brand: "",
-      brand_name: "",
-      total_quantity: "",
-      category: "",
-      unit: "",
-      package: "",
-      item_price_w_vat: "",
-      item_price_wo_vat: "",
-      retail_price: "",
-      catalyst: "",
-      created_at: "",
+      user_id: "",
+      branch: "",
+      branch_name: "",
+      username: "",
+      password: "",
+      user_role: "",
+      first_name: "",
+      last_name: "",
+      age: "",
     });
   };
 
@@ -87,7 +78,7 @@ export default function EditModal({
     <>
       <DialogTitle style={{ backgroundColor: headerColor }}>
         <Typography color="white" variant="h5" align="left">
-          Edit Item
+          Edit User
         </Typography>
       </DialogTitle>
       <IconButton
@@ -104,108 +95,85 @@ export default function EditModal({
         <Container maxWidth="lg">
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2} mt={1}>
+              <Grid item xs={12} md={6}>
+                <TextField
+                  required
+                  fullWidth
+                  label="User Name"
+                  name="username"
+                  value={data.username}
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <TextField
+                  required
+                  fullWidth
+                  label="Password"
+                  name="password"
+                  value={data.password}
+                  onChange={handleChange}
+                />
+              </Grid>
+
+              <Grid item xs={12} md={6}>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Role</InputLabel>
+                  <Select
+                    fullWidth
+                    label="Role"
+                    name="user_role"
+                    id="demo-simple-select"
+                    value={data.user_role}
+                    onChange={handleChange}>
+                    <MenuItem value={"Administrator"}>Administrator</MenuItem>
+                    <MenuItem value={"Manager"}>Manager</MenuItem>
+                    <MenuItem value={"Supervisor"}>Supervisor</MenuItem>
+                    <MenuItem value={"Employee"}>Employee</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <BranchesDropdown
+                  selectedBranch={data.branch}
+                  handleChange={handleChange}
+                />
+              </Grid>
+
               <Grid item xs={12} md={4}>
                 <TextField
                   required
                   fullWidth
-                  label="Item Name"
-                  name="item_name"
-                  value={data.item_name}
+                  label="First Name"
+                  name="first_name"
+                  value={data.first_name}
                   onChange={handleChange}
                 />
               </Grid>
-              <Grid item xs={12} md={3}>
-                <BrandsDropdown
-                  selectedBrand={data.brand}
-                  handleChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12} md={2}>
+              <Grid item xs={12} md={4}>
                 <TextField
                   required
                   fullWidth
-                  name="total_quantity"
-                  label="Total Quantity"
-                  value={data.total_quantity}
+                  label="Last Name"
+                  name="last_name"
+                  value={data.last_name}
                   onChange={handleChange}
                 />
               </Grid>
-              <Grid item xs={12} md={3}>
-                <CategoriesDropdown
-                  selectedCategory={data.category}
-                  handleChange={handleChange}
+              <Grid item xs={12} md={4}>
+                <TextField
+                  required
+                  fullWidth
+                  label="Age"
+                  name="age"
+                  value={data.age}
+                  onChange={handleChange}
                 />
               </Grid>
-            </Grid>
 
-            <Grid container spacing={2} mt={1}>
-              <Grid item xs={12} md={1}>
-                <TextField
-                  required
-                  fullWidth
-                  name="unit"
-                  label="Unit"
-                  value={data.unit}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12} md={2}>
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">Package</InputLabel>
-                  <Select
-                    fullWidth
-                    label="Package"
-                    name="package"
-                    id="demo-simple-select"
-                    value={data.package}
-                    onChange={handleChange}>
-                    <MenuItem value={"L"}>Liter/s</MenuItem>
-                    <MenuItem value={"GL"}>Gallons</MenuItem>
-                    <MenuItem value={"PC"}>Piece</MenuItem>
-                    <MenuItem value={"PCS"}>Pieces</MenuItem>
-                    <MenuItem value={"SHTS"}>Sheets</MenuItem>
-                  </Select>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <CatalystsDropdown
-                  selectedItem={data.catalyst}
-                  handleChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12} md={2}>
-                <TextField
-                  required
-                  fullWidth
-                  name="item_price_w_vat"
-                  label="Item Price W/ Vat"
-                  value={data.item_price_w_vat}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12} md={2}>
-                <TextField
-                  required
-                  fullWidth
-                  name="item_price_wo_vat"
-                  label="Item Price W/O Vat"
-                  value={data.item_price_wo_vat}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12} md={2}>
-                <TextField
-                  required
-                  fullWidth
-                  name="retail_price"
-                  label="Retail Price"
-                  value={data.retail_price}
-                  onChange={handleChange}
-                />
-              </Grid>
               <Grid item xs={12}>
                 <Button type="submit" variant="contained" color="primary">
-                  Submit
+                  Update
                 </Button>
               </Grid>
             </Grid>

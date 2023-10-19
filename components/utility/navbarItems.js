@@ -11,14 +11,14 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import InventoryIcon from "@mui/icons-material/Inventory";
 import PeopleIcon from "@mui/icons-material/People";
 import BarChartIcon from "@mui/icons-material/BarChart";
-import LayersIcon from "@mui/icons-material/Layers";
+import StoreIcon from "@mui/icons-material/Store";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import TransferWithinAStationIcon from "@mui/icons-material/TransferWithinAStation";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
-import { styled } from '@mui/system';
+import { styled } from "@mui/system";
 
 const HoverListItemButton = styled(ListItemButton)(({ theme }) => ({
-  '&:hover': {
+  "&:hover": {
     backgroundColor: theme.palette.action.hover,
   },
 }));
@@ -46,12 +46,12 @@ export const mainListItems = () => (
       <ListItemText primary="Inventory" />
     </HoverListItemButton>
 
-    <HoverListItemButton component={Link} href="/suppliers">
+    {/* <HoverListItemButton component={Link} href="/suppliers">
       <ListItemIcon>
         <TransferWithinAStationIcon />
       </ListItemIcon>
       <ListItemText primary="Suppliers" />
-    </HoverListItemButton>
+    </HoverListItemButton> */}
 
     {/* <ListItemButton onClick={() => setSelectedItem("reports")}>
       <ListItemIcon>
@@ -93,22 +93,30 @@ export function secondaryListItems() {
       <Collapse in={isItemsOpen} timeout="auto" unmountOnExit>
         <List component="div">
           <HoverListItemButton component={Link} href="/items">
+            <ListItemIcon>
+              <AssignmentIcon />
+            </ListItemIcon>
             <ListItemText primary="Items" />
           </HoverListItemButton>
           <HoverListItemButton component={Link} href="/items_info">
-            <ListItemText primary="Categories" />
-            <ListItemText primary="Brands" />
-            <ListItemText primary="Suppliers" />
+            <ListItemIcon>
+              <TransferWithinAStationIcon />
+            </ListItemIcon>
+            <ListItemText primary="Categories, Brands, Suppliers" />
           </HoverListItemButton>
-  
         </List>
       </Collapse>
-
-      <HoverListItemButton>
+      <HoverListItemButton component={Link} href="/branches">
+        <ListItemIcon>
+          <StoreIcon />
+        </ListItemIcon>
+        <ListItemText primary="Branches" />
+      </HoverListItemButton>
+      <HoverListItemButton component={Link} href="/users">
         <ListItemIcon>
           <PeopleIcon />
         </ListItemIcon>
-        <ListItemText primary="Employees" />
+        <ListItemText primary="Users" />
       </HoverListItemButton>
     </List>
   );

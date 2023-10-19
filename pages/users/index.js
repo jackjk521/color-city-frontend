@@ -14,19 +14,19 @@ import CustomTabPanel from "../../components/utility/customTabPanel";
 // Table
 import BasicReactTable from "@/components/utility/tables/basicReactTable";
 import {
-  ItemColumns,
-  ItemColumnVisibility,
+  UsersColumns,
+  UserColumnsVisibility,
 } from "../../components/utility/tables/tableColumns";
 
 // Helper Functions
-import ItemModalManager from "../../components/items/modals/itemModalManager";
-import ActionFormatter from "@/components/items/actionFormatter";
+import UserModalManager from "../../components/users/modals/userModalManager";
+import ActionFormatter from "../../components/users/actionFormatter";
 import apiClient from "../../components/utility/api/apiClient";
 import withAuth from "@/components/utility/with_auth";
 
 const fetcher = async () => {
   try {
-    const response = await apiClient.get("/items");
+    const response = await apiClient.get("/users");
     if (response.status !== 200) {
       const error = new Error();
       error.info = response.data;
@@ -46,7 +46,7 @@ const fetcher = async () => {
   }
 };
 
- function Items({ rows }) {
+function Users({ rows }) {
   // const [data, setData] = React.useState(rows);
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
@@ -61,26 +61,17 @@ const fetcher = async () => {
     data: fetchedData,
     mutate,
     error: fetchedError,
-  } = useSWR("/items", fetcher, {
+  } = useSWR("/users", fetcher, {
     fallbackData: rows,
   });
 
-  // React.useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     fetcher();
-  //   }, 5000); // Set the interval to 1 minute
-
-  //   return () => {
-  //     clearInterval(interval); // Cleanup the interval on component unmount
-  //   };
-  // }, []);
 
   // console.log(data)
   return (
     <>
-      <ItemsContent>
+      {/* <ItemsContent> */}
         {/* Modal Config */}
-        <ItemModalManager
+        <UserModalManager
           activeModal={activeModal}
           setActiveModal={setActiveModal}
           mutate={mutate}
@@ -94,7 +85,7 @@ const fetcher = async () => {
               color="success"
               onClick={() => openModal("add")}>
               {" "}
-              Add Item{" "}
+              Add User{" "}
             </Button>
           </Grid>
         </Grid>
@@ -104,22 +95,22 @@ const fetcher = async () => {
         <CustomTabPanel value={value} index={0}>
           <CardGrid>
             <BasicReactTable
-              data_columns={ItemColumns}
-              column_visibility={ItemColumnVisibility}
+              data_columns={UsersColumns}
+              column_visibility={UserColumnsVisibility}
               fetched_data={fetchedData}
               action_formatter={ActionFormatter}
               mutate={mutate}
             />
           </CardGrid>
         </CustomTabPanel>
-      </ItemsContent>
+      {/* </ItemsContent> */}
     </>
   );
 }
 
 export async function getServerSideProps({ req, res }) {
   try {
-    const initialData = await fetcher("/items");
+    const initialData = await fetcher("/users");
     return {
       props: {
         rows: initialData,
@@ -135,4 +126,4 @@ export async function getServerSideProps({ req, res }) {
   }
 }
 
-export default withAuth(Items)
+export default withAuth(Users)

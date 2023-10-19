@@ -39,6 +39,7 @@ import {
   suppliersFetcher,
 } from "../../components/items_info/fetch_data";
 import { renderTabContent } from "@/components/items_info/tab_tables";
+import withAuth from "@/components/utility/with_auth";
 
 function a11yProps(index) {
   return {
@@ -47,7 +48,7 @@ function a11yProps(index) {
   };
 }
 
-export default function ItemsInfo({ brands, categories, suppliers }) {
+function ItemsInfo({ brands, categories, suppliers }) {
   // const [data, setData] = React.useState(rows);
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
@@ -204,3 +205,5 @@ export async function getServerSideProps({ req, res }) {
     };
   }
 }
+
+export default withAuth(ItemsInfo)

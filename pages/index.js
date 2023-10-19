@@ -1,21 +1,13 @@
-import Head from "next/head";
-// import Image from 'next/image';
-// import { Inter } from '@next/font/google';
-// import styles from "../styles/Home.module.css";
-
-// Material UI
-import Box from "@mui/material/Box";
 
 // Components
 import DashboardContent from "@/components/dashboard/dashboardContent";
+import withAuth from "@/components/utility/with_auth";
 
-export default function Dashboard() {
+function Dashboard() { // Landing page
   return (
     <DashboardContent>
           {/* <BasicTable/> */}
     </DashboardContent>
-    // <Box sx={{ flexGrow: 1, backgroundColor: "#FFFFF" }}>
-
-    // </Box>
   );
 }
+export default withAuth(Dashboard)

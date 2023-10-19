@@ -12,7 +12,6 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import apiClient from "@/components/utility/api/apiClient";
 import Swal from "sweetalert2";
-import { SuppliersDropdown } from "@/components/utility/get_data";
 
 export default function EditModal({
   headerColor,
@@ -32,14 +31,14 @@ export default function EditModal({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const brand_id = data.brand_id;
+    const branch_id = data.branch_id;
     try {
-      const response = await apiClient.put(`/brand/${brand_id}/`, data);
+      const response = await apiClient.put(`/branch/${branch_id}/`, data);
       if (response.status === 200) {
         closeModal();
         Swal.fire({
           title: "Succcess",
-          text: "Successfully updated a brand",
+          text: "Successfully updated a branch",
           icon: "success",
         });
         mutate();
@@ -56,10 +55,9 @@ export default function EditModal({
     }
     // Reset form fields
     setData({
-      brand_id: "",
-      brand_name: "",
-      supplier: "",
-      supplier_name: "",
+      branch_id: "",
+      branch_name: "",
+      address: "",
     });
   };
 
@@ -67,7 +65,7 @@ export default function EditModal({
     <>
       <DialogTitle style={{ backgroundColor: headerColor }}>
         <Typography color="white" variant="h5" align="left">
-          Edit Brand
+          Edit Branch
         </Typography>
       </DialogTitle>
       <IconButton
@@ -88,16 +86,20 @@ export default function EditModal({
                 <TextField
                   required
                   fullWidth
-                  label="Brand Name"
-                  name="brand_name"
-                  value={data.brand_name}
+                  label="Branch Name"
+                  name="branch_name"
+                  value={data.branch_name}
                   onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12} md={6}>
-                <SuppliersDropdown
-                  selectedSupplier={data.supplier}
-                  handleChange={handleChange}
+                <TextField
+                  required
+                  fullWidth
+                  label="Address"
+                  name="address"
+                  value={data.address}
+                  onChange={handleChange}
                 />
               </Grid>
 
