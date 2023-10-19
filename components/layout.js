@@ -18,11 +18,13 @@ import Container from "@mui/material/Container";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import OutputIcon from "@mui/icons-material/Output";
 
 // Components
 import { mainListItems, secondaryListItems } from "./utility/navbarItems";
 import Header from "./header";
 import Footer from "./footer";
+import { UserContext } from "../contexts/userContext";
 
 const drawerWidth = 240;
 
@@ -74,13 +76,16 @@ const Drawer = styled(MuiDrawer, {
 const defaultTheme = createTheme();
 
 export default function Layout({ children }) {
+  const router = useRouter();
   const [open, setOpen] = React.useState(true);
+  const [loggedIn, setLoggedIn] = React.useState(false);
+  const { user } = React.useContext(UserContext);
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
-  const router = useRouter();
-
+  // Navigation Bar Title 
   const getPageTitle = () => {
     const path = router.pathname;
     switch (path) {
@@ -100,6 +105,16 @@ export default function Layout({ children }) {
   };
 
   const pageTitle = getPageTitle();
+
+  // Log Out User
+  const logoutNow = () => {
+    user.updateUserCredentials([]);
+    router.push("/");
+  };
+
+  const handleLogout = () => {
+    loggedIn ? logoutNow() : router.push("/login");
+  };
 
   return (
     <>
@@ -138,6 +153,9 @@ export default function Layout({ children }) {
                   <NotificationsIcon />
                 </Badge>
               </IconButton>
+              <IconButton color="inherit" onClick={handleLogout}>
+                <OutputIcon />
+              </IconButton>
             </Toolbar>
           </AppBar>
           <Drawer variant="permanent" open={open}>
@@ -155,8 +173,12 @@ export default function Layout({ children }) {
             <Divider />
             <List component="nav">
               {mainListItems()}
-              <Divider sx={{ my: 1 }} />
-              {secondaryListItems()}
+              {user.userCredentials.user_role === "Administrator" && (
+                <>
+                  <Divider sx={{ my: 1 }} />
+                  {secondaryListItems()}
+                </>
+              )}
             </List>
           </Drawer>
           <Box

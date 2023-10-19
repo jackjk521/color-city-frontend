@@ -1,20 +1,18 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext } from "react";
 import { useRouter } from "next/router";
 import { Grid, TextField, Button, Container } from "@mui/material";
 import Image from "next/image";
-import { UserContext } from '@/contexts/userContext';
-import apiClient from '@/components/utility/api/apiClient';
+import { UserContext } from "@/contexts/userContext";
+import apiClient from "@/components/utility/api/apiClient";
 import Swal from "sweetalert2";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { status, user } = useContext(UserContext);
   const [userCred, setUserCred] = useState({
     username: "",
     password: "",
   });
-
-  const { updateUserCredentials } = useContext(UserContext);
-
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,34 +20,34 @@ export default function LoginPage() {
   };
 
   const handleLogin = async (e) => {
-    e.preventDefault()
-    // logic to handle login
-    // if login is successful, navigate to dashboard
+    e.preventDefault();
+
     try {
-        const response = await apiClient.post("/auth_user/", {
-            username: userCred.username,
-            password: userCred.password
+      const response = await apiClient.post("/auth_user/", {
+        username: userCred.username,
+        password: userCred.password,
+      });
+      if (response.status !== 200) {
+        const error = new Error();
+        error.info = response.data;
+        error.status = response.status;
+        error.message = "Invalid User Credentials";
+        Swal.fire({
+          title: error.info,
+          text: error.message,
+          icon: "error",
         });
-        if (response.status !== 200) {
-          const error = new Error();
-          error.info = response.data;
-          error.status = response.status;
-          error.message = "Invalid User Credentials";
-          Swal.fire({
-            title: error.info,
-            text: error.message,
-            icon: "error",
-          });
-          throw error;
-        }
-        // return response.data;
-        console.log(response.data)
-        updateUserCredentials(response.data) 
-        router.push("/");
-      } catch (error) {
-        console.error(error);
         throw error;
       }
+      // return response.data;
+      console.log(response.data);
+      user.updateUserCredentials(response.data);
+      router.push("/")
+      // router.push("/");
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   };
 
   return (
@@ -57,7 +55,12 @@ export default function LoginPage() {
       <Grid container spacing={2} justifyContent="center" alignItems="center">
         {/* ADD YOUR IMAGE OR LOGO HERE */}
         <Grid item xs={12} textAlign="center">
-          <Image src="/images/icon-256x256.png" alt="Logo" width={200} height={200} />
+          <Image
+            src="/images/icon-256x256.png"
+            alt="Logo"
+            width={200}
+            height={200}
+          />
         </Grid>
 
         <Grid item xs={12}>
