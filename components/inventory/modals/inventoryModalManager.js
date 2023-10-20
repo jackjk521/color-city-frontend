@@ -1,41 +1,80 @@
-import React from "react";
-import ReusableModal from "../../utility/modals/largeModal";
+import React, { useState, useEffect } from "react";
+import LargeModal from "../../utility/modals/largeModal";
+import SmallModal from "../../utility/modals/smallModal";
 
 // Modal Contents
-import AddPurchaseModal from "./add";
-import ViewPurchaseModal from "./view";
-import EditPurchaseModal from "./edit";
-import RemovePurchaseModal from "./remove";
+import AddModal from "./add";
+import ViewModal from "./view";
+import EditModal from "./edit";
+import RemoveModal from "./remove";
 
-const InventoryModalManager = ({ modalType, setActiveModal }) => {
+const InventoryModalManager = ({
+  data,
+  setData,
+  activeModal,
+  setActiveModal,
+  rowData,
+  mutate,
+}) => {
   const closeModal = () => {
     setActiveModal(null);
   };
 
   // Header Colors
   const selectedHeaderColor = () => {
-    switch (modalType) {
+    switch (activeModal) {
+      case "add":
+        return "#2e7d32";
       case "view":
-        return "blue";
+        return "#1976d2";
       case "edit":
-        return "yellow";
+        return "#ff9100";
       case "remove":
-        return "red";
+        return "#b71c1c";
       default:
         return null;
     }
   };
 
   const renderModalContent = () => {
-    switch (modalType) {
+    switch (activeModal) {
       case "add":
-        return <AddPurchaseModal headerColor={selectedHeaderColor()} />;
+        return (
+          <AddModal
+            headerColor={selectedHeaderColor()}
+            closeModal={closeModal}
+            mutate={mutate}
+          />
+        );
       case "view":
-        return <ViewPurchaseModal headerColor={selectedHeaderColor()} />;
+        return (
+          <ViewModal
+            headerColor={selectedHeaderColor()}
+            closeModal={closeModal}
+            data={data}
+            rowData={rowData}
+          />
+        );
       case "edit":
-        return <EditPurchaseModal headerColor={selectedHeaderColor()} />;
+        return (
+          <EditModal
+            headerColor={selectedHeaderColor()}
+            closeModal={closeModal}
+            data={data}
+            setData={setData}
+            mutate={mutate}
+          />
+        );
       case "remove":
-        return <RemovePurchaseModal headerColor={selectedHeaderColor()} />;
+        return (
+          <RemoveModal
+            headerColor={selectedHeaderColor()}
+            closeModal={closeModal}
+            rowData={rowData}
+            mutate={mutate}
+
+          />
+        );
       default:
         return null;
     }
@@ -43,15 +82,27 @@ const InventoryModalManager = ({ modalType, setActiveModal }) => {
 
   return (
     <>
-      {modalType != null && (
-        <ReusableModal
-          isOpen={modalType !== null}
+      {/* {activeModal != null && activeModal != "remove" && (
+        <LargeModal
+          isOpen={activeModal !== null}
           onClose={closeModal}
-          title={modalType}>
+          title={activeModal}
+        >
           {renderModalContent()}
-        </ReusableModal>
+        </LargeModal>
+      )} */}
+
+      {activeModal  && (
+        <SmallModal
+          isOpen={activeModal !== null}
+          onClose={closeModal}
+          title={activeModal}
+        >
+          {renderModalContent()}
+        </SmallModal>
       )}
-      {modalType == null && <></>}
+
+      {activeModal == null && <></>}
     </>
   );
 };

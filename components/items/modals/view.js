@@ -78,8 +78,8 @@ export default function ViewModal({ data, headerColor, closeModal }) {
             <Grid item xs={12} md={2}>
               <TextField
                 fullWidth
-                label="Total Quantity"
-                value={data.total_quantity}
+                label="Category"
+                value={data.category_name}
                 InputProps={{
                   readOnly: true,
                 }}
@@ -88,16 +88,6 @@ export default function ViewModal({ data, headerColor, closeModal }) {
           </Grid>
 
           <Grid container spacing={2} mt={1}>
-            <Grid item xs={12} md={2}>
-              <TextField
-                fullWidth
-                label="Category"
-                value={data.category_name}
-                InputProps={{
-                  readOnly: true,
-                }}
-              />
-            </Grid>
             <Grid item xs={12} md={1}>
               <TextField
                 fullWidth
@@ -131,16 +121,6 @@ export default function ViewModal({ data, headerColor, closeModal }) {
             <Grid item xs={12} md={2}>
               <TextField
                 fullWidth
-                label="Item Price W/ Vat"
-                value={data.item_price_w_vat}
-                InputProps={{
-                  readOnly: true,
-                }}
-              />
-            </Grid>
-            <Grid item xs={12} md={2}>
-              <TextField
-                fullWidth
                 label="Item Price W/O Vat"
                 value={data.item_price_wo_vat}
                 InputProps={{
@@ -148,7 +128,17 @@ export default function ViewModal({ data, headerColor, closeModal }) {
                 }}
               />
             </Grid>
-            <Grid item xs={12} md={2}>
+            <Grid item xs={12} md={3}>
+              <TextField
+                fullWidth
+                label="Item Price W/ Vat"
+                value={data.item_price_w_vat}
+                InputProps={{
+                  readOnly: true,
+                }}
+              />
+            </Grid>
+            <Grid item xs={12} md={3}>
               <TextField
                 fullWidth
                 label="Retail Price"

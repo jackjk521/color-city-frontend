@@ -217,3 +217,35 @@ export const UserColumnsVisibility = {
   branch_name: false,
   user_role: false,
 };
+
+// Inventory
+export const InventoryColumns = [
+  {
+    accessorKey: "inventory_id", // Primary key
+    header: "ID",
+    size: 50,
+  },
+  {
+    accessorKey: "item_name", //normal accessorKey
+    header: "Item",
+    size: 200,
+  },
+  {
+    accessorKey: "branch_name", //normal accessorKey
+    header: "Assigned Branch",
+    size: 200,
+  },
+  {
+    accessorKey: "holding_cost", //normal accessorKey
+    header: "Holding Cost",
+    size: 200,
+  },
+
+ 
+];
+export const InventoryColumnsVisibility = {
+  inventory_id: true,
+  item_name: false,
+  branch_name: false,
+  holding_cost: false,
+};

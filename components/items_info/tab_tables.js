@@ -15,6 +15,7 @@ export function renderTabContent({
   //   return <div>Error: {itemsError.message}</div>;
   // }
 
+  console.log(tabData)
   if (!tabData) {
     return <div>Loading...</div>;
   }

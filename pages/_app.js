@@ -20,6 +20,8 @@ export default function App({ Component, pageProps }) {
     "/items",
     "/items_info",
     "/users",
+    "/inventory",
+    "/purchases",
   ];
   const isPathExist = !isLoginPage && validPaths.includes(router.asPath);
 

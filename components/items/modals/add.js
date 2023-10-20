@@ -24,12 +24,7 @@ import {
   CategoriesDropdown,
 } from "@/components/utility/get_data";
 
-export default function AddModal({
-  headerColor,
-  closeModal,
-  mutate
-}) {
-
+export default function AddModal({ headerColor, closeModal, mutate }) {
   const [itemData, setItemData] = useState({
     item_number: "",
     item_name: "",
@@ -55,7 +50,7 @@ export default function AddModal({
     try {
       const response = await apiClient.post(`/items/`, itemData);
       if (response.status === 201) {
-        closeModal()
+        closeModal();
         Swal.fire({
           title: "Succcess",
           text: "Successfully added an item",
@@ -80,10 +75,9 @@ export default function AddModal({
       item_name: "",
       brand: "",
       brand_name: "",
-      total_quantity: "",
       category: "",
       unit: "",
-      package: '',
+      package: "",
       item_price_w_vat: "",
       item_price_wo_vat: "",
       retail_price: "",
@@ -115,7 +109,7 @@ export default function AddModal({
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2} mt={1}>
               <Grid item xs={12} md={3}>
-                <ItemNumberField/>
+                <ItemNumberField />
               </Grid>
               <Grid item xs={12} md={4}>
                 <TextField
@@ -127,26 +121,20 @@ export default function AddModal({
                 />
               </Grid>
               <Grid item xs={12} md={3}>
-                <BrandsDropdown selectedBrand={itemData.brand} handleChange={handleChange} />
-              </Grid>
-              <Grid item xs={12} md={2}>
-                <TextField
-                  required
-                  fullWidth
-                  name="total_quantity"
-                  label="Total Quantity"
-                  onChange={handleChange}
+                <BrandsDropdown
+                  selectedBrand={itemData.brand}
+                  handleChange={handleChange}
                 />
               </Grid>
-            </Grid>
-
-            <Grid container spacing={2} mt={1}>
               <Grid item xs={12} md={2}>
                 <CategoriesDropdown
                   selectedCategory={itemData.category}
                   handleChange={handleChange}
                 />
               </Grid>
+            </Grid>
+
+            <Grid container spacing={2} mt={1}>
               <Grid item xs={12} md={1}>
                 <TextField
                   required
@@ -158,9 +146,7 @@ export default function AddModal({
               </Grid>
               <Grid item xs={12} md={3}>
                 <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">
-                    Package
-                  </InputLabel>
+                  <InputLabel id="demo-simple-select-label">Package</InputLabel>
                   <Select
                     fullWidth
                     label="Package"
@@ -179,21 +165,21 @@ export default function AddModal({
                 <TextField
                   required
                   fullWidth
-                  name="item_price_w_vat"
-                  label="Item Price W/ Vat"
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12} md={2}>
-                <TextField
-                  required
-                  fullWidth
                   name="item_price_wo_vat"
                   label="Item Price W/O Vat"
                   onChange={handleChange}
                 />
               </Grid>
-              <Grid item xs={12} md={2}>
+              <Grid item xs={12} md={3}>
+                <TextField
+                  required
+                  fullWidth
+                  name="item_price_w_vat"
+                  label="Item Price W/ Vat"
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12} md={3}>
                 <TextField
                   required
                   fullWidth

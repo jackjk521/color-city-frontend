@@ -12,19 +12,8 @@ import {
   EditBtn,
   RemoveBtn,
 } from "../utility/tables/actionButtonList";
-import ItemModalManager from "../../components/items/modals/itemModalManager";
+import InventoryModalManager from "../../components/inventory/modals/inventoryModalManager";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-
-// Formatters
-// import { format } from "date-fns";
-// import numeral from "numeral";
-
-// const formattedDate = (date) => {
-//   return format(date, "mm/dd/yy"); // Using date-fns for date formatting
-// };
-// const formattedNumber = (number) => {
-//   return numeral(number).format("$0,0.00");
-// };
 
 const ActionFormatter = ({ rowData, mutate }) => {
   // console.log(rowData)
@@ -44,20 +33,15 @@ const ActionFormatter = ({ rowData, mutate }) => {
     setAnchorEl(null);
   };
 
-  const [itemData, setItemData] = React.useState({
-    item_id: "",
-    item_number: "",
+  const [inventoryData, setInventoryData] = React.useState({
+    inventory_id: "",
+    item: "",
     item_name: "",
-    brand: "",
-    brand_name: "",
-    category: "",
-    unit: "",
-    package: "",
     item_price_w_vat: "",
-    item_price_wo_vat: "",
-    retail_price: "",
-    catalyst: 0,
-    created_at: "",
+    branch: "",
+    branch_name: "",
+    total_quantity: "",
+    holding_cost: "",
   });
 
   const isMobile = useMediaQuery("(max-width: 600px)");
@@ -67,21 +51,15 @@ const ActionFormatter = ({ rowData, mutate }) => {
   const openView = () => {
     console.log(rowData);
     // open view logic
-    setItemData({
-      item_id: rowData.item_id,
-      item_number: rowData.item_number,
+    setInventoryData({
+      inventory_id: rowData.inventory_id,
+      item: rowData.item,
       item_name: rowData.item_name,
-      brand: rowData.brand,
-      brand_name: rowData.brand_name,
-      category: rowData.category,
-      category_name: rowData.category_name,
-      unit: rowData.unit,
-      package: rowData.package,
       item_price_w_vat: rowData.item_price_w_vat,
-      item_price_wo_vat: rowData.item_price_wo_vat,
-      retail_price: rowData.retail_price,
-      catalyst: rowData.catalyst,
-      created_at: rowData.created_at,
+      branch: rowData.branch,
+      branch_name: rowData.branch_name,
+      total_quantity: rowData.total_quantity,
+      holding_cost: rowData.holding_cost,
     });
 
     openModal("view");
@@ -90,18 +68,15 @@ const ActionFormatter = ({ rowData, mutate }) => {
   const openEdit = () => {
     // open edit logic
     // console.log(rowData);
-    setItemData({
-      item_id: rowData.item_id,
-      item_number: rowData.item_number,
+    setInventoryData({
+      inventory_id: rowData.inventory_id,
+      item: rowData.item,
       item_name: rowData.item_name,
-      brand: rowData.brand,
-      category: rowData.category,
-      unit: rowData.unit,
-      package: rowData.package,
       item_price_w_vat: rowData.item_price_w_vat,
-      item_price_wo_vat: rowData.item_price_wo_vat,
-      retail_price: rowData.retail_price,
-      catalyst: rowData.catalyst,
+      branch: rowData.branch,
+      branch_name: rowData.branch_name,
+      total_quantity: rowData.total_quantity,
+      holding_cost: rowData.holding_cost,
     });
     openModal("edit");
   };
@@ -114,11 +89,11 @@ const ActionFormatter = ({ rowData, mutate }) => {
   return (
     <>
       {/* Modal Config */}
-      <ItemModalManager
+      <InventoryModalManager
         activeModal={activeModal}
         setActiveModal={setActiveModal}
-        data={itemData}
-        setData={setItemData}
+        data={inventoryData}
+        setData={setInventoryData}
         rowData={rowData}
         mutate={mutate}
       />

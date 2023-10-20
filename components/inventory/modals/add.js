@@ -1,91 +1,211 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   TextField,
+  InputAdornment,
+  FormControl,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormHelperText,
   Button,
   Grid,
   Container,
   Typography,
   DialogTitle,
   DialogContent,
+  IconButton,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import apiClient from "@/components/utility/api/apiClient";
+import Swal from "sweetalert2";
+import { BranchesDropdown, get_items } from "@/components/utility/get_data";
 
-export default function AddPurchaseModal({ headerColor }) {
-  const [purchaseOrder, setPurchaseOrder] = useState({
-    orderNumber: "",
-    supplier: "",
-    totalAmount: "",
-    shippingAddress: "",
+export default function AddModal({ headerColor, closeModal, mutate }) {
+  const [inventoryData, setItemData] = useState({
+    item: "",
+    item_name: "",
+    item_price_w_vat: "",
+    branch: "",
+    branch_name: "",
+    total_quantity: "",
+    holding_cost: 0,
   });
+  const [items, setItems] = useState([]);
+  const [totalQuantity, setTotalQuantity] = useState(0);
+  const [calculatedPrice, setCalculatedPrice] = useState(0);
+
+  useEffect(() => {
+    get_items()
+      .then((items) => {
+        setItems(items);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setPurchaseOrder((prevOrder) => ({ ...prevOrder, [name]: value }));
+    const { name, value } = e.target; // gets the item id from the items dropdownn
+    setItemData((prevOrder) => ({ ...prevOrder, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleDropdownChange = (e) => {
+    const { name, value } = e.target; // gets the item id from the items dropdownn
+
+    const item = items.find((item) => item.item_id === value);
+    setItemData((prevOrder) => ({
+      ...prevOrder,
+      item_price_w_vat: item.item_price_w_vat,
+      [name]: value,
+    }));
+  };
+
+  const handleQuantityChange = (e) => {
+    const { name, value } = e.target;
+    setTotalQuantity(value);
+    setItemData((prevOrder) => ({ ...prevOrder, [name]: value }));
+    calculatePrice(inventoryData.item, value);
+  };
+
+  const calculatePrice = (selectedItem, quantity) => {
+    const item = items.find((item) => item.item_id === selectedItem);
+    if (item) {
+      const price = item.item_price_w_vat * quantity;
+      setCalculatedPrice(parseFloat(price.toFixed(2)));
+      setItemData((prevOrder) => ({
+        ...prevOrder,
+        holding_cost: calculatedPrice,
+      }));
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Handle form submission
-    console.log(purchaseOrder);
+
+    try {
+      const response = await apiClient.post(`/inventory/`, inventoryData);
+      if (response.status === 201) {
+        closeModal();
+        Swal.fire({
+          title: "Succcess",
+          text: "Successfully added an item to inventory",
+          icon: "success",
+        });
+        mutate();
+      }
+    } catch (error) {
+      // Handle the error
+      console.error(error);
+      Swal.fire({
+        title: "Error",
+        text: error,
+        icon: "error",
+      });
+      throw error;
+    }
     // Reset form fields
-    setPurchaseOrder({
-      orderNumber: "",
-      supplier: "",
-      totalAmount: "",
-      shippingAddress: "",
+    setItemData({
+      item: "",
+      item_name: "",
+      item_price_w_vat: "",
+      branch: "",
+      branch_name: "",
+      total_quantity: "",
+      holding_cost: "",
     });
   };
 
   return (
     <>
       <DialogTitle style={{ backgroundColor: headerColor }}>
-        <Typography variant="h4" align="center" gutterBottom>
-          Add Purchase Order
+        <Typography color="white" variant="h5" align="left">
+          Add Item to Inventory
         </Typography>
       </DialogTitle>
-      <DialogContent>
-        <Container maxWidth="md">
+      <IconButton
+        aria-label="close"
+        onClick={closeModal}
+        sx={{
+          position: "absolute",
+          right: 10,
+          top: 10,
+        }}>
+        <CloseIcon />
+      </IconButton>
+
+      <DialogContent sx={{ paddingTop: 0 }}>
+        <Container maxWidth="lg">
           <form onSubmit={handleSubmit}>
-            <Grid container spacing={3}>
-              <Grid item xs={12} sm={6}>
+            <Grid container spacing={2} mt={1}>
+              <Grid item xs={12} md={6}>
+                <FormControl fullWidth>
+                  <InputLabel id="items-label">Items</InputLabel>
+                  <Select
+                    fullWidth
+                    labelId="items-label"
+                    label="items"
+                    id="items-select"
+                    name="item"
+                    value={inventoryData.item || ""}
+                    onChange={handleDropdownChange}>
+                    {items.length > 0 ? (
+                      items.map((item) => (
+                        <MenuItem key={item.item_id} value={item.item_id}>
+                          {item.brand_name} - {item.item_name}
+                        </MenuItem>
+                      ))
+                    ) : (
+                      <MenuItem key={0} value={0}>
+                        NO ITEMS
+                      </MenuItem>
+                    )}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <BranchesDropdown
+                  selectedBranch={inventoryData.branch}
+                  handleChange={handleChange}
+                />
+              </Grid>
+
+              <Grid item xs={12} md={4}>
                 <TextField
                   required
                   fullWidth
-                  label="Order Number"
-                  name="orderNumber"
-                  value={purchaseOrder.orderNumber}
-                  onChange={handleChange}
+                  name="total_quantity"
+                  label="Total Quantity"
+                  onChange={handleQuantityChange}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+
+              <Grid item xs={12} md={4}>
                 <TextField
                   required
                   fullWidth
-                  label="Supplier"
-                  name="supplier"
-                  value={purchaseOrder.supplier}
-                  onChange={handleChange}
+                  name="item_price_w_vat"
+                  label="Item Price W/ Vat"
+                  value={inventoryData.item_price_w_vat}
+                  InputProps={{
+                    readOnly: true,
+                  }}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
+
+              <Grid item xs={12} md={4}>
                 <TextField
                   required
                   fullWidth
-                  label="Total Amount"
-                  name="totalAmount"
-                  value={purchaseOrder.totalAmount}
+                  name="holding_cost"
+                  label="Holding Cost"
+                  value={inventoryData.holding_cost.toFixed(2)}
                   onChange={handleChange}
+                  InputProps={{
+                    readOnly: true,
+                  }}
                 />
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  label="Shipping Address"
-                  name="shippingAddress"
-                  value={purchaseOrder.shippingAddress}
-                  onChange={handleChange}
-                />
-              </Grid>
+
               <Grid item xs={12}>
                 <Button type="submit" variant="contained" color="primary">
                   Submit

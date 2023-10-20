@@ -71,7 +71,6 @@ export default function EditModal({
       item_name: "",
       brand: "",
       brand_name: "",
-      total_quantity: "",
       category: "",
       unit: "",
       package: "",
@@ -121,18 +120,14 @@ export default function EditModal({
                 />
               </Grid>
               <Grid item xs={12} md={2}>
-                <TextField
-                  required
-                  fullWidth
-                  name="total_quantity"
-                  label="Total Quantity"
-                  value={data.total_quantity}
-                  onChange={handleChange}
+                <CategoriesDropdown
+                  selectedCategory={data.category}
+                  handleChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12} md={3}>
-                <CategoriesDropdown
-                  selectedCategory={data.category}
+                <CatalystsDropdown
+                  selectedItem={data.catalyst}
                   handleChange={handleChange}
                 />
               </Grid>
@@ -167,13 +162,8 @@ export default function EditModal({
                   </Select>
                 </FormControl>
               </Grid>
+
               <Grid item xs={12} md={3}>
-                <CatalystsDropdown
-                  selectedItem={data.catalyst}
-                  handleChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12} md={2}>
                 <TextField
                   required
                   fullWidth
@@ -183,7 +173,7 @@ export default function EditModal({
                   onChange={handleChange}
                 />
               </Grid>
-              <Grid item xs={12} md={2}>
+              <Grid item xs={12} md={3}>
                 <TextField
                   required
                   fullWidth
@@ -193,7 +183,7 @@ export default function EditModal({
                   onChange={handleChange}
                 />
               </Grid>
-              <Grid item xs={12} md={2}>
+              <Grid item xs={12} md={3}>
                 <TextField
                   required
                   fullWidth

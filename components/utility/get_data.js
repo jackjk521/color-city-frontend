@@ -86,6 +86,25 @@ export const get_branches = async () => {
   }
 };
 
+// Items 
+export const get_items = async () => {
+  try {
+    const response = await apiClient.get(`/items/`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    // Handle the error
+    console.error(error);
+    Swal.fire({
+      title: "Error",
+      text: error,
+      icon: "error",
+    });
+    throw error;
+  }
+};
+
 // Item Number Generation
 export const get_item_number = async () => {
   try {
@@ -282,7 +301,7 @@ export function CatalystsDropdown({ selectedItem, handleChange }) {
         {items.length > 0 ? (
           items.map((item) => (
             <MenuItem key={item.item_id} value={item.item_id}>
-              {item.item_name}
+              {item.brand_name} - {item.item_name}
             </MenuItem>
           ))
         ) : (
@@ -328,6 +347,46 @@ export function BranchesDropdown({ selectedBranch, handleChange }) {
         ) : (
           <MenuItem key={0} value={0}>
             NO BRANCHES
+          </MenuItem>
+        )}
+      </Select>
+    </FormControl>
+  );
+}
+
+export function ItemsDropdown({ selectedItem, handleChange }) {
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    get_items()
+      .then((items) => {
+        setItems(items);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  return (
+    <FormControl fullWidth>
+      <InputLabel id="items-label">Items</InputLabel>
+      <Select
+        fullWidth
+        labelId="items-label"
+        label="items"
+        id="items-select"
+        name="item"
+        value={selectedItem || ""}
+        onChange={handleChange}>
+        {items.length > 0 ? (
+          items.map((item) => (
+            <MenuItem key={item.item_id} value={item.item_id}>
+              {item.brand_name} - {item.item_name}
+            </MenuItem>
+          ))
+        ) : (
+          <MenuItem key={0} value={0}>
+            NO ITEMS
           </MenuItem>
         )}
       </Select>

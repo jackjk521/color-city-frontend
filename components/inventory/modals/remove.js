@@ -6,47 +6,73 @@ import {
   Typography,
   DialogTitle,
   DialogContent,
+  IconButton,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
+import apiClient from "@/components/utility/api/apiClient";
+import Swal from "sweetalert2";
 
-export default function RemovePurchaseModal({ onClose, headerColor  }) {
-  const [purchaseOrder, setPurchaseOrder] = useState({
-    orderNumber: "",
-    supplier: "",
-    totalAmount: "",
-    shippingAddress: "",
-  });
-
-  const handleRemove = (e) => {
+export default function RemoveModal({
+  headerColor,
+  closeModal,
+  rowData,
+  mutate,
+}) {
+  const handleRemove = async (e) => {
+    // console.log(rowData);
     e.preventDefault();
-    // TODO: Handle form submission
-    console.log(purchaseOrder);
-    // Reset form fields
-    setPurchaseOrder({
-      orderNumber: "",
-      supplier: "",
-      totalAmount: "",
-      shippingAddress: "",
-    });
+    const item_id = rowData.item_id;
+    try {
+      const response = await apiClient.delete(`/item/${item_id}/`);
+      if (response.status === 200) {
+        closeModal();
+        Swal.fire({
+          title: "Succcess",
+          text: "Successfully deleted an item",
+          icon: "success",
+        });
+        mutate();
+      }
+    } catch (error) {
+      // Handle the error
+      console.error(error);
+      Swal.fire({
+        title: "Error",
+        text: error,
+        icon: "error",
+      });
+      throw error;
+    }
   };
 
   return (
     <>
-      <DialogTitle style={{ backgroundColor: headerColor }}>
-        <Typography variant="h4" align="center">
-          Remove Purchase Order
+      <DialogTitle style={{ backgroundColor: headerColor }} mb={3}>
+        <Typography color="white" variant="h5" align="left">
+          Remove Item
         </Typography>
       </DialogTitle>
-      <DialogContent>
-        <Container maxWidth="md">
+      <IconButton
+        aria-label="close"
+        onClick={closeModal}
+        sx={{
+          position: "absolute",
+          right: 10,
+          top: 10,
+        }}>
+        <CloseIcon />
+      </IconButton>
+      <DialogContent sx={{ paddingTop: 0 }}>
+        <Container maxWidth="sm" mt={1}>
           <Typography variant="body1" gutterBottom>
-            Are you sure you want to remove this purchase order?
+            Are you sure you want to remove this item?
           </Typography>
           <DialogActions>
-            <Button onClick={onClose} color="primary">
-              Cancel
+            <Button variant="contained" color="success" onClick={handleRemove}>
+              Yes
             </Button>
-            <Button onClick={handleRemove} color="secondary">
-              Remove
+            <Button variant="contained" color="error" onClick={closeModal}>
+              No
             </Button>
           </DialogActions>
         </Container>
