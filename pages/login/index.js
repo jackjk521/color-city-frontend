@@ -39,11 +39,10 @@ export default function LoginPage() {
         });
         throw error;
       }
-      // return response.data;
-      console.log(response.data);
+      // console.log(response.data);
       user.updateUserCredentials(response.data);
       router.push("/")
-      // router.push("/");
+
     } catch (error) {
       console.error(error);
       throw error;

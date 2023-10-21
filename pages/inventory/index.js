@@ -97,9 +97,6 @@ function Inventory({
   };
 
   const branch_id = (user.userCredentials.branch - 1)
-  console.log(typeof(branch_id))
-  console.log(branch_id)
-
 
   return (
     <>

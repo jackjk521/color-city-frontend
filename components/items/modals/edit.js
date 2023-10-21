@@ -46,13 +46,34 @@ export default function EditModal({
     try {
       const response = await apiClient.put(`/item/${item_id}/`, data);
       if (response.status === 200) {
-        closeModal();
-        Swal.fire({
-          title: "Succcess",
-          text: "Successfully updated an item",
-          icon: "success",
-        });
-        mutate();
+        let item_id = response.data.item_id;
+        try {
+          const log_data = {
+            branch: user.userCredentials.branch,
+            user: user.userCredentials.user_id,
+            type: "ITEMS",
+            type_id: item_id,
+            message: user.userCredentials.username + " successfully updated an item with item_id: " +  item_id,
+          };
+          const response = await apiClient.post(`/logs`, log_data);
+          if (response.status === 200) {
+            closeModal();
+            Swal.fire({
+              title: "Succcess",
+              text: "Successfully updated an item",
+              icon: "success",
+            });
+            mutate();
+          }
+        } catch (error) {
+          // Handle the error
+          Swal.fire({
+            title: "Error",
+            text: error,
+            icon: "error",
+          });
+          throw error;
+        }
       }
     } catch (error) {
       // Handle the error

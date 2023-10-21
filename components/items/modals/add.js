@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   TextField,
   InputAdornment,
@@ -23,6 +23,8 @@ import {
   BrandsDropdown,
   CategoriesDropdown,
 } from "@/components/utility/get_data";
+import { UserContext } from "@/contexts/userContext";
+import { createAddLogData } from "@/components/utility/logger";
 
 export default function AddModal({ headerColor, closeModal, mutate }) {
   const [itemData, setItemData] = useState({
@@ -38,6 +40,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
     retail_price: "",
     catalyst: 0,
   });
+  const { user } = useContext(UserContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,13 +53,38 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
     try {
       const response = await apiClient.post(`/items/`, itemData);
       if (response.status === 201) {
-        closeModal();
-        Swal.fire({
-          title: "Succcess",
-          text: "Successfully added an item",
-          icon: "success",
-        });
-        mutate();
+        let item_id = response.data.item_id;
+        let item_name = response.data.item_name;
+
+        try {
+          const log_data = createAddLogData(
+            user.userCredentials.branch,
+            user.userCredentials.user_id,
+            user.userCredentials.username,
+            "ITEMS",
+            item_id,
+            item_name
+          );
+
+          const response = await apiClient.post(`/logs`, log_data);
+          if (response.status === 201) {
+            closeModal();
+            Swal.fire({
+              title: "Succcess",
+              text: "Successfully added an item",
+              icon: "success",
+            });
+            mutate();
+          }
+        } catch (error) {
+          // Handle the error
+          Swal.fire({
+            title: "Error",
+            text: error,
+            icon: "error",
+          });
+          throw error;
+        }
       }
     } catch (error) {
       // Handle the error
