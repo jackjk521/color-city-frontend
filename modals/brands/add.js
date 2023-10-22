@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   TextField,
   Button,
@@ -10,52 +10,33 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import apiClient from "@/components/utility/api/apiClient";
-import Swal from "sweetalert2";
-import { SuppliersDropdown } from "@/components/utility/get_data";
+import {
+  SuppliersDropdown,
+} from "@/components/utility/get_data";
+import { post_data } from "@/components/utility/api/fetcher";
 
-export default function EditModal({
-  headerColor,
-  data,
-  setData,
-  closeModal,
-  mutate,
-}) {
-  // console.log(data);
-
-  // Get all categories
+const url = "/brands"
+export default function AddModal({ headerColor, closeModal, mutate }) {
+  const [brandData, setBrandData] = useState({
+    brand_id: "",
+    brand_name: "",
+    supplier: "",
+    supplier_name: "",
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setData((prevOrder) => ({ ...prevOrder, [name]: value }));
+    setBrandData((prevOrder) => ({ ...prevOrder, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const brand_id = data.brand_id;
-    try {
-      const response = await apiClient.put(`/brand/${brand_id}/`, data);
-      if (response.status === 200) {
-        closeModal();
-        Swal.fire({
-          title: "Succcess",
-          text: "Successfully updated a brand",
-          icon: "success",
-        });
-        mutate();
-      }
-    } catch (error) {
-      // Handle the error
-      console.error(error);
-      Swal.fire({
-        title: "Error",
-        text: error,
-        icon: "error",
-      });
-      throw error;
-    }
+
+   // Add logic
+   post_data("brand", url, brandData, closeModal, mutate);
+
     // Reset form fields
-    setData({
+    setBrandData({
       brand_id: "",
       brand_name: "",
       supplier: "",
@@ -64,10 +45,10 @@ export default function EditModal({
   };
 
   return (
-    <>
+    <React.Fragment>
       <DialogTitle style={{ backgroundColor: headerColor }}>
         <Typography color="white" variant="h5" align="left">
-          Edit Brand
+          Add Brand
         </Typography>
       </DialogTitle>
       <IconButton
@@ -80,8 +61,9 @@ export default function EditModal({
         }}>
         <CloseIcon />
       </IconButton>
+
       <DialogContent sx={{ paddingTop: 0 }}>
-        <Container maxWidth="lg">
+        <Container maxWidth="sm">
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2} mt={1}>
               <Grid item xs={12} md={6}>
@@ -90,13 +72,14 @@ export default function EditModal({
                   fullWidth
                   label="Brand Name"
                   name="brand_name"
-                  value={data.brand_name}
+                  // value={brandData.brand_name}
                   onChange={handleChange}
+
                 />
               </Grid>
               <Grid item xs={12} md={6}>
-                <SuppliersDropdown
-                  selectedSupplier={data.supplier}
+              <SuppliersDropdown
+                  selectedSupplier={brandData.supplier}
                   handleChange={handleChange}
                 />
               </Grid>
@@ -110,6 +93,6 @@ export default function EditModal({
           </form>
         </Container>
       </DialogContent>
-    </>
+    </React.Fragment>
   );
 }

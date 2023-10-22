@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import LargeModal from "../../utility/modals/largeModal";
-import SmallModal from "../../utility/modals/smallModal";
+import LargeModal from "../../components/utility/modals/largeModal";
+import SmallModal from "../../components/utility/modals/smallModal";
 
 // Modal Contents
 import AddModal from "./add";
@@ -8,7 +8,7 @@ import ViewModal from "./view";
 import EditModal from "./edit";
 import RemoveModal from "./remove";
 
-const SupplierModalManager = ({
+const CategoryModalManager = ({
   data,
   setData,
   activeModal,
@@ -107,4 +107,4 @@ const SupplierModalManager = ({
   );
 };
 
-export default SupplierModalManager;
+export default CategoryModalManager;

@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
   TextField,
-  InputAdornment,
-  FormControl,
-  Select,
-  MenuItem,
-  InputLabel,
-  FormHelperText,
   Button,
   Grid,
   Container,
@@ -16,63 +10,38 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import apiClient from "@/components/utility/api/apiClient";
-import Swal from "sweetalert2";
-import {
-  SuppliersDropdown,
-} from "@/components/utility/get_data";
+import { post_data } from "@/components/utility/api/fetcher";
 
+const url = "/categories";
 export default function AddModal({ headerColor, closeModal, mutate }) {
-  const [brandData, setBrandData] = useState({
-    brand_id: "",
-    brand_name: "",
-    supplier: "",
-    supplier_name: "",
+  const [categoryData, setCategoryData] = React.useState({
+    category_id: "",
+    category_name: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setBrandData((prevOrder) => ({ ...prevOrder, [name]: value }));
+    setCategoryData((prevOrder) => ({ ...prevOrder, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const response = await apiClient.post(`/brands`, brandData);
-      if (response.status === 201) {
-        closeModal();
-        Swal.fire({
-          title: "Succcess",
-          text: "Successfully added a brand",
-          icon: "success",
-        });
-        mutate();
-      }
-    } catch (error) {
-      // Handle the error
-      console.error(error);
-      Swal.fire({
-        title: "Error",
-        text: error,
-        icon: "error",
-      });
-      throw error;
-    }
+    // Add logic
+    post_data("category", url, categoryData, closeModal, mutate);
+
     // Reset form fields
-    setBrandData({
-      brand_id: "",
-      brand_name: "",
-      supplier: "",
-      supplier_name: "",
+    setCategoryData({
+      category_id: "",
+      category_name: "",
     });
   };
 
   return (
-    <>
+    <React.Fragment>
       <DialogTitle style={{ backgroundColor: headerColor }}>
         <Typography color="white" variant="h5" align="left">
-          Add Brand
+          Add Category
         </Typography>
       </DialogTitle>
       <IconButton
@@ -90,22 +59,21 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
         <Container maxWidth="sm">
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2} mt={1}>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={12}>
                 <TextField
                   required
                   fullWidth
-                  label="Brand Name"
-                  name="brand_name"
-                  // value={brandData.brand_name}
+                  label="Category Name"
+                  name="category_name"
+                  // value={categoryData.brand_name}
                   onChange={handleChange}
-
                 />
               </Grid>
               <Grid item xs={12} md={6}>
-              <SuppliersDropdown
-                  selectedSupplier={brandData.supplier}
+                {/* <SuppliersDropdown
+                  selectedSupplier={categoryData.supplier}
                   handleChange={handleChange}
-                />
+                /> */}
               </Grid>
 
               <Grid item xs={12}>
@@ -117,6 +85,6 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
           </form>
         </Container>
       </DialogContent>
-    </>
+    </React.Fragment>
   );
 }

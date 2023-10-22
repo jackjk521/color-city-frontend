@@ -10,9 +10,7 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import apiClient from "@/components/utility/api/apiClient";
-import Swal from "sweetalert2";
-import { SuppliersDropdown } from "@/components/utility/get_data";
+import { put_data } from "@/components/utility/api/fetcher";
 
 export default function EditPurchaseModal({
   headerColor,
@@ -21,10 +19,6 @@ export default function EditPurchaseModal({
   closeModal,
   mutate,
 }) {
-  // console.log(data);
-
-  // Get all categories
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData((prevOrder) => ({ ...prevOrder, [name]: value }));
@@ -33,27 +27,9 @@ export default function EditPurchaseModal({
   const handleSubmit = async (e) => {
     e.preventDefault();
     const supplier_id = data.supplier_id;
-    try {
-      const response = await apiClient.put(`/supplier/${supplier_id}/`, data);
-      if (response.status === 200) {
-        closeModal();
-        Swal.fire({
-          title: "Succcess",
-          text: "Successfully updated a supplier",
-          icon: "success",
-        });
-        mutate();
-      }
-    } catch (error) {
-      // Handle the error
-      console.error(error);
-      Swal.fire({
-        title: "Error",
-        text: error,
-        icon: "error",
-      });
-      throw error;
-    }
+    const url = `/supplier/${supplier_id}/`
+    // Edit Logic
+    put_data("supplier", url, data, closeModal, mutate);
     // Reset form fields
     setData({
       brand_id: "",
@@ -84,7 +60,7 @@ export default function EditPurchaseModal({
         <Container maxWidth="lg">
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2} mt={1}>
-            <Grid item xs={12} md={4}>
+              <Grid item xs={12} md={4}>
                 <TextField
                   required
                   fullWidth

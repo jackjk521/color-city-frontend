@@ -12,6 +12,8 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import apiClient from "@/components/utility/api/apiClient";
 import Swal from "sweetalert2";
+import { SuppliersDropdown } from "@/components/utility/get_data";
+import { put_data } from "@/components/utility/api/fetcher";
 
 export default function EditModal({
   headerColor,
@@ -20,9 +22,6 @@ export default function EditModal({
   closeModal,
   mutate,
 }) {
-  // console.log(data);
-
-  // Get all categories
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,41 +30,25 @@ export default function EditModal({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const branch_id = data.branch_id;
-    try {
-      const response = await apiClient.put(`/branch/${branch_id}/`, data);
-      if (response.status === 200) {
-        closeModal();
-        Swal.fire({
-          title: "Succcess",
-          text: "Successfully updated a branch",
-          icon: "success",
-        });
-        mutate();
-      }
-    } catch (error) {
-      // Handle the error
-      console.error(error);
-      Swal.fire({
-        title: "Error",
-        text: error,
-        icon: "error",
-      });
-      throw error;
-    }
+    const brand_id = data.brand_id;
+    const url = `/brand/${brand_id}/`
+    
+    // Edit Logic
+    put_data('brand', url, data, closeModal, mutate)
     // Reset form fields
     setData({
-      branch_id: "",
-      branch_name: "",
-      address: "",
+      brand_id: "",
+      brand_name: "",
+      supplier: "",
+      supplier_name: "",
     });
   };
 
   return (
-    <>
+    <React.Fragment>
       <DialogTitle style={{ backgroundColor: headerColor }}>
         <Typography color="white" variant="h5" align="left">
-          Edit Branch
+          Edit Brand
         </Typography>
       </DialogTitle>
       <IconButton
@@ -86,20 +69,16 @@ export default function EditModal({
                 <TextField
                   required
                   fullWidth
-                  label="Branch Name"
-                  name="branch_name"
-                  value={data.branch_name}
+                  label="Brand Name"
+                  name="brand_name"
+                  value={data.brand_name}
                   onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12} md={6}>
-                <TextField
-                  required
-                  fullWidth
-                  label="Address"
-                  name="address"
-                  value={data.address}
-                  onChange={handleChange}
+                <SuppliersDropdown
+                  selectedSupplier={data.supplier}
+                  handleChange={handleChange}
                 />
               </Grid>
 
@@ -112,6 +91,6 @@ export default function EditModal({
           </form>
         </Container>
       </DialogContent>
-    </>
+    </React.Fragment>
   );
 }

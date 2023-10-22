@@ -10,8 +10,7 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import apiClient from "@/components/utility/api/apiClient";
-import Swal from "sweetalert2";
+import { put_data } from "@/components/utility/api/fetcher";
 
 export default function EditModal({
   headerColor,
@@ -20,9 +19,6 @@ export default function EditModal({
   closeModal,
   mutate,
 }) {
-  // console.log(data);
-
-  // Get all categories
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,32 +27,17 @@ export default function EditModal({
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const category_id = data.category_id;
-    try {
-      const response = await apiClient.put(`/category/${category_id}/`, data);
-      if (response.status === 200) {
-        closeModal();
-        Swal.fire({
-          title: "Succcess",
-          text: "Successfully updated a brand",
-          icon: "success",
-        });
-        mutate();
-      }
-    } catch (error) {
-      // Handle the error
-      console.error(error);
-      Swal.fire({
-        title: "Error",
-        text: error,
-        icon: "error",
-      });
-      throw error;
-    }
+    const branch_id = data.branch_id;
+    const url = `/branch/${branch_id}/`
+
+    // Edit Logic
+    put_data('branch', url, data, closeModal, mutate)
+
     // Reset form fields
     setData({
-      category_id: "",
-      category_name: "",
+      branch_id: "",
+      branch_name: "",
+      address: "",
     });
   };
 
@@ -64,7 +45,7 @@ export default function EditModal({
     <>
       <DialogTitle style={{ backgroundColor: headerColor }}>
         <Typography color="white" variant="h5" align="left">
-          Edit Category
+          Edit Branch
         </Typography>
       </DialogTitle>
       <IconButton
@@ -81,21 +62,25 @@ export default function EditModal({
         <Container maxWidth="lg">
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2} mt={1}>
-              <Grid item xs={12} md={12}>
+              <Grid item xs={12} md={6}>
                 <TextField
                   required
                   fullWidth
-                  label="Category Name"
-                  name="category_name"
-                  value={data.category_name}
+                  label="Branch Name"
+                  name="branch_name"
+                  value={data.branch_name}
                   onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12} md={6}>
-                {/* <SuppliersDropdown
-                  selectedSupplier={data.supplier}
-                  handleChange={handleChange}
-                /> */}
+                <TextField
+                  required
+                  fullWidth
+                  label="Address"
+                  name="address"
+                  value={data.address}
+                  onChange={handleChange}
+                />
               </Grid>
 
               <Grid item xs={12}>

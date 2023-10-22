@@ -9,8 +9,7 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import apiClient from "@/components/utility/api/apiClient";
-import Swal from "sweetalert2";
+import { delete_data } from "@/components/utility/api/fetcher";
 
 export default function RemoveModal({
   headerColor,
@@ -22,31 +21,13 @@ export default function RemoveModal({
     // console.log(rowData);
     e.preventDefault();
     const supplier_id = rowData.supplier_id;
-    try {
-      const response = await apiClient.delete(`/supplier/${supplier_id}/`);
-      if (response.status === 200) {
-        closeModal();
-        Swal.fire({
-          title: "Succcess",
-          text: "Successfully deleted a supplier",
-          icon: "success",
-        });
-        mutate();
-      }
-    } catch (error) {
-      // Handle the error
-      console.error(error);
-      Swal.fire({
-        title: "Error",
-        text: error,
-        icon: "error",
-      });
-      throw error;
-    }
+    const url = `/supplier/${supplier_id}/`;
+    // Delete logic
+    delete_data("supplier", url, closeModal, mutate);
   };
 
   return (
-    <>
+    <React.Fragment>
       <DialogTitle style={{ backgroundColor: headerColor }} mb={3}>
         <Typography color="white" variant="h5" align="left">
           Remove Supplier
@@ -77,6 +58,6 @@ export default function RemoveModal({
           </DialogActions>
         </Container>
       </DialogContent>
-    </>
+    </React.Fragment>
   );
 }

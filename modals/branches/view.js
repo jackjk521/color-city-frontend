@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import {
   TextField,
-  Button,
   Grid,
   Container,
   Typography,
-  DialogActions,
   DialogTitle,
   DialogContent,
   IconButton,
@@ -13,7 +11,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 
 export default function ViewModal({ data, headerColor, closeModal }) {
-  console.log(data);
+  // console.log(data);
   return (
     <>
       <DialogTitle style={{ backgroundColor: headerColor }} mb={3}>

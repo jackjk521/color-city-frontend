@@ -1,12 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
   TextField,
-  InputAdornment,
-  FormControl,
-  Select,
-  MenuItem,
-  InputLabel,
-  FormHelperText,
   Button,
   Grid,
   Container,
@@ -16,58 +10,43 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import apiClient from "@/components/utility/api/apiClient";
-import Swal from "sweetalert2";
+import { SuppliersDropdown } from "@/components/utility/get_data";
+import { post_data } from "@/components/utility/api/fetcher";
 
+const url = "/suppliers";
 export default function AddModal({ headerColor, closeModal, mutate }) {
-  const [branchData, setBranchData] = useState({
-    branch_id: "",
-    branch_name: "",
-    address: "",
+  const [supplierData, setSupplierData] = React.useState({
+    supplier_id: "",
+    supplier_name: "",
+    contact_num: "",
+    discount_rate: "",
   });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setBranchData((prevOrder) => ({ ...prevOrder, [name]: value }));
+    setSupplierData((prevOrder) => ({ ...prevOrder, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const response = await apiClient.post(`/branches`, branchData);
-      if (response.status === 201) {
-        closeModal();
-        Swal.fire({
-          title: "Succcess",
-          text: "Successfully added a branch",
-          icon: "success",
-        });
-        mutate();
-      }
-    } catch (error) {
-      // Handle the error
-      console.error(error);
-      Swal.fire({
-        title: "Error",
-        text: error,
-        icon: "error",
-      });
-      throw error;
-    }
+    // Add logic
+    post_data("supplier", url, supplierData, closeModal, mutate);
+
     // Reset form fields
-    setBranchData({
-      branch_id: "",
-      branch_name: "",
-      address: "",
+    setSupplierData({
+      supplier_id: "",
+      supplier_name: "",
+      contact_num: "",
+      discount_rate: "",
     });
   };
 
   return (
-    <>
+    <React.Fragment>
       <DialogTitle style={{ backgroundColor: headerColor }}>
         <Typography color="white" variant="h5" align="left">
-          Add Branch
+          Add Supplier
         </Typography>
       </DialogTitle>
       <IconButton
@@ -85,21 +64,30 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
         <Container maxWidth="sm">
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2} mt={1}>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={4}>
                 <TextField
                   required
                   fullWidth
-                  label="Branch Name"
-                  name="branch_name"
+                  label="Supplier Name"
+                  name="supplier_name"
                   onChange={handleChange}
                 />
               </Grid>
-              <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={4}>
                 <TextField
                   required
                   fullWidth
-                  label="Address"
-                  name="address"
+                  label="Contact Number"
+                  name="contact_num"
+                  onChange={handleChange}
+                />
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <TextField
+                  required
+                  fullWidth
+                  label="Discount Rate"
+                  name="discount_rate"
                   onChange={handleChange}
                 />
               </Grid>
@@ -113,6 +101,6 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
           </form>
         </Container>
       </DialogContent>
-    </>
+    </React.Fragment>
   );
 }

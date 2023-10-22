@@ -1,12 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   TextField,
-  InputAdornment,
-  FormControl,
-  Select,
-  MenuItem,
-  InputLabel,
-  FormHelperText,
   Button,
   Grid,
   Container,
@@ -16,47 +10,33 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import apiClient from "@/components/utility/api/apiClient";
-import Swal from "sweetalert2";
+import { put_data } from "@/components/utility/api/fetcher";
 
-export default function AddModal({ headerColor, closeModal, mutate }) {
-  const [categoryData, setCategoryData] = React.useState({
-    category_id: "",
-    category_name: "",
-  });
+export default function EditModal({
+  headerColor,
+  data,
+  setData,
+  closeModal,
+  mutate,
+}) {
+  // console.log(data);
 
+  // Get all categories
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setCategoryData((prevOrder) => ({ ...prevOrder, [name]: value }));
+    setData((prevOrder) => ({ ...prevOrder, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const category_id = data.category_id;
+    const url = `/category/${category_id}/`;
 
-    try {
-      const response = await apiClient.post(`/categories`, categoryData);
-      if (response.status === 201) {
-        closeModal();
-        Swal.fire({
-          title: "Succcess",
-          text: "Successfully added a brand",
-          icon: "success",
-        });
-        mutate();
-      }
-    } catch (error) {
-      // Handle the error
-      console.error(error);
-      Swal.fire({
-        title: "Error",
-        text: error,
-        icon: "error",
-      });
-      throw error;
-    }
+    // Edit Logic
+    put_data("category", url, data, closeModal, mutate);
     // Reset form fields
-    setCategoryData({
+    setData({
       category_id: "",
       category_name: "",
     });
@@ -66,7 +46,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
     <>
       <DialogTitle style={{ backgroundColor: headerColor }}>
         <Typography color="white" variant="h5" align="left">
-          Add Category
+          Edit Category
         </Typography>
       </DialogTitle>
       <IconButton
@@ -79,9 +59,8 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
         }}>
         <CloseIcon />
       </IconButton>
-
       <DialogContent sx={{ paddingTop: 0 }}>
-        <Container maxWidth="sm">
+        <Container maxWidth="lg">
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2} mt={1}>
               <Grid item xs={12} md={12}>
@@ -90,14 +69,13 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                   fullWidth
                   label="Category Name"
                   name="category_name"
-                  // value={categoryData.brand_name}
+                  value={data.category_name}
                   onChange={handleChange}
-
                 />
               </Grid>
               <Grid item xs={12} md={6}>
-              {/* <SuppliersDropdown
-                  selectedSupplier={categoryData.supplier}
+                {/* <SuppliersDropdown
+                  selectedSupplier={data.supplier}
                   handleChange={handleChange}
                 /> */}
               </Grid>
