@@ -13,12 +13,12 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 
 export default function ViewModal({ data, headerColor, closeModal }) {
-  console.log(data);
+  // console.log(data);
   return (
     <>
       <DialogTitle style={{ backgroundColor: headerColor }} mb={3}>
         <Typography color="white" variant="h5" align="left">
-          View Item
+          View Inventory Entry
         </Typography>
       </DialogTitle>
       <IconButton
@@ -35,29 +35,23 @@ export default function ViewModal({ data, headerColor, closeModal }) {
         <Container maxWidth="lg">
           {/* Fields Start  */}
           <Grid container spacing={2} mt={1}>
-            <Grid item xs={12} md={1}>
+            <Grid item xs={12} md={6}>
               <TextField
+                required
                 fullWidth
-                label="Item ID"
-                value={data.item_id}
+                name="inventory_id"
+                label="ID"
+                value={data.inventory_id}
                 InputProps={{
                   readOnly: true,
                 }}
               />
             </Grid>
-            <Grid item xs={12} md={3}>
+            <Grid item xs={12} md={6}>
               <TextField
+                required
                 fullWidth
-                label="Item Number"
-                value={data.item_number}
-                InputProps={{
-                  readOnly: true,
-                }}
-              />
-            </Grid>
-            <Grid item xs={12} md={3}>
-              <TextField
-                fullWidth
+                name="item_name"
                 label="Item Name"
                 value={data.item_name}
                 InputProps={{
@@ -65,84 +59,41 @@ export default function ViewModal({ data, headerColor, closeModal }) {
                 }}
               />
             </Grid>
-            <Grid item xs={12} md={3}>
-              <TextField
-                fullWidth
-                label="Brand"
-                value={data.brand_name}
-                InputProps={{
-                  readOnly: true,
-                }}
-              />
-            </Grid>
-            <Grid item xs={12} md={2}>
-              <TextField
-                fullWidth
-                label="Category"
-                value={data.category_name}
-                InputProps={{
-                  readOnly: true,
-                }}
-              />
-            </Grid>
-          </Grid>
 
-          <Grid container spacing={2} mt={1}>
-            <Grid item xs={12} md={1}>
+            <Grid item xs={12} md={4}>
               <TextField
+                required
                 fullWidth
-                label="Unit"
-                value={data.unit}
+                name="total_quantity"
+                label="Total Quantity"
+                value={data.total_quantity}
                 InputProps={{
                   readOnly: true,
                 }}
               />
             </Grid>
-            <Grid item xs={12} md={1}>
+
+            <Grid item xs={12} md={4}>
               <TextField
+                required
                 fullWidth
-                label="Package"
-                value={data.package}
-                InputProps={{
-                  readOnly: true,
-                }}
-              />
-            </Grid>
-            <Grid item xs={12} md={2}>
-              <TextField
-                fullWidth
-                label="Catalyst"
-                value={data.catalyst}
-                InputProps={{
-                  readOnly: true,
-                }}
-              />
-            </Grid>
-            <Grid item xs={12} md={2}>
-              <TextField
-                fullWidth
-                label="Item Price W/O Vat"
-                value={data.item_price_wo_vat}
-                InputProps={{
-                  readOnly: true,
-                }}
-              />
-            </Grid>
-            <Grid item xs={12} md={3}>
-              <TextField
-                fullWidth
+                name="item_price_w_vat"
                 label="Item Price W/ Vat"
                 value={data.item_price_w_vat}
+
                 InputProps={{
                   readOnly: true,
                 }}
               />
             </Grid>
-            <Grid item xs={12} md={3}>
+
+            <Grid item xs={12} md={4}>
               <TextField
+                required
                 fullWidth
-                label="Retail Price"
-                value={data.retail_price}
+                name="holding_cost"
+                label="Holding Cost"
+                value={parseFloat(data.holding_cost).toFixed(2)} // bug here
                 InputProps={{
                   readOnly: true,
                 }}

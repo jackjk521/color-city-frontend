@@ -207,8 +207,6 @@ export const UsersColumns = [
     header: "Role",
     size: 200,
   },
-
- 
 ];
 export const UserColumnsVisibility = {
   user_id: true,
@@ -225,6 +223,7 @@ export const InventoryColumns = [
     header: "ID",
     size: 50,
   },
+
   {
     accessorKey: "item_name", //normal accessorKey
     header: "Item",
@@ -236,16 +235,20 @@ export const InventoryColumns = [
     size: 200,
   },
   {
+    accessorKey: "total_quantity", //normal accessorKey
+    header: "Total Quantity",
+    size: 200,
+  },
+  {
     accessorKey: "holding_cost", //normal accessorKey
     header: "Holding Cost",
     size: 200,
   },
-
- 
 ];
 export const InventoryColumnsVisibility = {
   inventory_id: true,
   item_name: false,
   branch_name: false,
+  total_quantity: false,
   holding_cost: false,
 };

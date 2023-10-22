@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   TextField,
   InputAdornment,
@@ -22,7 +22,10 @@ import {
   CatalystsDropdown,
 } from "@/components/utility/get_data";
 import { put_data } from "@/components/utility/api/fetcher";
-
+import { createEditLogData } from "@/components/utility/logger";
+import { BranchesDropdown } from "@/components/utility/get_data";
+import { get_items } from "@/components/utility/get_data";
+import { UserContext } from "@/contexts/userContext";
 
 export default function EditModal({
   headerColor,
@@ -31,34 +34,87 @@ export default function EditModal({
   closeModal,
   mutate,
 }) {
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData((prevOrder) => ({ ...prevOrder, [name]: value }));
   };
 
+  const {user } = useContext(UserContext)
+
+  const [items, setItems] = useState([]);
+  const [totalQuantity, setTotalQuantity] = useState(0);
+  const [calculatedPrice, setCalculatedPrice] = useState(0);
+
+  useEffect(() => {
+    get_items()
+      .then((items) => {
+        setItems(items);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target; // gets the item id from the items dropdownn
+  //   setItemData((prevOrder) => ({ ...prevOrder, [name]: value }));
+  // };
+
+  const handleDropdownChange = (e) => {
+    const { name, value } = e.target; // gets the item id from the items dropdownn
+
+    const item = items.find((item) => item.item_id === value);
+    setData((prevOrder) => ({
+      ...prevOrder,
+      item_price_w_vat: item.item_price_w_vat,
+      [name]: value,
+    }));
+  };
+
+  const handleQuantityChange = (e) => {
+    const { name, value } = e.target;
+    setTotalQuantity(value);
+    calculatePrice(data.item, value);
+    setData((prevOrder) => ({ ...prevOrder, [name]: value }));
+  };
+
+  const calculatePrice = (selectedItem, quantity) => {
+    const item = items.find((item) => item.item_id === selectedItem);
+    if (item) {
+      const price = item.item_price_w_vat * quantity;
+      setCalculatedPrice(parseFloat(price.toFixed(2)));
+      setData((prevOrder) => ({
+        ...prevOrder,
+        holding_cost: calculatedPrice,
+      }));
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const item_id = data.item_id;
-    const url = `/inventory/${inventory_id}/`
-
+    const inventory_id = data.inventory_id;
+    const url = `/inv/${inventory_id}/`;
+    // Add log data
+    const log_data = createEditLogData(
+      user.userCredentials.branch,
+      user.userCredentials.user_id,
+      user.userCredentials.username,
+      "INVENTORY",
+      inventory_id,
+      data.item_name
+    );
     // Edit Logic
-    put_data('inventory', url, data, closeModal, mutate)
+    put_data("inventory", url, data, closeModal, mutate, log_data);
+
     // Reset form fields
     setData({
-      item_id: "",
-      item_number: "",
+      item: "",
       item_name: "",
-      brand: "",
-      brand_name: "",
-      category: "",
-      unit: "",
-      package: "",
       item_price_w_vat: "",
-      item_price_wo_vat: "",
-      retail_price: "",
-      catalyst: "",
-      created_at: "",
+      branch: "",
+      branch_name: "",
+      total_quantity: "",
+      holding_cost: 0,
     });
   };
 
@@ -66,7 +122,7 @@ export default function EditModal({
     <React.Fragment>
       <DialogTitle style={{ backgroundColor: headerColor }}>
         <Typography color="white" variant="h5" align="left">
-          Edit Item
+          Edit Inventory Entry
         </Typography>
       </DialogTitle>
       <IconButton
@@ -83,96 +139,76 @@ export default function EditModal({
         <Container maxWidth="lg">
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2} mt={1}>
+            <Grid item xs={12} md={6}>
+                <FormControl fullWidth>
+                  <InputLabel id="items-label">Items</InputLabel>
+                  <Select
+                    fullWidth
+                    labelId="items-label"
+                    label="items"
+                    id="items-select"
+                    name="item"
+                    value={data.item}
+                    onChange={handleDropdownChange}>
+                    {items.length > 0 ? (
+                      items.map((item) => (
+                        <MenuItem key={item.item_id} value={item.item_id}>
+                          {item.brand_name} - {item.item_name}
+                        </MenuItem>
+                      ))
+                    ) : (
+                      <MenuItem key={0} value={0}>
+                        NO ITEMS
+                      </MenuItem>
+                    )}
+                  </Select>
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <BranchesDropdown
+                  selectedBranch={data.branch}
+                  handleChange={handleChange}
+                />
+              </Grid>
+
               <Grid item xs={12} md={4}>
                 <TextField
                   required
                   fullWidth
-                  label="Item Name"
-                  name="item_name"
-                  value={data.item_name}
-                  onChange={handleChange}
+                  name="total_quantity"
+                  label="Total Quantity"
+                  value={data.total_quantity}
+                  onChange={handleQuantityChange}
                 />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <BrandsDropdown
-                  selectedBrand={data.brand}
-                  handleChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12} md={2}>
-                <CategoriesDropdown
-                  selectedCategory={data.category}
-                  handleChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12} md={3}>
-                <CatalystsDropdown
-                  selectedItem={data.catalyst}
-                  handleChange={handleChange}
-                />
-              </Grid>
-            </Grid>
-
-            <Grid container spacing={2} mt={1}>
-              <Grid item xs={12} md={1}>
-                <TextField
-                  required
-                  fullWidth
-                  name="unit"
-                  label="Unit"
-                  value={data.unit}
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12} md={2}>
-                <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">Package</InputLabel>
-                  <Select
-                    fullWidth
-                    label="Package"
-                    name="package"
-                    id="demo-simple-select"
-                    value={data.package}
-                    onChange={handleChange}>
-                    <MenuItem value={"L"}>Liter/s</MenuItem>
-                    <MenuItem value={"GL"}>Gallons</MenuItem>
-                    <MenuItem value={"PC"}>Piece</MenuItem>
-                    <MenuItem value={"PCS"}>Pieces</MenuItem>
-                    <MenuItem value={"SHTS"}>Sheets</MenuItem>
-                  </Select>
-                </FormControl>
               </Grid>
 
-              <Grid item xs={12} md={3}>
+              <Grid item xs={12} md={4}>
                 <TextField
                   required
                   fullWidth
                   name="item_price_w_vat"
                   label="Item Price W/ Vat"
                   value={data.item_price_w_vat}
-                  onChange={handleChange}
+                  InputProps={{
+                    readOnly: true,
+                  }}
                 />
               </Grid>
-              <Grid item xs={12} md={3}>
+
+              <Grid item xs={12} md={4}>
                 <TextField
                   required
                   fullWidth
-                  name="item_price_wo_vat"
-                  label="Item Price W/O Vat"
-                  value={data.item_price_wo_vat}
+                  name="holding_cost"
+                  label="Holding Cost"
+                  value={parseFloat(data.holding_cost).toFixed(2)} // bug here
                   onChange={handleChange}
+                  InputProps={{
+                    readOnly: true,
+                  }}
                 />
               </Grid>
-              <Grid item xs={12} md={3}>
-                <TextField
-                  required
-                  fullWidth
-                  name="retail_price"
-                  label="Retail Price"
-                  value={data.retail_price}
-                  onChange={handleChange}
-                />
-              </Grid>
+
               <Grid item xs={12}>
                 <Button type="submit" variant="contained" color="primary">
                   Submit

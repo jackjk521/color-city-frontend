@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import {
   TextField,
   InputAdornment,
@@ -20,8 +20,10 @@ import apiClient from "@/components/utility/api/apiClient";
 import Swal from "sweetalert2";
 import { BranchesDropdown, get_items } from "@/components/utility/get_data";
 import { post_data } from "@/components/utility/api/fetcher";
+import { createAddLogData } from "@/components/utility/logger";
+import { UserContext } from "@/contexts/userContext";
 
-const url = "/inventory/"
+const url = "/inventory/";
 export default function AddModal({ headerColor, closeModal, mutate }) {
   const [inventoryData, setItemData] = useState({
     item: "",
@@ -32,6 +34,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
     total_quantity: "",
     holding_cost: 0,
   });
+  const { user } = useContext(UserContext);
   const [items, setItems] = useState([]);
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [calculatedPrice, setCalculatedPrice] = useState(0);
@@ -65,8 +68,8 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
   const handleQuantityChange = (e) => {
     const { name, value } = e.target;
     setTotalQuantity(value);
-    setItemData((prevOrder) => ({ ...prevOrder, [name]: value }));
     calculatePrice(inventoryData.item, value);
+    setItemData((prevOrder) => ({ ...prevOrder, [name]: value }));
   };
 
   const calculatePrice = (selectedItem, quantity) => {
@@ -83,9 +86,15 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    const log_data = createAddLogData(
+      user.userCredentials.branch,
+      user.userCredentials.user_id,
+      user.userCredentials.username,
+      "INVENTORY",
+      inventoryData.item_name
+    );
     // Add logic
-    post_data("inventory", url, inventoryData, closeModal, mutate);
+    post_data("inventory", url, inventoryData, closeModal, mutate, log_data);
     // Reset form fields
     setItemData({
       item: "",
@@ -102,7 +111,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
     <React.Fragment>
       <DialogTitle style={{ backgroundColor: headerColor }}>
         <Typography color="white" variant="h5" align="left">
-          Add Item to Inventory
+          Add Item to Inventory Entry
         </Typography>
       </DialogTitle>
       <IconButton
@@ -181,7 +190,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                   fullWidth
                   name="holding_cost"
                   label="Holding Cost"
-                  value={inventoryData.holding_cost.toFixed(2)}
+                  value={parseFloat(inventoryData.holding_cost).toFixed(2)} // bug here
                   onChange={handleChange}
                   InputProps={{
                     readOnly: true,

@@ -41,7 +41,7 @@ const ActionFormatter = ({ rowData, mutate }) => {
     branch: "",
     branch_name: "",
     total_quantity: "",
-    holding_cost: "",
+    holding_cost: 0,
   });
 
   const isMobile = useMediaQuery("(max-width: 600px)");

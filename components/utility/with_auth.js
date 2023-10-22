@@ -6,7 +6,7 @@ export default function withAuth(Component) {
   return function ProtectedRoute({ ...props }) {
     const { user } = useContext(UserContext);
     const router = useRouter();
-    const isAuthenticated = user.userCredentials; // logic to check if user is authenticated
+    const isAuthenticated = user?.userCredentials; // Check if userCredentials exist
 
     useEffect(() => {
       if (!isAuthenticated) {
@@ -14,6 +14,8 @@ export default function withAuth(Component) {
       }
     }, [isAuthenticated, router]);
 
-    return isAuthenticated && <Component {...props} userCredentials={user.userCredentials} />;
+    return isAuthenticated ? (
+      <Component {...props} userCredentials={user?.userCredentials} />
+    ) : null;
   };
 }

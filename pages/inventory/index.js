@@ -29,14 +29,15 @@ function a11yProps(index) {
   };
 }
 
-const allUrl = "/inventory"
-const branch1Url = `/inventory/?branch=2`
-const branch2Url = `/inventory/?branch=3`
-const branch3Url = `/inventory/?branch=4`
-
+const allUrl = "/inventory";
+const warehouseUrl = `/inventory/?branch=1`;
+const branch1Url = `/inventory/?branch=2`;
+const branch2Url = `/inventory/?branch=3`;
+const branch3Url = `/inventory/?branch=4`;
 
 function Inventory({
   allInventory,
+  warehouseInventory,
   branch1Inventory,
   branch2Inventory,
   branch3Inventory,
@@ -59,6 +60,14 @@ function Inventory({
     error: allInventoryError,
   } = useSWR(allUrl, get_fetcher, {
     fallbackData: allInventory,
+  });
+
+  const {
+    data: warehouseData,
+    mutate: warehouseMutate,
+    error: warehouseDataError,
+  } = useSWR(warehouseUrl, get_fetcher, {
+    fallbackData: warehouseInventory,
   });
 
   const {
@@ -87,19 +96,21 @@ function Inventory({
 
   const mutateArray = {
     0: allInventoryMutate,
-    1: branch1Mutate,
-    2: branch2Mutate,
-    3: branch3Mutate,
+    1: warehouseMutate,
+    2: branch1Mutate,
+    3: branch2Mutate,
+    4: branch3Mutate,
   };
 
   const dataArray = {
     0: allInventoryData,
-    1: branch1Data,
-    2: branch2Data,
-    3: branch3Data,
+    1: warehouseData,
+    2: branch1Data,
+    3: branch2Data,
+    4: branch3Data,
   };
 
-  const branch_id = (user.userCredentials.branch - 1)
+  const branch_id = user.userCredentials.branch;
 
   return (
     <>
@@ -119,9 +130,10 @@ function Inventory({
                 onChange={handleChange}
                 aria-label="basic tabs example">
                 <Tab label="All" {...a11yProps(0)} />
-                <Tab label="Branch 1" {...a11yProps(1)} />
-                <Tab label="Branch 2" {...a11yProps(2)} />
-                <Tab label="Branch 3" {...a11yProps(3)} />
+                <Tab label="Warehouse" {...a11yProps(1)} />
+                <Tab label="Branch 1" {...a11yProps(2)} />
+                <Tab label="Branch 2" {...a11yProps(3)} />
+                <Tab label="Branch 3" {...a11yProps(4)} />
               </Tabs>
             )}
             {user.userCredentials.user_role === "Manager" && (
@@ -163,6 +175,17 @@ function Inventory({
             {renderTabContent({
               tabValue: value,
               tabIndex: 1,
+              tabName: "Warehouse",
+              tabData: warehouseData,
+              dataColumns: InventoryColumns,
+              column_visibility: InventoryColumnsVisibility,
+              actionFormatter: ActionFormatter,
+              tabMutate: warehouseMutate,
+            })}
+
+            {renderTabContent({
+              tabValue: value,
+              tabIndex: 2,
               tabName: "Branch 1",
               tabData: branch1Data,
               dataColumns: InventoryColumns,
@@ -173,7 +196,7 @@ function Inventory({
 
             {renderTabContent({
               tabValue: value,
-              tabIndex: 2,
+              tabIndex: 3,
               tabName: "Branch 2",
               tabData: branch2Data,
               dataColumns: InventoryColumns,
@@ -184,7 +207,7 @@ function Inventory({
 
             {renderTabContent({
               tabValue: value,
-              tabIndex: 3,
+              tabIndex: 4,
               tabName: "Branch 3",
               tabData: branch3Data,
               dataColumns: InventoryColumns,
@@ -217,6 +240,7 @@ function Inventory({
 export async function getServerSideProps({ req, res }) {
   try {
     const initialAllInventoryData = await get_fetcher(allUrl);
+    const initialWarehouseData = await get_fetcher(warehouseUrl);
     const initialBranch1Data = await get_fetcher(branch1Url);
     const initialBranch2Data = await get_fetcher(branch2Url);
     const initialBranch3Data = await get_fetcher(branch3Url);
@@ -224,6 +248,7 @@ export async function getServerSideProps({ req, res }) {
     return {
       props: {
         allInventoryData: initialAllInventoryData,
+        warehouseData: initialWarehouseData,
         branch1Inventory: initialBranch1Data,
         branch2Inventory: initialBranch2Data,
         branch3Inventory: initialBranch3Data,
@@ -234,6 +259,7 @@ export async function getServerSideProps({ req, res }) {
     return {
       props: {
         allInventoryData: [],
+        warehouseData: [],
         branch1Inventory: [],
         branch2Inventory: [],
         branch3Inventory: [],

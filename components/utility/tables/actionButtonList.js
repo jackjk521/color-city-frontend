@@ -9,7 +9,7 @@ export const ViewBtn = ({ openView }) => {
     <IconButton
       color="primary"
       onClick={openView}
-      title="Click to view item data">
+      title="View">
       {" "}
       {/* Hover text  */}
       <MoreHorizIcon />
@@ -22,7 +22,7 @@ export const EditBtn = ({ openEdit }) => {
     <IconButton
       color="warning"
       onClick={openEdit}
-      title="Click to edit item data">
+      title="Edit">
       {" "}
       {/* Hover text  */}
       <EditIcon />
@@ -35,7 +35,7 @@ export const RemoveBtn = ({ openRemove }) => {
     <IconButton
       color="error"
       onClick={openRemove}
-      title="Click to delete item data">
+      title="Delete">
       <DeleteIcon />
     </IconButton>
   );

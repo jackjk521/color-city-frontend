@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import {redirect} from 'next/navigation'
 import React, { createContext, useState, useEffect } from "react";
 
 export const UserContext = createContext();
@@ -11,7 +10,7 @@ export const UserProvider = ({ children }) => {
     setUserCredentials(credentials);
   };
 
-  // Logout after 1-min of inactivity
+  // Logout after 10-min of inactivity
   useEffect(() => {
     let timeout;
 
