@@ -25,7 +25,7 @@ import { UserContext } from "@/contexts/userContext";
 import { createAddLogData } from "@/components/utility/logger";
 import { post_data } from "@/components/utility/api/fetcher";
 
-const url = "/items/"
+const url = "/items/";
 export default function AddModal({ headerColor, closeModal, mutate }) {
   const [itemData, setItemData] = useState({
     item_number: "",
@@ -49,55 +49,16 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const log_data = createAddLogData(
+      user.userCredentials.branch,
+      user.userCredentials.user_id,
+      user.userCredentials.username,
+      "ITEMS",
+      itemData.item_name
+    );
+    // Add logic
+    post_data("item", url, itemData, closeModal, mutate, log_data);
 
-     // Add logic
-     post_data("item", url, itemData, closeModal, mutate);
-    // try {
-    //   const response = await apiClient.post(`/items/`, itemData);
-    //   if (response.status === 201) {
-    //     let item_id = response.data.item_id;
-    //     let item_name = response.data.item_name;
-
-    //     try {
-    //       const log_data = createAddLogData(
-    //         user.userCredentials.branch,
-    //         user.userCredentials.user_id,
-    //         user.userCredentials.username,
-    //         "ITEMS",
-    //         item_id,
-    //         item_name
-    //       );
-
-    //       const response = await apiClient.post(`/logs`, log_data);
-    //       if (response.status === 201) {
-    //         closeModal();
-    //         Swal.fire({
-    //           title: "Succcess",
-    //           text: "Successfully added an item",
-    //           icon: "success",
-    //         });
-    //         mutate();
-    //       }
-    //     } catch (error) {
-    //       // Handle the error
-    //       Swal.fire({
-    //         title: "Error",
-    //         text: error,
-    //         icon: "error",
-    //       });
-    //       throw error;
-    //     }
-    //   }
-    // } catch (error) {
-    //   // Handle the error
-    //   console.error(error);
-    //   Swal.fire({
-    //     title: "Error",
-    //     text: error,
-    //     icon: "error",
-    //   });
-    //   throw error;
-    // }
     // Reset form fields
     setItemData({
       item_id: "",

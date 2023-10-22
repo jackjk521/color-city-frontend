@@ -1,11 +1,11 @@
 // Add Data
-export const createAddLogData = (branch, user, username, type, id, name) => {
+export const createAddLogData = (branch, user, username, type, name) => {
   return {
     branch: branch,
     user: user,
     type: type,
-    type_id: id,
-    message: `${username} successfully added ${name} with id: ${id}`,
+    type_id: 0,
+    message: `${username} successfully added ${name}`,
   };
 };
 

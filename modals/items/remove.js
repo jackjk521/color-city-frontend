@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   Button,
   DialogActions,
@@ -10,7 +10,8 @@ import {
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { delete_data } from "@/components/utility/api/fetcher";
-
+import { createRemoveLogData } from "@/components/utility/logger";
+import { UserContext } from "@/contexts/userContext";
 
 export default function RemoveModal({
   headerColor,
@@ -18,13 +19,22 @@ export default function RemoveModal({
   rowData,
   mutate,
 }) {
+  const { user } = useContext(UserContext);
   const handleRemove = async (e) => {
     // console.log(rowData);
     e.preventDefault();
     const item_id = rowData.item_id;
-    const url = `/item/${item_id}/`
+    const url = `/item/${item_id}/`;
+    const log_data = createRemoveLogData(
+      user.userCredentials.branch,
+      user.userCredentials.user_id,
+      user.userCredentials.username,
+      "ITEMS",
+      item_id,
+      rowData.item_name
+    );
     // Delete logic
-    delete_data('item', url, closeModal, mutate)
+    delete_data("item", url, closeModal, mutate, log_data);
   };
 
   return (

@@ -86,7 +86,7 @@ export function secondaryListItems() {
         <ListItemIcon>
           <AssignmentIcon />
         </ListItemIcon>
-        <ListItemText primary="Items" />
+        <ListItemText primary="Products" />
         {isItemsOpen ? <ExpandLess /> : <ExpandMore />}
       </HoverListItemButton>
 
@@ -102,7 +102,7 @@ export function secondaryListItems() {
             <ListItemIcon>
               <TransferWithinAStationIcon />
             </ListItemIcon>
-            <ListItemText primary="Categories, Brands, Suppliers" />
+            <ListItemText primary="Item Details" />
           </HoverListItemButton>
         </List>
       </Collapse>

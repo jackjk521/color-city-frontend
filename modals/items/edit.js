@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   TextField,
   InputAdornment,
@@ -22,7 +22,8 @@ import {
   CatalystsDropdown,
 } from "@/components/utility/get_data";
 import { put_data } from "@/components/utility/api/fetcher";
-
+import { createEditLogData } from "@/components/utility/logger";
+import { UserContext } from "@/contexts/userContext";
 
 export default function EditModal({
   headerColor,
@@ -31,6 +32,7 @@ export default function EditModal({
   closeModal,
   mutate,
 }) {
+  const { user } = useContext(UserContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,10 +42,18 @@ export default function EditModal({
   const handleSubmit = async (e) => {
     e.preventDefault();
     const item_id = data.item_id;
-    const url = `/item/${item_id}/`
+    const url = `/item/${item_id}/`;
 
+    const log_data = createEditLogData(
+      user.userCredentials.branch,
+      user.userCredentials.user_id,
+      user.userCredentials.username,
+      "ITEMS",
+      item_id,
+      data.item_name
+    );
     // Edit Logic
-    put_data('item', url, data, closeModal, mutate)
+    put_data("item", url, data, closeModal, mutate, log_data);
     // Reset form fields
     setData({
       item_id: "",
