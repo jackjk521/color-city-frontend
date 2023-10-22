@@ -4,10 +4,7 @@ import useSWR from "swr";
 // Material UI
 import { Button, Grid, Divider } from "@mui/material";
 
-import Swal from "sweetalert2";
-
 // Components
-import ItemsContent from "../../components/items/itemsContent";
 import CardGrid from "../../components/utility/grids/CardGrid";
 import CustomTabPanel from "../../components/utility/customTabPanel";
 
@@ -19,32 +16,14 @@ import {
 } from "../../components/utility/tables/tableColumns";
 
 // Helper Functions
-import UserModalManager from "../../components/users/modals/userModalManager";
+import UserModalManager from "../../modals/users/userModalManager";
 import ActionFormatter from "../../components/users/actionFormatter";
-import apiClient from "../../components/utility/api/apiClient";
 import withAuth from "@/components/utility/with_auth";
 
-const fetcher = async () => {
-  try {
-    const response = await apiClient.get("/users");
-    if (response.status !== 200) {
-      const error = new Error();
-      error.info = response.data;
-      error.status = response.status;
-      error.message = "An error occurred while fetching data";
-      Swal.fire({
-        title: error.info,
-        text: error.message,
-        icon: "error",
-      });
-      throw error;
-    }
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
+import { get_fetcher } from "@/components/utility/api/fetcher";
+
+
+const url = "/users"
 
 function Users({ rows }) {
   // const [data, setData] = React.useState(rows);
@@ -61,7 +40,7 @@ function Users({ rows }) {
     data: fetchedData,
     mutate,
     error: fetchedError,
-  } = useSWR("/users", fetcher, {
+  } = useSWR(url, get_fetcher, {
     fallbackData: rows,
   });
 
@@ -110,7 +89,7 @@ function Users({ rows }) {
 
 export async function getServerSideProps({ req, res }) {
   try {
-    const initialData = await fetcher("/users");
+    const initialData = await get_fetcher(url);
     return {
       props: {
         rows: initialData,

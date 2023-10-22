@@ -12,7 +12,7 @@ import {
   EditBtn,
   RemoveBtn,
 } from "../utility/tables/actionButtonList";
-import ItemModalManager from "../../components/items/modals/itemModalManager";
+import ItemModalManager from "../../modals/items/itemModalManager";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 // Formatters

@@ -12,7 +12,7 @@ import {
   EditBtn,
   RemoveBtn,
 } from "../utility/tables/actionButtonList";
-import InventoryModalManager from "../../components/inventory/modals/inventoryModalManager";
+import InventoryModalManager from "../../modals/inventory/inventoryModalManager";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 const ActionFormatter = ({ rowData, mutate }) => {

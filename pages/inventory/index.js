@@ -14,16 +14,13 @@ import {
 } from "../../components/utility/tables/tableColumns";
 
 // Helper Functions
-import InventoryModalManager from "../../components/inventory/modals/inventoryModalManager";
+import InventoryModalManager from "../../modals/inventory/inventoryModalManager";
 import ActionFormatter from "@/components/inventory/actionFormatter";
 import withAuth from "@/components/utility/with_auth";
 
-import {
-  allInventoryFetcher,
-  branchInventoryFetcher,
-} from "../../components/items_info/fetch_data";
 import { renderTabContent } from "@/components/items_info/tab_tables";
 import { UserContext } from "@/contexts/userContext";
+import { get_fetcher } from "@/components/utility/api/fetcher";
 
 function a11yProps(index) {
   return {
@@ -31,6 +28,12 @@ function a11yProps(index) {
     "aria-controls": `simple-tabpanel-${index}`,
   };
 }
+
+const allUrl = "/inventory"
+const branch1Url = `/inventory/?branch=2`
+const branch2Url = `/inventory/?branch=3`
+const branch3Url = `/inventory/?branch=4`
+
 
 function Inventory({
   allInventory,
@@ -54,7 +57,7 @@ function Inventory({
     data: allInventoryData,
     mutate: allInventoryMutate,
     error: allInventoryError,
-  } = useSWR("/inventory", allInventoryFetcher, {
+  } = useSWR(allUrl, get_fetcher, {
     fallbackData: allInventory,
   });
 
@@ -62,7 +65,7 @@ function Inventory({
     data: branch1Data,
     mutate: branch1Mutate,
     error: branch1Error,
-  } = useSWR(branchInventoryFetcher(2), {
+  } = useSWR(branch1Url, get_fetcher, {
     fallbackData: branch1Inventory,
   });
 
@@ -70,7 +73,7 @@ function Inventory({
     data: branch2Data,
     mutate: branch2Mutate,
     error: branch2Error,
-  } = useSWR(branchInventoryFetcher(3), {
+  } = useSWR(branch2Url, get_fetcher, {
     fallbackData: branch2Inventory,
   });
 
@@ -78,7 +81,7 @@ function Inventory({
     data: branch3Data,
     mutate: branch3Mutate,
     error: branch3Error,
-  } = useSWR(branchInventoryFetcher(4), {
+  } = useSWR(branch3Url, get_fetcher, {
     fallbackData: branch3Inventory,
   });
 
@@ -213,10 +216,10 @@ function Inventory({
 
 export async function getServerSideProps({ req, res }) {
   try {
-    const initialAllInventoryData = await allInventoryFetcher();
-    const initialBranch1Data = await branchInventoryFetcher(2);
-    const initialBranch2Data = await branchInventoryFetcher(3);
-    const initialBranch3Data = await branchInventoryFetcher(4);
+    const initialAllInventoryData = await get_fetcher(allUrl);
+    const initialBranch1Data = await get_fetcher(branch1Url);
+    const initialBranch2Data = await get_fetcher(branch2Url);
+    const initialBranch3Data = await get_fetcher(branch3Url);
 
     return {
       props: {

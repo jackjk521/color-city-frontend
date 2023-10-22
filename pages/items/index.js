@@ -19,32 +19,14 @@ import {
 } from "../../components/utility/tables/tableColumns";
 
 // Helper Functions
-import ItemModalManager from "../../components/items/modals/itemModalManager";
+import ItemModalManager from "../../modals/items/itemModalManager";
 import ActionFormatter from "@/components/items/actionFormatter";
-import apiClient from "../../components/utility/api/apiClient";
 import withAuth from "@/components/utility/with_auth";
 
-const fetcher = async () => {
-  try {
-    const response = await apiClient.get("/items");
-    if (response.status !== 200) {
-      const error = new Error();
-      error.info = response.data;
-      error.status = response.status;
-      error.message = "An error occurred while fetching data";
-      Swal.fire({
-        title: error.info,
-        text: error.message,
-        icon: "error",
-      });
-      throw error;
-    }
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
+import { get_fetcher } from "@/components/utility/api/fetcher";
+
+
+const url = "/items"
 
  function Items({ rows }) {
   // const [data, setData] = React.useState(rows);
@@ -61,7 +43,7 @@ const fetcher = async () => {
     data: fetchedData,
     mutate,
     error: fetchedError,
-  } = useSWR("/items", fetcher, {
+  } = useSWR(url, get_fetcher, {
     fallbackData: rows,
   });
 
@@ -119,7 +101,7 @@ const fetcher = async () => {
 
 export async function getServerSideProps({ req, res }) {
   try {
-    const initialData = await fetcher("/items");
+    const initialData = await get_fetcher(url);
     return {
       props: {
         rows: initialData,
