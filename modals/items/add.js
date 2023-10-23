@@ -56,25 +56,43 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
       "ITEMS",
       itemData.item_name
     );
-    // Add logic
-    post_data("item", url, itemData, closeModal, mutate, log_data);
-
-    // Reset form fields
-    setItemData({
-      item_id: "",
-      item_number: "",
-      item_name: "",
-      brand: "",
-      brand_name: "",
-      category: "",
-      unit: "",
-      package: "",
-      item_price_w_vat: "",
-      item_price_wo_vat: "",
-      retail_price: "",
-      catalyst: 0,
-      created_at: "",
-    });
+    try {
+      const result = await post_data(
+        "item",
+        url,
+        itemData,
+        closeModal,
+        mutate,
+        log_data
+      );
+      
+      // Reset form fields only after the API request is successfully completed
+      if (result) {
+        setItemData({
+          item_id: "",
+          item_number: "",
+          item_name: "",
+          brand: "",
+          brand_name: "",
+          category: "",
+          unit: "",
+          package: "",
+          item_price_w_vat: "",
+          item_price_wo_vat: "",
+          retail_price: "",
+          catalyst: 0,
+          created_at: "",
+        });
+      }
+    } catch (error) {
+      // Handle the error
+      console.error(error);
+      Swal.fire({
+        title: "Error",
+        text: error,
+        icon: "error",
+      });
+    }
   };
 
   return (

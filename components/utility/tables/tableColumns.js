@@ -252,3 +252,75 @@ export const InventoryColumnsVisibility = {
   total_quantity: false,
   holding_cost: false,
 };
+
+// SupplierOrder
+export const SupplierOrderColumns = [
+  {
+    accessorKey: "purchase_header_id", // Primary key
+    header: "ID",
+    size: 50,
+  },
+  {
+    accessorKey: "supplier_name", //normal accessorKey
+    header: "Supplier",
+    size: 200,
+  },
+  {
+    accessorKey: "total_amount", //normal accessorKey
+    header: "Total Amount",
+    size: 200,
+  },
+  {
+    accessorKey: "date_created", //normal accessorKey
+    header: "Order Date",
+    size: 200,
+  },
+  {
+    accessorKey: "status", //normal accessorKey
+    header: "Status",
+    size: 200,
+  },
+];
+export const SupplierOrderColumnsVisibility = {
+  purchase_header_id: true,
+  supplier_name: false,
+  total_amount: false,
+  date_created: false,
+  status: false,
+};
+
+// BranchOrder
+export const BranchOrderColumns = [
+  {
+    accessorKey: "purchase_header_id", // Primary key
+    header: "ID",
+    size: 50,
+  },
+  {
+    accessorKey: "branch_name", //normal accessorKey
+    header: "From Branch",
+    size: 200,
+  },
+  {
+    accessorKey: "total_amount", //normal accessorKey
+    header: "Total Amount",
+    size: 200,
+  },
+  {
+    accessorKey: "date_created", //normal accessorKey
+    header: "Order Date",
+    size: 200,
+  },
+  {
+    accessorKey: "status", //normal accessorKey
+    header: "Status",
+    size: 200,
+  },
+];
+export const BranchOrderColumnsVisibility = {
+  purchase_header_id: true,
+  branch_name: false,
+  total_amount: false,
+  date_created: false,
+  status: false,
+};

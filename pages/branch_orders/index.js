@@ -25,10 +25,9 @@ import withAuth from "@/components/utility/with_auth";
 
 import { get_fetcher } from "@/components/utility/api/fetcher";
 
+const url = "/items";
 
-const url = "/items"
-
- function Items({ rows }) {
+function BranchOrders({ rows }) {
   // const [data, setData] = React.useState(rows);
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
@@ -117,4 +116,4 @@ export async function getServerSideProps({ req, res }) {
   }
 }
 
-export default withAuth(Items)
+export default withAuth(BranchOrders);

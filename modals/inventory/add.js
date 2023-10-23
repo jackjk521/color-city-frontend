@@ -93,18 +93,39 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
       "INVENTORY",
       inventoryData.item_name
     );
-    // Add logic
-    post_data("inventory", url, inventoryData, closeModal, mutate, log_data);
-    // Reset form fields
-    setItemData({
-      item: "",
-      item_name: "",
-      item_price_w_vat: "",
-      branch: "",
-      branch_name: "",
-      total_quantity: "",
-      holding_cost: "",
-    });
+
+    try {
+      // Add logic
+      const result = await post_data(
+        "inventory",
+        url,
+        inventoryData,
+        closeModal,
+        mutate,
+        log_data
+      );
+      // Reset form fields only after the API request is successfully completed
+      if (result) {
+        // Reset form fields
+        setItemData({
+          item: "",
+          item_name: "",
+          item_price_w_vat: "",
+          branch: "",
+          branch_name: "",
+          total_quantity: "",
+          holding_cost: "",
+        });
+      }
+    } catch (error) {
+      // Handle the error
+      console.error(error);
+      Swal.fire({
+        title: "Error",
+        text: error,
+        icon: "error",
+      });
+    }
   };
 
   return (

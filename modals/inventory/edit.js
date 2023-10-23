@@ -39,7 +39,7 @@ export default function EditModal({
     setData((prevOrder) => ({ ...prevOrder, [name]: value }));
   };
 
-  const {user } = useContext(UserContext)
+  const { user } = useContext(UserContext);
 
   const [items, setItems] = useState([]);
   const [totalQuantity, setTotalQuantity] = useState(0);
@@ -103,19 +103,40 @@ export default function EditModal({
       inventory_id,
       data.item_name
     );
-    // Edit Logic
-    put_data("inventory", url, data, closeModal, mutate, log_data);
 
-    // Reset form fields
-    setData({
-      item: "",
-      item_name: "",
-      item_price_w_vat: "",
-      branch: "",
-      branch_name: "",
-      total_quantity: "",
-      holding_cost: 0,
-    });
+    try {
+      // Edit Logic
+      const result = await put_data(
+        "inventory",
+        url,
+        data,
+        closeModal,
+        mutate,
+        log_data
+      );
+
+      // Reset form fields only after the API request is successfully completed
+      if (result) {
+        // Reset form fields
+        setData({
+          item: "",
+          item_name: "",
+          item_price_w_vat: "",
+          branch: "",
+          branch_name: "",
+          total_quantity: "",
+          holding_cost: 0,
+        });
+      }
+    } catch (error) {
+      // Handle the error
+      console.error(error);
+      Swal.fire({
+        title: "Error",
+        text: error,
+        icon: "error",
+      });
+    }
   };
 
   return (
@@ -139,7 +160,7 @@ export default function EditModal({
         <Container maxWidth="lg">
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2} mt={1}>
-            <Grid item xs={12} md={6}>
+              <Grid item xs={12} md={6}>
                 <FormControl fullWidth>
                   <InputLabel id="items-label">Items</InputLabel>
                   <Select

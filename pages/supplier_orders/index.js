@@ -28,7 +28,7 @@ import { get_fetcher } from "@/components/utility/api/fetcher";
 
 const url = "/items"
 
- function Items({ rows }) {
+ function SupplierOrders({ rows }) {
   // const [data, setData] = React.useState(rows);
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
@@ -117,4 +117,4 @@ export async function getServerSideProps({ req, res }) {
   }
 }
 
-export default withAuth(Items)
+export default withAuth(SupplierOrders)

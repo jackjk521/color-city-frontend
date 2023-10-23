@@ -21,7 +21,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import OutputIcon from "@mui/icons-material/Output";
 
 // Components
-import { mainListItems, secondaryListItems } from "./utility/navbarItems";
+import { MainListItems, SecondaryListItems } from "./utility/navbarItems";
 import Header from "./header";
 import Footer from "./footer";
 import { UserContext } from "../contexts/userContext";
@@ -85,12 +85,14 @@ export default function Layout({ children }) {
     setOpen(!open);
   };
 
-  // Navigation Bar Title 
+  // Navigation Bar Title
   const getPageTitle = () => {
     const path = router.pathname;
     switch (path) {
-      case "/purchases":
-        return "Purchases";
+      case "/supplier_orders":
+        return "Supplier Orders";
+      case "/branch_orders":
+        return "Branch Orders";
       case "/inventory":
         return "Inventory";
       case "/items":
@@ -172,11 +174,11 @@ export default function Layout({ children }) {
             </Toolbar>
             <Divider />
             <List component="nav">
-              {mainListItems()}
+              {MainListItems()}
               {user.userCredentials.user_role === "Administrator" && (
                 <>
                   <Divider sx={{ my: 1 }} />
-                  {secondaryListItems()}
+                  {SecondaryListItems()}
                 </>
               )}
             </List>

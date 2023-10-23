@@ -30,10 +30,10 @@ function a11yProps(index) {
 }
 
 const allUrl = "/inventory";
-const warehouseUrl = `/inventory/?branch=1`;
-const branch1Url = `/inventory/?branch=2`;
-const branch2Url = `/inventory/?branch=3`;
-const branch3Url = `/inventory/?branch=4`;
+const warehouseUrl = "/inventory/?branch=1";
+const branch1Url = "/inventory/?branch=2";
+const branch2Url = "/inventory/?branch=3";
+const branch3Url = "/inventory/?branch=4";
 
 function Inventory({
   allInventory,

@@ -15,6 +15,7 @@ import StoreIcon from "@mui/icons-material/Store";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import TransferWithinAStationIcon from "@mui/icons-material/TransferWithinAStation";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import MoveUpIcon from '@mui/icons-material/MoveUp';
 import { styled } from "@mui/system";
 
 const HoverListItemButton = styled(ListItemButton)(({ theme }) => ({
@@ -23,37 +24,63 @@ const HoverListItemButton = styled(ListItemButton)(({ theme }) => ({
   },
 }));
 
-export const mainListItems = () => (
-  <React.Fragment>
-    <HoverListItemButton component={Link} href="/">
-      <ListItemIcon>
-        <DashboardIcon />
-      </ListItemIcon>
-      <ListItemText primary="Dashboard" />
-    </HoverListItemButton>
+export function MainListItems() {
+  const [isItemsOpen, setItemsOpen] = React.useState(false);
 
-    <HoverListItemButton component={Link} href="/purchases">
-      <ListItemIcon>
-        <ShoppingCartIcon />
-      </ListItemIcon>
-      <ListItemText primary="Purchases" />
-    </HoverListItemButton>
+  const handleItemsClick = () => {
+    setItemsOpen(!isItemsOpen);
+  };
 
-    <HoverListItemButton component={Link} href="/inventory">
-      <ListItemIcon>
-        <InventoryIcon />
-      </ListItemIcon>
-      <ListItemText primary="Inventory" />
-    </HoverListItemButton>
+  return (
+    <React.Fragment>
+      <HoverListItemButton component={Link} href="/">
+        <ListItemIcon>
+          <DashboardIcon />
+        </ListItemIcon>
+        <ListItemText primary="Dashboard" />
+      </HoverListItemButton>
 
-    {/* <HoverListItemButton component={Link} href="/suppliers">
+      <HoverListItemButton onClick={handleItemsClick}>
+        <ListItemIcon>
+          <ShoppingCartIcon />
+        </ListItemIcon>
+        <ListItemText primary="Purchases" />
+        {isItemsOpen ? <ExpandLess /> : <ExpandMore />}
+      </HoverListItemButton>
+
+      {/* Purchases Side Menu  */}
+      <Collapse in={isItemsOpen} timeout="auto" unmountOnExit>
+        <List component="div">
+          <HoverListItemButton component={Link} href="/supplier_orders">
+            <ListItemIcon>
+              <MoveUpIcon />
+            </ListItemIcon>
+            <ListItemText primary="Supplier Orders" />
+          </HoverListItemButton>
+          <HoverListItemButton component={Link} href="/branch_orders">
+            <ListItemIcon>
+              <TransferWithinAStationIcon />
+            </ListItemIcon>
+            <ListItemText primary="Branch Orders" />
+          </HoverListItemButton>
+        </List>
+      </Collapse>
+
+      <HoverListItemButton component={Link} href="/inventory">
+        <ListItemIcon>
+          <InventoryIcon />
+        </ListItemIcon>
+        <ListItemText primary="Inventory" />
+      </HoverListItemButton>
+
+      {/* <HoverListItemButton component={Link} href="/suppliers">
       <ListItemIcon>
         <TransferWithinAStationIcon />
       </ListItemIcon>
       <ListItemText primary="Suppliers" />
     </HoverListItemButton> */}
 
-    {/* <ListItemButton onClick={() => setSelectedItem("reports")}>
+      {/* <ListItemButton onClick={() => setSelectedItem("reports")}>
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>
@@ -66,10 +93,11 @@ export const mainListItems = () => (
       </ListItemIcon>
       <ListItemText primary="Integrations" />
     </ListItemButton> */}
-  </React.Fragment>
-);
+    </React.Fragment>
+  );
+}
 
-export function secondaryListItems() {
+export function SecondaryListItems() {
   const [isItemsOpen, setItemsOpen] = React.useState(false);
 
   const handleItemsClick = () => {
@@ -90,6 +118,7 @@ export function secondaryListItems() {
         {isItemsOpen ? <ExpandLess /> : <ExpandMore />}
       </HoverListItemButton>
 
+      {/* Products Side Menu*/}
       <Collapse in={isItemsOpen} timeout="auto" unmountOnExit>
         <List component="div">
           <HoverListItemButton component={Link} href="/items">
@@ -106,6 +135,7 @@ export function secondaryListItems() {
           </HoverListItemButton>
         </List>
       </Collapse>
+
       <HoverListItemButton component={Link} href="/branches">
         <ListItemIcon>
           <StoreIcon />
