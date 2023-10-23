@@ -14,8 +14,8 @@ import CustomTabPanel from "../../components/utility/customTabPanel";
 // Table
 import BasicReactTable from "@/components/utility/tables/basicReactTable";
 import {
-  ItemColumns,
-  ItemColumnVisibility,
+  BranchOrdersColumns,
+  BranchOrdersColumnVisibility,
 } from "../../components/utility/tables/tableColumns";
 
 // Helper Functions
@@ -85,8 +85,8 @@ function BranchOrders({ rows }) {
         <CustomTabPanel value={value} index={0}>
           <CardGrid>
             <BasicReactTable
-              data_columns={ItemColumns}
-              column_visibility={ItemColumnVisibility}
+              data_columns={BranchOrdersColumns}
+              column_visibility={BranchOrdersColumnVisibility}
               fetched_data={fetchedData}
               action_formatter={ActionFormatter}
               mutate={mutate}

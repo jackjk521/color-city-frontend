@@ -14,21 +14,20 @@ import CustomTabPanel from "../../components/utility/customTabPanel";
 // Table
 import BasicReactTable from "@/components/utility/tables/basicReactTable";
 import {
-  ItemColumns,
-  ItemColumnVisibility,
+  SupplierOrderColumns,
+  SupplierColumnsVisibility,
 } from "../../components/utility/tables/tableColumns";
 
 // Helper Functions
-import ItemModalManager from "../../modals/items/itemModalManager";
-import ActionFormatter from "@/components/items/actionFormatter";
+import SupplierOrdersModalManager from "../../modals/supplier_orders/supplierOrdersModalManager";
+import ActionFormatter from "@/components/supplier_orders/actionFormatter";
 import withAuth from "@/components/utility/with_auth";
 
 import { get_fetcher } from "@/components/utility/api/fetcher";
 
+const url = "/purchase_headers/?type=SUPPLIER";
 
-const url = "/items"
-
- function SupplierOrders({ rows }) {
+function SupplierOrders({ rows }) {
   // const [data, setData] = React.useState(rows);
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
@@ -47,22 +46,11 @@ const url = "/items"
     fallbackData: rows,
   });
 
-  // React.useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     fetcher();
-  //   }, 5000); // Set the interval to 1 minute
-
-  //   return () => {
-  //     clearInterval(interval); // Cleanup the interval on component unmount
-  //   };
-  // }, []);
-
-  // console.log(data)
   return (
     <>
       <ItemsContent>
         {/* Modal Config */}
-        <ItemModalManager
+        <SupplierOrdersModalManager
           activeModal={activeModal}
           setActiveModal={setActiveModal}
           mutate={mutate}
@@ -76,7 +64,7 @@ const url = "/items"
               color="success"
               onClick={() => openModal("add")}>
               {" "}
-              Add Item{" "}
+              Create Order{" "}
             </Button>
           </Grid>
         </Grid>
@@ -84,15 +72,13 @@ const url = "/items"
 
         {/* Different Panel Views  */}
         <CustomTabPanel value={value} index={0}>
-          <CardGrid>
             <BasicReactTable
-              data_columns={ItemColumns}
-              column_visibility={ItemColumnVisibility}
+              data_columns={SupplierOrderColumns}
+              column_visibility={SupplierColumnsVisibility}
               fetched_data={fetchedData}
               action_formatter={ActionFormatter}
               mutate={mutate}
             />
-          </CardGrid>
         </CustomTabPanel>
       </ItemsContent>
     </>
@@ -117,4 +103,4 @@ export async function getServerSideProps({ req, res }) {
   }
 }
 
-export default withAuth(SupplierOrders)
+export default withAuth(SupplierOrders);
