@@ -67,6 +67,43 @@ export const post_data = async (
   }
 };
 
+// export const post_order_data = async (
+//   name,
+//   url,
+//   data,
+//   closeModal,
+//   mutate,
+//   log_data = null,
+//   transaction_type,
+//   branch_id
+// ) => {
+//   try {
+//     const response = await apiClient.post(url, data);
+//     if (response.status === 201) {
+//       if (log_data != null) {
+//         log_add_data(name, closeModal, mutate, log_data);
+//       } else {
+//         closeModal();
+//         Swal.fire({
+//           title: "Success",
+//           text: "Branch with id: " + branch_id + "successfully created a " + transaction_type + "  order.",
+//           icon: "success",
+//         });
+//         mutate();
+//       }
+//     }
+//   } catch (error) {
+//     // Handle the error
+//     console.error(error);
+//     Swal.fire({
+//       title: "Error",
+//       text: error,
+//       icon: "error",
+//     });
+//     throw error;
+//   }
+// };
+
 export const put_data = async (
   name,
   url,

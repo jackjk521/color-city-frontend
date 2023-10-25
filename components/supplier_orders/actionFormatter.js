@@ -33,15 +33,23 @@ const ActionFormatter = ({ rowData, mutate }) => {
     setAnchorEl(null);
   };
 
-  const [inventoryData, setInventoryData] = React.useState({
-    inventory_id: "",
-    item: "",
-    item_name: "",
-    item_price_w_vat: "",
-    branch: "",
-    branch_name: "",
-    total_quantity: "",
-    holding_cost: 0,
+  const [purchaseData, setPurchaseData] = React.useState({
+    purchaseHeader: {
+      branch: "",
+      user: "",
+      transaction_type: "",
+      supplier: "",
+      total_amount: 0,
+      payment_mode: "",
+      status: ""
+    },
+    purchaseLines: [
+      // {
+      //   item: "",
+      //   req_quantity: 0,
+      //   subtotal: 0,
+      // },
+    ],
   });
 
   const isMobile = useMediaQuery("(max-width: 600px)");
@@ -51,15 +59,23 @@ const ActionFormatter = ({ rowData, mutate }) => {
   const openView = () => {
     console.log(rowData);
     // open view logic
-    setInventoryData({
-      inventory_id: rowData.inventory_id,
-      item: rowData.item,
-      item_name: rowData.item_name,
-      item_price_w_vat: rowData.item_price_w_vat,
-      branch: rowData.branch,
-      branch_name: rowData.branch_name,
-      total_quantity: rowData.total_quantity,
-      holding_cost: rowData.holding_cost,
+    setPurchaseData({
+      purchaseHeader: {
+        branch: rowData.branch,
+        user: rowData.user,
+        transaction_type: rowData.transaction_type,
+        supplier: rowData.supplier,
+        total_amount:rowData.total_amount,
+        payment_mode: rowData.payment_mode,
+        status: rowData.status
+      },
+      purchaseLines: [
+        // {
+        //   item: rowData,
+        //   req_quantity: 0,
+        //   subtotal: 0,
+        // },
+      ],
     });
 
     openModal("view");
@@ -68,7 +84,7 @@ const ActionFormatter = ({ rowData, mutate }) => {
   const openEdit = () => {
     // open edit logic
     // console.log(rowData);
-    setInventoryData({
+    setPurchaseData({
       inventory_id: rowData.inventory_id,
       item: rowData.item,
       item_name: rowData.item_name,
@@ -92,8 +108,8 @@ const ActionFormatter = ({ rowData, mutate }) => {
       <InventoryModalManager
         activeModal={activeModal}
         setActiveModal={setActiveModal}
-        data={inventoryData}
-        setData={setInventoryData}
+        data={purchaseData}
+        setData={setPurchaseData}
         rowData={rowData}
         mutate={mutate}
       />

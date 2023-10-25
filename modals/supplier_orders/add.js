@@ -16,73 +16,85 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import apiClient from "@/components/utility/api/apiClient";
 import Swal from "sweetalert2";
-import { BranchesDropdown, get_items } from "@/components/utility/get_data";
 import { post_data } from "@/components/utility/api/fetcher";
 import { createAddLogData } from "@/components/utility/logger";
 import { UserContext } from "@/contexts/userContext";
+import {
+  ItemsDropdown,
+  SuppliersDropdown,
+} from "@/components/utility/get_data";
+import BasicReactTable from "@/components/utility/tables/basicReactTable";
+import {
+  PurchaseLineColumns,
+  PurchaseLineColumnsVisibility,
+} from "@/components/utility/tables/tableColumns";
 
-const url = "/supplier_orders/";
+import ActionFormatter from "@/components/supplier_orders/actionFormatter";
+
+const url = "/purchases/";
 
 export default function AddModal({ headerColor, closeModal, mutate }) {
-  const [inventoryData, setItemData] = useState({
-    item: "",
-    item_name: "",
-    item_price_w_vat: "",
-    branch: "",
-    branch_name: "",
-    total_quantity: "",
-    holding_cost: 0,
-  });
   const { user } = useContext(UserContext);
-  const [items, setItems] = useState([]);
-  const [totalQuantity, setTotalQuantity] = useState(0);
-  const [calculatedPrice, setCalculatedPrice] = useState(0);
+  const [purchaseData, setPurchaseData] = useState({
+    purchaseHeader: {
+      branch: user.userCredentials.branch,
+      user: user.userCredentials.user_id,
+      transaction_type: "SUPPLIER",
+      supplier: "",
+      total_amount: 0,
+      payment_mode: "",
+      status: "APPROVED",
+    },
+    purchaseLines: [
+      // {
+      //   item: "",
+      //   req_quantity: 0,
+      //   subtotal: 0,
+      // },
+    ],
+  });
 
-  useEffect(() => {
-    get_items()
-      .then((items) => {
-        setItems(items);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
+  const [addItemData, setAddItemData] = useState({
+    item: "",
+    req_quantity: 0,
+    subtotal: 0,
+  });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target; // gets the item id from the items dropdownn
-    setItemData((prevOrder) => ({ ...prevOrder, [name]: value }));
+  const addPurchaseLine = () => {
+    setPurchaseData((prevState) => ({
+      ...prevState,
+      purchaseLines: [
+        ...prevState.purchaseLines,
+        {
+          ...addItemData,
+        },
+      ],
+    }));
+
+    // Reset after every add of the purchase line
+    setAddItemData({
+      item: "",
+      req_quantity: 0,
+      subtotal: 0,
+    });
   };
 
-  const handleDropdownChange = (e) => {
+  const handlePHChange = (e) => {
     const { name, value } = e.target; // gets the item id from the items dropdownn
-
-    const item = items.find((item) => item.item_id === value);
-    setItemData((prevOrder) => ({
-      ...prevOrder,
-      item_price_w_vat: item.item_price_w_vat,
-      [name]: value,
+    // setPurchaseData((prevOrder) => ({ ...prevOrder, [name]: value }));
+    setPurchaseData((prevState) => ({
+      ...prevState,
+      purchaseHeader: {
+        ...prevState.purchaseHeader,
+        [name]: value,
+      },
     }));
   };
 
-  const handleQuantityChange = (e) => {
-    const { name, value } = e.target;
-    setTotalQuantity(value);
-    calculatePrice(inventoryData.item, value);
-    setItemData((prevOrder) => ({ ...prevOrder, [name]: value }));
-  };
-
-  const calculatePrice = (selectedItem, quantity) => {
-    const item = items.find((item) => item.item_id === selectedItem);
-    if (item) {
-      const price = item.item_price_w_vat * quantity;
-      setCalculatedPrice(parseFloat(price.toFixed(2)));
-      setItemData((prevOrder) => ({
-        ...prevOrder,
-        holding_cost: calculatedPrice,
-      }));
-    }
+  const handleChange = (e) => {
+    const { name, value } = e.target; // gets the item id from the items dropdownn
+    setAddItemData((prevOrder) => ({ ...prevOrder, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -91,16 +103,21 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
       user.userCredentials.branch,
       user.userCredentials.user_id,
       user.userCredentials.username,
-      "INVENTORY",
-      inventoryData.item_name
+      "SUPP_ORDER",
+      purchaseData.branch // to be changed or to create another logger
     );
+
+    const requestData = {
+      purchaseHeader: purchaseData.purchaseHeader,
+      purchaseLines: JSON.stringify(purchaseData.purchaseLines),
+    };
 
     try {
       // Add logic
       const result = await post_data(
-        "inventory",
+        "supplier_orders",
         url,
-        inventoryData,
+        requestData,
         closeModal,
         mutate,
         log_data
@@ -108,15 +125,19 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
       // Reset form fields only after the API request is successfully completed
       if (result) {
         // Reset form fields
-        setItemData({
-          item: "",
-          item_name: "",
-          item_price_w_vat: "",
-          branch: "",
-          branch_name: "",
-          total_quantity: "",
-          holding_cost: "",
-        });
+        setPurchaseData((prevState) => ({
+          ...prevState,
+          purchaseHeader: {
+            ...prevState.purchaseHeader,
+            branch: "",
+            user: "",
+            transaction_type: "SUPPLIER",
+            supplier: "",
+            total_amount: 0,
+            payment_mode: "",
+            status: "APPROVED",
+          },
+        }));
       }
     } catch (error) {
       // Handle the error
@@ -133,7 +154,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
     <React.Fragment>
       <DialogTitle style={{ backgroundColor: headerColor }}>
         <Typography color="white" variant="h5" align="left">
-          Add Item to Inventory Entry
+          Add a Supplier Order
         </Typography>
       </DialogTitle>
       <IconButton
@@ -151,78 +172,127 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
         <Container maxWidth="lg">
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2} mt={1}>
-              <Grid item xs={12} md={6}>
+              {/* Purchase Header  */}
+              <Grid item xs={12}>
+                <Typography variant="h5" align="center">
+                  Purchase Header Entry
+                </Typography>
+              </Grid>
+
+              <Grid item xs={12} md={4}>
+                {/* Supplier Dropdown  */}
+                <SuppliersDropdown
+                  selectedSupplier={purchaseData.purchaseHeader.supplier}
+                  handleChange={handlePHChange}
+                />
+              </Grid>
+              <Grid item xs={12} md={4}>
+                {/* Payment Mode  */}
                 <FormControl fullWidth>
-                  <InputLabel id="items-label">Items</InputLabel>
+                  <InputLabel id="demo-simple-select-label">
+                    Payment Mode
+                  </InputLabel>
                   <Select
                     fullWidth
-                    labelId="items-label"
-                    label="items"
-                    id="items-select"
-                    name="item"
-                    value={inventoryData.item || ""}
-                    onChange={handleDropdownChange}>
-                    {items.length > 0 ? (
-                      items.map((item) => (
-                        <MenuItem key={item.item_id} value={item.item_id}>
-                          {item.brand_name} - {item.item_name}
-                        </MenuItem>
-                      ))
-                    ) : (
-                      <MenuItem key={0} value={0}>
-                        NO ITEMS
-                      </MenuItem>
-                    )}
+                    label="Payment Mode"
+                    name="payment_mode"
+                    id="demo-simple-select"
+                    onChange={handlePHChange}>
+                    <MenuItem value={"CASH"}>Cash</MenuItem>
+                    <MenuItem value={"CHECK"}>Check</MenuItem>
                   </Select>
                 </FormControl>
               </Grid>
-              <Grid item xs={12} md={6}>
-                <BranchesDropdown
-                  selectedBranch={inventoryData.branch}
-                  handleChange={handleChange}
-                />
-              </Grid>
-
               <Grid item xs={12} md={4}>
+                {/* Total Amount  */}
                 <TextField
                   required
                   fullWidth
-                  name="total_quantity"
-                  label="Total Quantity"
-                  onChange={handleQuantityChange}
-                />
-              </Grid>
-
-              <Grid item xs={12} md={4}>
-                <TextField
-                  required
-                  fullWidth
-                  name="item_price_w_vat"
-                  label="Item Price W/ Vat"
-                  value={inventoryData.item_price_w_vat}
-                  InputProps={{
-                    readOnly: true,
-                  }}
-                />
-              </Grid>
-
-              <Grid item xs={12} md={4}>
-                <TextField
-                  required
-                  fullWidth
-                  name="holding_cost"
-                  label="Holding Cost"
-                  value={parseFloat(inventoryData.holding_cost).toFixed(2)} // bug here
-                  onChange={handleChange}
-                  InputProps={{
-                    readOnly: true,
-                  }}
+                  name="total_amount"
+                  label="Total Amount"
+                  onChange={handlePHChange}
+                  // InputProps={{
+                  //   readOnly: true,
+                  // }}
                 />
               </Grid>
 
               <Grid item xs={12}>
+                <Typography variant="h5" align="center">
+                  Purchase Items
+                </Typography>
+              </Grid>
+              {/* Adding Item for the Purchase Line  */}
+              <Grid item xs={12} md={5}>
+                {/* Item Dropdown  */}
+                <ItemsDropdown
+                  selectedItem={addItemData.item}
+                  handleChange={handleChange}
+                />
+              </Grid>
+
+              <Grid item xs={12} md={2}>
+                {/* Requested Quantity  */}
+                <TextField
+                  required
+                  fullWidth
+                  name="req_quantity"
+                  label="Requested Quantity"
+                  value={addItemData.req_quantity}
+                  onChange={handleChange}
+                />
+              </Grid>
+
+              <Grid item xs={12} md={3}>
+                {/* Subtotal  */}
+                <TextField
+                  required
+                  fullWidth
+                  name="subtotal"
+                  label="Subtotal"
+                  value={addItemData.subtotal}
+                  onChange={handleChange}
+                  // InputProps={{
+                  //   readOnly: true,
+                  // }}
+                />
+              </Grid>
+              <Grid item xs={12} md={2}>
+                <Button
+                  onClick={addPurchaseLine}
+                  variant="contained"
+                  color="primary">
+                  Add to Order
+                </Button>
+              </Grid>
+              {/* Adding Item for the Purchase Line END */}
+
+              {/* Table of Purchase Lines here  */}
+              <Grid item xs={12}>
+                {/* Display the purchase lines from purchase data here in JSON format  */}
+                <Typography variant="h6">Purchase Lines:</Typography>
+                {purchaseData.purchaseLines.map((line, index) => (
+                  <div key={index}>
+                    <Typography>Item: {line.item}</Typography>
+                    <Typography>
+                      Requested Quantity: {line.req_quantity}
+                    </Typography>
+                    <Typography>Subtotal: {line.subtotal}</Typography>
+                    <hr />
+                  </div>
+                ))}
+
+                <BasicReactTable
+                  data_columns={PurchaseLineColumns}
+                  column_visibility={PurchaseLineColumnsVisibility}
+                  fetched_data={purchaseData.purchaseLines}
+                  action_formatter={ActionFormatter}
+                />
+
+              </Grid>
+              <Grid item xs={12}>
                 <Button type="submit" variant="contained" color="primary">
-                  Submit
+                  Submit Supplier Order
                 </Button>
               </Grid>
             </Grid>

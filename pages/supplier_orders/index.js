@@ -4,8 +4,6 @@ import useSWR from "swr";
 // Material UI
 import { Button, Grid, Divider } from "@mui/material";
 
-import Swal from "sweetalert2";
-
 // Components
 import ItemsContent from "../../components/items/itemsContent";
 import CardGrid from "../../components/utility/grids/CardGrid";
@@ -25,7 +23,7 @@ import withAuth from "@/components/utility/with_auth";
 
 import { get_fetcher } from "@/components/utility/api/fetcher";
 
-const url = "/purchase_headers/?type=SUPPLIER";
+const url = "/purchases/?type=SUPPLIER";
 
 function SupplierOrders({ rows }) {
   // const [data, setData] = React.useState(rows);

@@ -25,7 +25,7 @@ import { UserContext } from "@/contexts/userContext";
 
 const url = "/inventory/";
 export default function AddModal({ headerColor, closeModal, mutate }) {
-  const [inventoryData, setItemData] = useState({
+  const [inventoryData, setInventoryData] = useState({
     item: "",
     item_name: "",
     item_price_w_vat: "",
@@ -51,14 +51,14 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target; // gets the item id from the items dropdownn
-    setItemData((prevOrder) => ({ ...prevOrder, [name]: value }));
+    setInventoryData((prevOrder) => ({ ...prevOrder, [name]: value }));
   };
 
   const handleDropdownChange = (e) => {
     const { name, value } = e.target; // gets the item id from the items dropdownn
 
     const item = items.find((item) => item.item_id === value);
-    setItemData((prevOrder) => ({
+    setInventoryData((prevOrder) => ({
       ...prevOrder,
       item_price_w_vat: item.item_price_w_vat,
       [name]: value,
@@ -69,7 +69,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
     const { name, value } = e.target;
     setTotalQuantity(value);
     calculatePrice(inventoryData.item, value);
-    setItemData((prevOrder) => ({ ...prevOrder, [name]: value }));
+    setInventoryData((prevOrder) => ({ ...prevOrder, [name]: value }));
   };
 
   const calculatePrice = (selectedItem, quantity) => {
@@ -77,7 +77,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
     if (item) {
       const price = item.item_price_w_vat * quantity;
       setCalculatedPrice(parseFloat(price.toFixed(2)));
-      setItemData((prevOrder) => ({
+      setInventoryData((prevOrder) => ({
         ...prevOrder,
         holding_cost: calculatedPrice,
       }));
@@ -107,7 +107,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
       // Reset form fields only after the API request is successfully completed
       if (result) {
         // Reset form fields
-        setItemData({
+        setInventoryData({
           item: "",
           item_name: "",
           item_price_w_vat: "",

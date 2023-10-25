@@ -5,6 +5,7 @@ import {
   FormControl,
   InputLabel,
   TextField,
+  Typography
 } from "@mui/material";
 import apiClient from "./api/apiClient";
 import Swal from "sweetalert2";
@@ -130,6 +131,26 @@ export const get_items_by_catalyst = async () => {
     const response = await apiClient.get(`/items/?category=4`);
     if (response.status === 200) {
       return response.data;
+    }
+  } catch (error) {
+    // Handle the error
+    console.error(error);
+    Swal.fire({
+      title: "Error",
+      text: error,
+      icon: "error",
+    });
+    throw error;
+  }
+};
+
+// Get Item by item-id
+export const get_items_by_id = async (id) => {
+  try {
+    const response = await apiClient.get(`/item/${id}/?item_name=1`);
+    if (response.status === 200) {
+      const brand_item_format = response.data
+      return brand_item_format;
     }
   } catch (error) {
     // Handle the error
@@ -391,5 +412,25 @@ export function ItemsDropdown({ selectedItem, handleChange }) {
         )}
       </Select>
     </FormControl>
+  );
+}
+
+// Generate the Item Name
+export function BrandItemName({id}) {
+  const [brandItem, setBrandItem] = useState("");
+  useEffect(() => {
+    get_items_by_id(id)
+      .then((item_num) => {
+        setBrandItem(item_num);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  return (
+    <Typography>
+      {brandItem}
+    </Typography>
   );
 }

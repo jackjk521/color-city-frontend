@@ -10,7 +10,7 @@ const BasicReactTable = ({
   column_visibility,
   fetched_data,
   action_formatter,
-  mutate = null,
+  mutate,
 }) => {
   //should be memoized or stable
   const columns = useMemo(() => data_columns, []);

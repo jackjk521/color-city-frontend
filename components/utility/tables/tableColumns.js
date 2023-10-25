@@ -1,45 +1,5 @@
-// Purchases
-export const PurchasesColumns = [
-  {
-    key: "id",
-    label: "Id",
-    fixed: true,
-    width: 70,
-    align: "center",
-    responsive: true,
-  },
-  {
-    key: "title",
-    label: "Title",
-    // fixed: true,
-    width: 130,
-    align: "left",
-    flexGrow: 1,
-    responsive: true,
-  },
-  {
-    key: "price",
-    label: "Price",
-    width: 200,
-    align: "right",
-    flexGrow: 1,
-    responsive: true,
-  },
-  {
-    key: "rating",
-    label: "Ratings",
-    align: "right",
-    flexGrow: 1,
-    responsive: true,
-  },
-  {
-    key: "actions",
-    label: "Actions",
-    align: "center",
-    flexGrow: 1,
-    responsive: true,
-  },
-];
+import React from "react";
+import { BrandItemName } from "../get_data";
 
 // Items
 export const ItemColumns = [
@@ -271,22 +231,28 @@ export const SupplierOrderColumns = [
     size: 200,
   },
   {
-    accessorKey: "date_created", //normal accessorKey
+    accessorKey: "date_created",
     header: "Order Date",
     size: 200,
+    render: (rowData) => {
+      const date = new Date(rowData.date_created);
+      const formattedDate = date.toLocaleString("en-US");
+      return formattedDate;
+    },
   },
   {
-    accessorKey: "status", //normal accessorKey
-    header: "Status",
+    accessorKey: "received_status", //normal accessorKey
+    header: "Received Status",
     size: 200,
   },
 ];
+
 export const SupplierOrderColumnsVisibility = {
   purchase_header_id: true,
   supplier_name: false,
   total_amount: false,
   date_created: false,
-  status: false,
+  received_status: false,
 };
 
 // BranchOrder
@@ -310,9 +276,21 @@ export const BranchOrderColumns = [
     accessorKey: "date_created", //normal accessorKey
     header: "Order Date",
     size: 200,
+    render: (value) => {
+      const date = new Date(value);
+      const formattedDate = date.toLocaleString("en-US", {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+        second: "numeric",
+      });
+      return formattedDate;
+    },
   },
   {
-    accessorKey: "status", //normal accessorKey
+    accessorKey: "received_status", //normal accessorKey
     header: "Status",
     size: 200,
   },
@@ -322,5 +300,38 @@ export const BranchOrderColumnsVisibility = {
   branch_name: false,
   total_amount: false,
   date_created: false,
-  status: false,
+  received_status: false,
+};
+
+// Purchase Lines
+export const PurchaseLineColumns = [
+  {
+    accessorKey: "item", // Primary key
+    header: "Item ID",
+    size: 50,
+  },
+  {
+    accessorKey: "item",
+    header: "Item Name",
+    size: 50,
+    Cell: function ({ cell }) {
+      return <BrandItemName id={cell.getValue()}/>;
+    },  
+  },
+
+  {
+    accessorKey: "req_quantity", //normal accessorKey
+    header: "Requested Quantity",
+    size: 200,
+  },
+  {
+    accessorKey: "subtotal", //normal accessorKey
+    header: "Subtotal",
+    size: 200,
+  },
+];
+export const PurchaseLineColumnsVisibility = {
+  item: true,
+  req_quantity: false,
+  subtotal: false,
 };
