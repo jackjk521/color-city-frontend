@@ -30,21 +30,22 @@ const BasicReactTable = ({
   return (
     <>
       {isMobile || isTablet ? (
-        <>
-          <MaterialReactTable
-            columns={columns}
-            data={data}
-            initialState={{
-              columnVisibility: column_visibility,
-            }}
-            enableRowActions
-            positionActionsColumn="last"
-            renderRowActions={({ row }) =>
-              action_formatter({ rowData: row.original, mutate: mutate })
-            }
-            // state={{ isLoading: true }}
-          />
-        </>
+        <MaterialReactTable
+          columns={columns}
+          data={data}
+          initialState={{
+            columnVisibility: column_visibility,
+          }}
+          enableRowActions
+          positionActionsColumn="last"
+          renderRowActions={({ row }) =>
+            action_formatter({
+              rowData: row.original,
+              mutate: mutate,
+            })
+          }
+          // state={{ isLoading: true }}
+        />
       ) : (
         <MaterialReactTable
           columns={columns}
@@ -52,7 +53,10 @@ const BasicReactTable = ({
           enableRowActions
           positionActionsColumn="last"
           renderRowActions={({ row }) =>
-            action_formatter({ rowData: row.original, mutate: mutate })
+            action_formatter({
+              rowData: row.original,
+              mutate: mutate,
+            })
           }
           // state={{ isLoading: true }}
         />

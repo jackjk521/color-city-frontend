@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useMemo } from "react";
 import {
   TextField,
   InputAdornment,
@@ -23,14 +23,16 @@ import { UserContext } from "@/contexts/userContext";
 import {
   ItemsDropdown,
   SuppliersDropdown,
+  get_items,
 } from "@/components/utility/get_data";
-import BasicReactTable from "@/components/utility/tables/basicReactTable";
+import InlineEditReactTable from "@/components/utility/tables/inlineEditReactTable";
 import {
   PurchaseLineColumns,
   PurchaseLineColumnsVisibility,
 } from "@/components/utility/tables/tableColumns";
 
-import ActionFormatter from "@/components/supplier_orders/actionFormatter";
+import PurchaseLineModalManager from "../purchase_lines/purchaseLineModalManager";
+import ActionFormatterPL from "@/components/supplier_orders/actionFormatterPL";
 
 const url = "/purchases/";
 
@@ -57,28 +59,23 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
 
   const [addItemData, setAddItemData] = useState({
     item: "",
+    brand_item: "",
+    item_price_w_vat: 0,
     req_quantity: 0,
     subtotal: 0,
   });
 
-  const addPurchaseLine = () => {
-    setPurchaseData((prevState) => ({
-      ...prevState,
-      purchaseLines: [
-        ...prevState.purchaseLines,
-        {
-          ...addItemData,
-        },
-      ],
-    }));
+  const [items, setItems] = useState([]);
 
-    // Reset after every add of the purchase line
-    setAddItemData({
-      item: "",
-      req_quantity: 0,
-      subtotal: 0,
-    });
-  };
+  useEffect(() => {
+    get_items()
+      .then((items) => {
+        setItems(items);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
   const handlePHChange = (e) => {
     const { name, value } = e.target; // gets the item id from the items dropdownn
@@ -95,6 +92,73 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
   const handleChange = (e) => {
     const { name, value } = e.target; // gets the item id from the items dropdownn
     setAddItemData((prevOrder) => ({ ...prevOrder, [name]: value }));
+  };
+
+  const calculateSubtotal = (item_id, quantity) => {
+    const item = items.find((item) => item.item_id === item_id);
+    if (item) {
+      const subtotal = item.item_price_w_vat * quantity;
+      setAddItemData((prevOrder) => ({
+        ...prevOrder,
+        subtotal: subtotal,
+      }));
+      return subtotal;
+    }
+    return 0;
+  };
+
+  const calculateTotalAmount = () => {
+    const total = purchaseData.purchaseLines.reduce(
+      (accumulator, item) => accumulator + item.subtotal,
+      0
+    );
+    setPurchaseData((prevState) => ({
+      ...prevState,
+      purchaseHeader: {
+        ...prevState.purchaseHeader,
+        total_amount: total,
+      },
+    }));
+    return total;
+  };
+
+  const subTotal = useMemo(() => {
+    return calculateSubtotal(addItemData.item, addItemData.req_quantity);
+  }, [addItemData.item, addItemData.req_quantity]);
+
+  const totalAmount = useMemo(() => {
+    return calculateTotalAmount();
+  }, [purchaseData.purchaseLines, purchaseData.purchaseHeader.total_amount]);
+
+  const addPurchaseLine = () => {
+    // Update the total_amount value
+    const total_amount =
+      purchaseData.purchaseHeader.total_amount + addItemData.subtotal;
+
+    // Update the Purchase lines data
+    setPurchaseData((prevState) => ({
+      // Update the total_amount
+      purchaseHeader: {
+        ...prevState.purchaseHeader,
+        total_amount: total_amount,
+      },
+
+      purchaseLines: [
+        ...prevState.purchaseLines,
+        {
+          ...addItemData,
+        },
+      ],
+    }));
+
+    // Reset after every add of the purchase line
+    setAddItemData({
+      item: "",
+      brand_item: "",
+      item_price_w_vat: 0,
+      req_quantity: 0,
+      subtotal: 0,
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -173,10 +237,35 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2} mt={1}>
               {/* Purchase Header  */}
-              <Grid item xs={12}>
-                <Typography variant="h5" align="center">
+              <Grid item xs={12} md={8}>
+                <Typography variant="h5" align="left">
                   Purchase Header Entry
                 </Typography>
+              </Grid>
+              <Grid item xs={12} md={2}>
+                {/* Total Amount  */}
+                <Typography variant="h5" align="right">
+                  Total Amount :
+                </Typography>
+              </Grid>
+
+              <Grid item xs={12} md={2}>
+                {/* Total Amount  */}
+                <Typography variant="h5" align="right">
+                  Php {totalAmount}
+                </Typography>
+                {/* <TextField
+                  required
+                  fullWidth
+                  type="number"
+                  name="total_amount"
+                  label="Total Amount"
+                  onChange={handlePHChange}
+                  value={purchaseData.purchaseHeader.total_amount}
+                  InputProps={{
+                    readOnly: true,
+                  }}
+                /> */}
               </Grid>
 
               <Grid item xs={12} md={4}>
@@ -203,17 +292,15 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                   </Select>
                 </FormControl>
               </Grid>
+
               <Grid item xs={12} md={4}>
-                {/* Total Amount  */}
+                {/* Created by  */}
                 <TextField
                   required
                   fullWidth
-                  name="total_amount"
-                  label="Total Amount"
-                  onChange={handlePHChange}
-                  // InputProps={{
-                  //   readOnly: true,
-                  // }}
+                  label="Created By"
+                  value={user.userCredentials.username}
+                  disabled
                 />
               </Grid>
 
@@ -226,8 +313,9 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
               <Grid item xs={12} md={5}>
                 {/* Item Dropdown  */}
                 <ItemsDropdown
-                  selectedItem={addItemData.item}
-                  handleChange={handleChange}
+                  // selectedItem={addItemData.item}
+                  // handleChange={handleChange}
+                  setAddItemData={setAddItemData}
                 />
               </Grid>
 
@@ -236,10 +324,14 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                 <TextField
                   required
                   fullWidth
+                  type="number"
                   name="req_quantity"
                   label="Requested Quantity"
                   value={addItemData.req_quantity}
                   onChange={handleChange}
+                  InputProps={{
+                    min: 0,
+                  }}
                 />
               </Grid>
 
@@ -248,20 +340,21 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                 <TextField
                   required
                   fullWidth
+                  type="number"
                   name="subtotal"
                   label="Subtotal"
-                  value={addItemData.subtotal}
+                  value={subTotal}
                   onChange={handleChange}
-                  // InputProps={{
-                  //   readOnly: true,
-                  // }}
+                  InputProps={{
+                    readOnly: true,
+                  }}
                 />
               </Grid>
               <Grid item xs={12} md={2}>
                 <Button
                   onClick={addPurchaseLine}
                   variant="contained"
-                  color="primary">
+                  color="success">
                   Add to Order
                 </Button>
               </Grid>
@@ -270,8 +363,18 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
               {/* Table of Purchase Lines here  */}
               <Grid item xs={12}>
                 {/* Display the purchase lines from purchase data here in JSON format  */}
+
                 <Typography variant="h6">Purchase Lines:</Typography>
-                {purchaseData.purchaseLines.map((line, index) => (
+
+                <InlineEditReactTable
+                  data_columns={PurchaseLineColumns}
+                  column_visibility={PurchaseLineColumnsVisibility}
+                  local_data={purchaseData.purchaseLines}
+                  action_formatter={ActionFormatterPL}
+                  setLocalData={setPurchaseData}
+                />
+
+                {/* {purchaseData.purchaseLines.map((line, index) => (
                   <div key={index}>
                     <Typography>Item: {line.item}</Typography>
                     <Typography>
@@ -280,19 +383,11 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                     <Typography>Subtotal: {line.subtotal}</Typography>
                     <hr />
                   </div>
-                ))}
-
-                <BasicReactTable
-                  data_columns={PurchaseLineColumns}
-                  column_visibility={PurchaseLineColumnsVisibility}
-                  fetched_data={purchaseData.purchaseLines}
-                  action_formatter={ActionFormatter}
-                />
-
+                ))} */}
               </Grid>
-              <Grid item xs={12}>
-                <Button type="submit" variant="contained" color="primary">
-                  Submit Supplier Order
+              <Grid item xs={12} align="right">
+                <Button type="submit" variant="contained" color="success">
+                  Create
                 </Button>
               </Grid>
             </Grid>

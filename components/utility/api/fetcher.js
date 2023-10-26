@@ -109,7 +109,7 @@ export const put_data = async (
   url,
   data,
   closeModal,
-  mutate,
+  mutate = null,
   log_data = null
 ) => {
   try {
@@ -143,7 +143,7 @@ export const delete_data = async (
   name,
   url,
   closeModal,
-  mutate,
+  mutate = null,
   log_data = null
 ) => {
   try {

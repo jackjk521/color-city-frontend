@@ -231,8 +231,8 @@ export default function EditModal({
               </Grid>
 
               <Grid item xs={12}>
-                <Button type="submit" variant="contained" color="primary">
-                  Submit
+                <Button type="submit" variant="contained" color="warning">
+                  Update
                 </Button>
               </Grid>
             </Grid>

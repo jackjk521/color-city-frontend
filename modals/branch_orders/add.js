@@ -186,6 +186,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                 <TextField
                   required
                   fullWidth
+                  type="number"
                   name="total_quantity"
                   label="Total Quantity"
                   onChange={handleQuantityChange}
@@ -196,6 +197,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                 <TextField
                   required
                   fullWidth
+                  type="number"
                   name="item_price_w_vat"
                   label="Item Price W/ Vat"
                   value={inventoryData.item_price_w_vat}
@@ -209,6 +211,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                 <TextField
                   required
                   fullWidth
+                  type="number"
                   name="holding_cost"
                   label="Holding Cost"
                   value={parseFloat(inventoryData.holding_cost).toFixed(2)} // bug here
@@ -220,8 +223,8 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
               </Grid>
 
               <Grid item xs={12}>
-                <Button type="submit" variant="contained" color="primary">
-                  Submit
+                <Button type="submit" variant="contained" color="success">
+                  Create
                 </Button>
               </Grid>
             </Grid>

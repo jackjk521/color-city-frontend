@@ -5,7 +5,8 @@ import {
   FormControl,
   InputLabel,
   TextField,
-  Typography
+  Typography,
+  Autocomplete,
 } from "@mui/material";
 import apiClient from "./api/apiClient";
 import Swal from "sweetalert2";
@@ -87,7 +88,7 @@ export const get_branches = async () => {
   }
 };
 
-// Items 
+// Items
 export const get_items = async () => {
   try {
     const response = await apiClient.get(`/items/`);
@@ -149,7 +150,7 @@ export const get_items_by_id = async (id) => {
   try {
     const response = await apiClient.get(`/item/${id}/?item_name=1`);
     if (response.status === 200) {
-      const brand_item_format = response.data
+      const brand_item_format = response.data;
       return brand_item_format;
     }
   } catch (error) {
@@ -310,7 +311,9 @@ export function CatalystsDropdown({ selectedItem, handleChange }) {
 
   return (
     <FormControl fullWidth>
-      <InputLabel id="items-label">Catalysts</InputLabel>
+      <InputLabel id="items-label" sx={{ paddingRight: "8px" }}>
+        Catalysts
+      </InputLabel>
       <Select
         fullWidth
         labelId="items-label"
@@ -375,7 +378,7 @@ export function BranchesDropdown({ selectedBranch, handleChange }) {
   );
 }
 
-export function ItemsDropdown({ selectedItem, handleChange }) {
+export function ItemsDropdown({ selectedItem, handleChange, setAddItemData }) {
   const [items, setItems] = useState([]);
 
   useEffect(() => {
@@ -388,35 +391,66 @@ export function ItemsDropdown({ selectedItem, handleChange }) {
       });
   }, []);
 
+  // Add new attribute 'searchableLabel' to each item
+  const formatted_item_list = items.map((item) => ({
+    ...item,
+    label: `${item.brand_name} - ${item.item_name}`,
+  }));
+
+  const handleItemChange = (event, value) => {
+    if (value) {
+      setAddItemData((prevOrder) => ({
+        ...prevOrder,
+        item: value.item_id,
+        brand_item: value.label,
+        item_price_w_vat: value.item_price_w_vat,
+      }));
+    }
+  };
+
   return (
     <FormControl fullWidth>
-      <InputLabel id="items-label">Items</InputLabel>
-      <Select
-        fullWidth
-        labelId="items-label"
-        label="items"
-        id="items-select"
+      <Autocomplete
+        options={formatted_item_list}
         name="item"
-        value={selectedItem || ""}
-        onChange={handleChange}>
-        {items.length > 0 ? (
-          items.map((item) => (
-            <MenuItem key={item.item_id} value={item.item_id}>
-              {item.brand_name} - {item.item_name}
-            </MenuItem>
-          ))
-        ) : (
-          <MenuItem key={0} value={0}>
-            NO ITEMS
-          </MenuItem>
+        onChange={handleItemChange}
+        getOptionLabel={(option) => option.label}
+        getOptionValue={(option) => option.item_id}
+        clearOnEscape
+        renderInput={(params) => (
+          <TextField {...params} label="Select an Item" variant="outlined" />
         )}
-      </Select>
+      />
     </FormControl>
+
+    // <FormControl fullWidth>
+    //   <InputLabel id="items-label">Items</InputLabel>
+    //   <Select
+    //     fullWidth
+    //     labelId="items-label"
+    //     label="items"
+    //     id="items-select"
+    //     name="item"
+    //     value={selectedItem || ""}
+    //     onChange={handleChange}>
+    //     {items.length > 0 ? (
+    //       items.map((item) => (
+    //         <MenuItem key={item.item_id} value={item.item_id}>
+    //           {item.brand_name} - {item.item_name}
+    //         </MenuItem>
+    //       ))
+    //     ) : (
+    //       <MenuItem key={0} value={0}>
+    //         NO ITEMS
+    //       </MenuItem>
+    //     )}
+    //   </Select>
+    // </FormControl>
   );
 }
 
 // Generate the Item Name
-export function BrandItemName({id}) {
+export function BrandItemName({ id }) {
   const [brandItem, setBrandItem] = useState("");
   useEffect(() => {
     get_items_by_id(id)
@@ -428,9 +462,5 @@ export function BrandItemName({id}) {
       });
   }, []);
 
-  return (
-    <Typography>
-      {brandItem}
-    </Typography>
-  );
+  return <Typography>{brandItem}</Typography>;
 }

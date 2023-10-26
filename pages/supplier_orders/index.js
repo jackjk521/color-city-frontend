@@ -13,7 +13,7 @@ import CustomTabPanel from "../../components/utility/customTabPanel";
 import BasicReactTable from "@/components/utility/tables/basicReactTable";
 import {
   SupplierOrderColumns,
-  SupplierColumnsVisibility,
+  SupplierOrderColumnsVisibility,
 } from "../../components/utility/tables/tableColumns";
 
 // Helper Functions
@@ -72,7 +72,7 @@ function SupplierOrders({ rows }) {
         <CustomTabPanel value={value} index={0}>
             <BasicReactTable
               data_columns={SupplierOrderColumns}
-              column_visibility={SupplierColumnsVisibility}
+              column_visibility={SupplierOrderColumnsVisibility}
               fetched_data={fetchedData}
               action_formatter={ActionFormatter}
               mutate={mutate}

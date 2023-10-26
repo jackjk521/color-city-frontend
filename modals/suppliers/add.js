@@ -10,7 +10,6 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { SuppliersDropdown } from "@/components/utility/get_data";
 import { post_data } from "@/components/utility/api/fetcher";
 
 const url = "/suppliers";
@@ -86,6 +85,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                 <TextField
                   required
                   fullWidth
+                  type="number"
                   label="Discount Rate"
                   name="discount_rate"
                   onChange={handleChange}
@@ -93,8 +93,8 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
               </Grid>
 
               <Grid item xs={12}>
-                <Button type="submit" variant="contained" color="primary">
-                  Submit
+                <Button type="submit" variant="contained" color="success">
+                  Create
                 </Button>
               </Grid>
             </Grid>

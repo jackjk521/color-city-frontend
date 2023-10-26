@@ -142,6 +142,7 @@ export default function EditModal({
                 <TextField
                   required
                   fullWidth
+                  type="number"
                   label="Age"
                   name="age"
                   value={data.age}
@@ -150,7 +151,7 @@ export default function EditModal({
               </Grid>
 
               <Grid item xs={12}>
-                <Button type="submit" variant="contained" color="primary">
+                <Button type="submit" variant="contained" color="warning">
                   Update
                 </Button>
               </Grid>

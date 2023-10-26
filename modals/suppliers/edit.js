@@ -84,6 +84,7 @@ export default function EditPurchaseModal({
                 <TextField
                   required
                   fullWidth
+                  type="number"
                   label="Discount Rate"
                   name="discount_rate"
                   value={data.discount_rate}
@@ -92,8 +93,8 @@ export default function EditPurchaseModal({
               </Grid>
 
               <Grid item xs={12}>
-                <Button type="submit" variant="contained" color="primary">
-                  Submit
+                <Button type="submit" variant="contained" color="warning">
+                  Update
                 </Button>
               </Grid>
             </Grid>

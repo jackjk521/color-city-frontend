@@ -1,5 +1,6 @@
 import React from "react";
 import { BrandItemName } from "../get_data";
+import { TextField } from "@mui/material";
 
 // Items
 export const ItemColumns = [
@@ -234,8 +235,8 @@ export const SupplierOrderColumns = [
     accessorKey: "date_created",
     header: "Order Date",
     size: 200,
-    render: (rowData) => {
-      const date = new Date(rowData.date_created);
+    Cell: ({ cell }) => {
+      const date = new Date(cell.getValue());
       const formattedDate = date.toLocaleString("en-US");
       return formattedDate;
     },
@@ -309,29 +310,51 @@ export const PurchaseLineColumns = [
     accessorKey: "item", // Primary key
     header: "Item ID",
     size: 50,
+    enableEditing: false,
   },
   {
-    accessorKey: "item",
+    accessorKey: "brand_item",
     header: "Item Name",
-    size: 50,
-    Cell: function ({ cell }) {
-      return <BrandItemName id={cell.getValue()}/>;
-    },  
+    size: 200,
+    enableEditing: false,
   },
-
   {
     accessorKey: "req_quantity", //normal accessorKey
     header: "Requested Quantity",
     size: 200,
+    Edit: ({ cell, column, table }) => (
+      <TextField
+        required
+        fullWidth
+        type="number"
+        name="req_quantity"
+        label="Requested Quantity"
+        value={cell.getValue()}
+        // onChange={handleChange}
+        InputProps={{
+          min: 0,
+        }}
+      />
+    ),
+  },
+  {
+    accessorKey: "item_price_w_vat",
+    header: "Item Price",
+    size: 200,
+    enableEditing: false,
   },
   {
     accessorKey: "subtotal", //normal accessorKey
     header: "Subtotal",
     size: 200,
+    enableEditing: false,
   },
 ];
 export const PurchaseLineColumnsVisibility = {
   item: true,
+  item_name: false,
+  brand_item: false,
+  item_price_w_vat: false,
   req_quantity: false,
   subtotal: false,
 };

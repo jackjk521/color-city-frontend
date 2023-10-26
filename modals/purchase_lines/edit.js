@@ -30,7 +30,6 @@ export default function EditModal({
   data,
   setData,
   closeModal,
-  mutate,
 }) {
   const { user } = useContext(UserContext);
 

@@ -12,9 +12,10 @@ import {
   EditBtn,
   RemoveBtn,
 } from "../utility/tables/actionButtonList";
-import InventoryModalManager from "../../modals/inventory/inventoryModalManager";
+import SupplierOrdersModalManager from "../../modals/supplier_orders/supplierOrdersModalManager";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
+// Suppleir Orders Table
 const ActionFormatter = ({ rowData, mutate }) => {
   // console.log(rowData)
   const [activeModal, setActiveModal] = React.useState(null);
@@ -35,21 +36,16 @@ const ActionFormatter = ({ rowData, mutate }) => {
 
   const [purchaseData, setPurchaseData] = React.useState({
     purchaseHeader: {
+      purchase_header_id: "",
       branch: "",
       user: "",
       transaction_type: "",
       supplier: "",
       total_amount: 0,
       payment_mode: "",
-      status: ""
+      status: "",
     },
-    purchaseLines: [
-      // {
-      //   item: "",
-      //   req_quantity: 0,
-      //   subtotal: 0,
-      // },
-    ],
+    purchaseLines: [],
   });
 
   const isMobile = useMediaQuery("(max-width: 600px)");
@@ -65,17 +61,11 @@ const ActionFormatter = ({ rowData, mutate }) => {
         user: rowData.user,
         transaction_type: rowData.transaction_type,
         supplier: rowData.supplier,
-        total_amount:rowData.total_amount,
+        total_amount: rowData.total_amount,
         payment_mode: rowData.payment_mode,
-        status: rowData.status
+        status: rowData.status,
       },
-      purchaseLines: [
-        // {
-        //   item: rowData,
-        //   req_quantity: 0,
-        //   subtotal: 0,
-        // },
-      ],
+      purchaseLines: [],
     });
 
     openModal("view");
@@ -105,7 +95,7 @@ const ActionFormatter = ({ rowData, mutate }) => {
   return (
     <>
       {/* Modal Config */}
-      <InventoryModalManager
+      <SupplierOrdersModalManager
         activeModal={activeModal}
         setActiveModal={setActiveModal}
         data={purchaseData}

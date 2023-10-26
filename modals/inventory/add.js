@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useMemo } from "react";
 import {
   TextField,
   InputAdornment,
@@ -16,12 +16,19 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import apiClient from "@/components/utility/api/apiClient";
 import Swal from "sweetalert2";
-import { BranchesDropdown, get_items } from "@/components/utility/get_data";
+import {
+  BranchesDropdown,
+  get_items,
+  ItemsDropdown,
+} from "@/components/utility/get_data";
 import { post_data } from "@/components/utility/api/fetcher";
 import { createAddLogData } from "@/components/utility/logger";
 import { UserContext } from "@/contexts/userContext";
+import {
+  handleDropdownChange,
+  calculatePrice,
+} from "@/components/inventory/inventory";
 
 const url = "/inventory/";
 export default function AddModal({ headerColor, closeModal, mutate }) {
@@ -35,9 +42,8 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
     holding_cost: 0,
   });
   const { user } = useContext(UserContext);
+
   const [items, setItems] = useState([]);
-  const [totalQuantity, setTotalQuantity] = useState(0);
-  const [calculatedPrice, setCalculatedPrice] = useState(0);
 
   useEffect(() => {
     get_items()
@@ -54,35 +60,15 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
     setInventoryData((prevOrder) => ({ ...prevOrder, [name]: value }));
   };
 
-  const handleDropdownChange = (e) => {
-    const { name, value } = e.target; // gets the item id from the items dropdownn
 
-    const item = items.find((item) => item.item_id === value);
-    setInventoryData((prevOrder) => ({
-      ...prevOrder,
-      item_price_w_vat: item.item_price_w_vat,
-      [name]: value,
-    }));
-  };
-
-  const handleQuantityChange = (e) => {
-    const { name, value } = e.target;
-    setTotalQuantity(value);
-    calculatePrice(inventoryData.item, value);
-    setInventoryData((prevOrder) => ({ ...prevOrder, [name]: value }));
-  };
-
-  const calculatePrice = (selectedItem, quantity) => {
-    const item = items.find((item) => item.item_id === selectedItem);
-    if (item) {
-      const price = item.item_price_w_vat * quantity;
-      setCalculatedPrice(parseFloat(price.toFixed(2)));
-      setInventoryData((prevOrder) => ({
-        ...prevOrder,
-        holding_cost: calculatedPrice,
-      }));
-    }
-  };
+  const holdingCost = useMemo(() => {
+    return calculatePrice(
+      inventoryData.item,
+      inventoryData.total_quantity,
+      items,
+      setInventoryData
+    );
+  }, [inventoryData.item, inventoryData.total_quantity]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -151,29 +137,12 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2} mt={1}>
               <Grid item xs={12} md={6}>
-                <FormControl fullWidth>
-                  <InputLabel id="items-label">Items</InputLabel>
-                  <Select
-                    fullWidth
-                    labelId="items-label"
-                    label="items"
-                    id="items-select"
-                    name="item"
-                    value={inventoryData.item || ""}
-                    onChange={handleDropdownChange}>
-                    {items.length > 0 ? (
-                      items.map((item) => (
-                        <MenuItem key={item.item_id} value={item.item_id}>
-                          {item.brand_name} - {item.item_name}
-                        </MenuItem>
-                      ))
-                    ) : (
-                      <MenuItem key={0} value={0}>
-                        NO ITEMS
-                      </MenuItem>
-                    )}
-                  </Select>
-                </FormControl>
+                <ItemsDropdown
+                  selectedItem={inventoryData.item}
+                  handleChange={(e) =>
+                    handleDropdownChange(e, items, setInventoryData)
+                  }
+                />
               </Grid>
               <Grid item xs={12} md={6}>
                 <BranchesDropdown
@@ -186,9 +155,10 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                 <TextField
                   required
                   fullWidth
+                  type="number"
                   name="total_quantity"
                   label="Total Quantity"
-                  onChange={handleQuantityChange}
+                  onChange={handleChange}
                 />
               </Grid>
 
@@ -196,6 +166,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                 <TextField
                   required
                   fullWidth
+                  type="number"
                   name="item_price_w_vat"
                   label="Item Price W/ Vat"
                   value={inventoryData.item_price_w_vat}
@@ -209,9 +180,10 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                 <TextField
                   required
                   fullWidth
+                  type="number"
                   name="holding_cost"
                   label="Holding Cost"
-                  value={parseFloat(inventoryData.holding_cost).toFixed(2)} // bug here
+                  value={holdingCost}
                   onChange={handleChange}
                   InputProps={{
                     readOnly: true,
@@ -220,8 +192,8 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
               </Grid>
 
               <Grid item xs={12}>
-                <Button type="submit" variant="contained" color="primary">
-                  Submit
+                <Button type="submit" variant="contained" color="success">
+                  Create
                 </Button>
               </Grid>
             </Grid>

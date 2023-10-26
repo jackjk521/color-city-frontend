@@ -16,15 +16,9 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import {
-  BrandsDropdown,
-  CategoriesDropdown,
-  CatalystsDropdown,
-} from "@/components/utility/get_data";
 import { put_data } from "@/components/utility/api/fetcher";
 import { createEditLogData } from "@/components/utility/logger";
-import { BranchesDropdown } from "@/components/utility/get_data";
-import { get_items } from "@/components/utility/get_data";
+import { BranchesDropdown, get_items } from "@/components/utility/get_data";
 import { UserContext } from "@/contexts/userContext";
 
 export default function EditModal({
@@ -231,8 +225,8 @@ export default function EditModal({
               </Grid>
 
               <Grid item xs={12}>
-                <Button type="submit" variant="contained" color="primary">
-                  Submit
+                <Button type="submit" variant="contained" color="warning">
+                  Update
                 </Button>
               </Grid>
             </Grid>

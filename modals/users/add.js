@@ -148,6 +148,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                 <TextField
                   required
                   fullWidth
+                  type="number"
                   label="Age"
                   name="age"
                   onChange={handleChange}
@@ -155,7 +156,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
               </Grid>
 
               <Grid item xs={12}>
-                <Button type="submit" variant="contained" color="primary">
+                <Button type="submit" variant="contained" color="success">
                   Create
                 </Button>
               </Grid>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useMemo } from "react";
 import {
   TextField,
   InputAdornment,
@@ -16,16 +16,18 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import {
-  BrandsDropdown,
-  CategoriesDropdown,
-  CatalystsDropdown,
-} from "@/components/utility/get_data";
 import { put_data } from "@/components/utility/api/fetcher";
 import { createEditLogData } from "@/components/utility/logger";
-import { BranchesDropdown } from "@/components/utility/get_data";
-import { get_items } from "@/components/utility/get_data";
+import {
+  BranchesDropdown,
+  get_items,
+  ItemsDropdown,
+} from "@/components/utility/get_data";
 import { UserContext } from "@/contexts/userContext";
+import {
+  handleDropdownChange,
+  calculatePrice,
+} from "@/components/inventory/inventory";
 
 export default function EditModal({
   headerColor,
@@ -34,16 +36,9 @@ export default function EditModal({
   closeModal,
   mutate,
 }) {
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setData((prevOrder) => ({ ...prevOrder, [name]: value }));
-  };
-
   const { user } = useContext(UserContext);
 
   const [items, setItems] = useState([]);
-  const [totalQuantity, setTotalQuantity] = useState(0);
-  const [calculatedPrice, setCalculatedPrice] = useState(0);
 
   useEffect(() => {
     get_items()
@@ -55,40 +50,14 @@ export default function EditModal({
       });
   }, []);
 
-  // const handleChange = (e) => {
-  //   const { name, value } = e.target; // gets the item id from the items dropdownn
-  //   setItemData((prevOrder) => ({ ...prevOrder, [name]: value }));
-  // };
-
-  const handleDropdownChange = (e) => {
+  const handleChange = (e) => {
     const { name, value } = e.target; // gets the item id from the items dropdownn
-
-    const item = items.find((item) => item.item_id === value);
-    setData((prevOrder) => ({
-      ...prevOrder,
-      item_price_w_vat: item.item_price_w_vat,
-      [name]: value,
-    }));
-  };
-
-  const handleQuantityChange = (e) => {
-    const { name, value } = e.target;
-    setTotalQuantity(value);
-    calculatePrice(data.item, value);
     setData((prevOrder) => ({ ...prevOrder, [name]: value }));
   };
 
-  const calculatePrice = (selectedItem, quantity) => {
-    const item = items.find((item) => item.item_id === selectedItem);
-    if (item) {
-      const price = item.item_price_w_vat * quantity;
-      setCalculatedPrice(parseFloat(price.toFixed(2)));
-      setData((prevOrder) => ({
-        ...prevOrder,
-        holding_cost: calculatedPrice,
-      }));
-    }
-  };
+  const holdingCost = useMemo(() => {
+    return calculatePrice(data.item, data.total_quantity, items, setData);
+  }, [data.item, data.total_quantity]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -161,29 +130,10 @@ export default function EditModal({
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2} mt={1}>
               <Grid item xs={12} md={6}>
-                <FormControl fullWidth>
-                  <InputLabel id="items-label">Items</InputLabel>
-                  <Select
-                    fullWidth
-                    labelId="items-label"
-                    label="items"
-                    id="items-select"
-                    name="item"
-                    value={data.item}
-                    onChange={handleDropdownChange}>
-                    {items.length > 0 ? (
-                      items.map((item) => (
-                        <MenuItem key={item.item_id} value={item.item_id}>
-                          {item.brand_name} - {item.item_name}
-                        </MenuItem>
-                      ))
-                    ) : (
-                      <MenuItem key={0} value={0}>
-                        NO ITEMS
-                      </MenuItem>
-                    )}
-                  </Select>
-                </FormControl>
+                <ItemsDropdown
+                  selectedItem={data.item}
+                  handleChange={(e) => handleDropdownChange(e, items, setData)}
+                />
               </Grid>
               <Grid item xs={12} md={6}>
                 <BranchesDropdown
@@ -196,10 +146,11 @@ export default function EditModal({
                 <TextField
                   required
                   fullWidth
+                  type="number"
                   name="total_quantity"
                   label="Total Quantity"
                   value={data.total_quantity}
-                  onChange={handleQuantityChange}
+                  onChange={handleChange}
                 />
               </Grid>
 
@@ -207,6 +158,7 @@ export default function EditModal({
                 <TextField
                   required
                   fullWidth
+                  type="number"
                   name="item_price_w_vat"
                   label="Item Price W/ Vat"
                   value={data.item_price_w_vat}
@@ -220,9 +172,10 @@ export default function EditModal({
                 <TextField
                   required
                   fullWidth
+                  type="number"
                   name="holding_cost"
                   label="Holding Cost"
-                  value={parseFloat(data.holding_cost).toFixed(2)} // bug here
+                  value={data.holding_cost ? data.holding_cost : holdingCost}
                   onChange={handleChange}
                   InputProps={{
                     readOnly: true,
@@ -231,8 +184,8 @@ export default function EditModal({
               </Grid>
 
               <Grid item xs={12}>
-                <Button type="submit" variant="contained" color="primary">
-                  Submit
+                <Button type="submit" variant="contained" color="warning">
+                  Update
                 </Button>
               </Grid>
             </Grid>

@@ -45,6 +45,11 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setItemData((prevOrder) => ({ ...prevOrder, [name]: value }));
+
+    if(name === "item_price_w_vat"){
+        const price = value * 0.88
+        setItemData((prevOrder) => ({ ...prevOrder, item_price_wo_vat: price }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -94,6 +99,8 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
       });
     }
   };
+
+
 
   return (
     <React.Fragment>
@@ -148,6 +155,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                 <TextField
                   required
                   fullWidth
+                  type="number"
                   name="unit"
                   label="Unit"
                   onChange={handleChange}
@@ -174,15 +182,22 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                 <TextField
                   required
                   fullWidth
+                  type="number"
                   name="item_price_wo_vat"
                   label="Item Price W/O Vat"
+                  value={itemData.item_price_wo_vat}
                   onChange={handleChange}
+                  disabled
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
                 />
               </Grid>
               <Grid item xs={12} md={3}>
                 <TextField
                   required
                   fullWidth
+                  type="number"
                   name="item_price_w_vat"
                   label="Item Price W/ Vat"
                   onChange={handleChange}
@@ -192,14 +207,15 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                 <TextField
                   required
                   fullWidth
+                  type="number"
                   name="retail_price"
                   label="Retail Price"
                   onChange={handleChange}
                 />
               </Grid>
               <Grid item xs={12}>
-                <Button type="submit" variant="contained" color="primary">
-                  Submit
+                <Button type="submit" variant="contained" color="success">
+                  Create
                 </Button>
               </Grid>
             </Grid>
