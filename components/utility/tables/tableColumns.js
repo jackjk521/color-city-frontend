@@ -322,20 +322,11 @@ export const PurchaseLineColumns = [
     accessorKey: "req_quantity", //normal accessorKey
     header: "Requested Quantity",
     size: 200,
-    Edit: ({ cell, column, table }) => (
-      <TextField
-        required
-        fullWidth
-        type="number"
-        name="req_quantity"
-        label="Requested Quantity"
-        value={cell.getValue()}
-        // onChange={handleChange}
-        InputProps={{
-          min: 0,
-        }}
-      />
-    ),
+    muiEditTextFieldProps: ({ cell }) => ({
+      name: 'req_quantity',
+      required: true,
+      type: 'number',
+    }),
   },
   {
     accessorKey: "item_price_w_vat",

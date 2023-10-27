@@ -128,7 +128,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
 
   const totalAmount = useMemo(() => {
     return calculateTotalAmount();
-  }, [purchaseData.purchaseLines, purchaseData.purchaseHeader.total_amount]);
+  }, [purchaseData.purchaseLines]);
 
   const addPurchaseLine = () => {
     // Update the total_amount value

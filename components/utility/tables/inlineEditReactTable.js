@@ -20,8 +20,37 @@ const InlineEditReactTable = ({
     setData(local_data);
   }, [local_data]);
 
-
   const isTablet = useMediaQuery("(max-width: 820px)");
+
+  // Purchase Lines
+  const handleRowSave = (e) => {
+    const { values } = e;
+
+    const item_id = values.item;
+    const item_price = values.item_price_w_vat;
+    const updated_req_quantity = values.req_quantity;
+    const newSubtotal = item_price * updated_req_quantity;
+
+    setLocalData((prevState) => ({
+      ...prevState,
+      purchaseLines: prevState.purchaseLines.map((line) => {
+        if (line.item === item_id) {
+          console.log(line.item === item_id);
+          console.log(updated_req_quantity);
+          console.log(newSubtotal);
+
+          return {
+            ...line,
+            req_quantity: updated_req_quantity,
+            subtotal: newSubtotal,
+          };
+        }
+        return line;
+      }),
+    }));
+
+    e.table.setEditingRow(null);
+  };
 
   return (
     <>
@@ -34,15 +63,13 @@ const InlineEditReactTable = ({
           }}
           enableRowActions
           positionActionsColumn="last"
-          renderRowActions={
-            ({ row }) => (
-              <ActionFormatter
-                rowData={row.original}
-                local_data={local_data}
-                setLocalData={setLocalData}
-              />
-            )
-          }
+          renderRowActions={({ row }) => (
+            <ActionFormatter
+              rowData={row.original}
+              local_data={local_data}
+              setLocalData={setLocalData}
+            />
+          )}
         />
       ) : (
         <MaterialReactTable
@@ -61,7 +88,12 @@ const InlineEditReactTable = ({
           )}
           editDisplayMode="row"
           enableEditing
-          onEditingRowSave={setData}
+          onEditingRowSave={handleRowSave}
+          // muiTableBodyCellEditTextFieldProps={({ cell }) => ({
+          //   onChange: (event) => {
+          //     console.info(event, cell.id);
+          //   },
+          // })}
         />
       )}
     </>
