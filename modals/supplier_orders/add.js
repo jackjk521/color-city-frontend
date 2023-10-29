@@ -24,6 +24,7 @@ import {
   ItemsDropdown,
   SuppliersDropdown,
   get_items,
+  SONumberField,
 } from "@/components/utility/get_data";
 import InlineEditReactTable from "@/components/utility/tables/inlineEditReactTable";
 import {
@@ -31,7 +32,6 @@ import {
   PurchaseLineColumnsVisibility,
 } from "@/components/utility/tables/tableColumns";
 
-import PurchaseLineModalManager from "../purchase_lines/purchaseLineModalManager";
 import ActionFormatterPL from "@/components/supplier_orders/actionFormatterPL";
 
 const url = "/purchases/";
@@ -43,20 +43,14 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
       branch: user.userCredentials.branch,
       user: user.userCredentials.user_id,
       transaction_type: "SUPPLIER",
+      po_number: "",
       supplier: "",
       total_amount: 0,
       payment_mode: "",
       status: "APPROVED",
     },
-    purchaseLines: [
-      // {
-      //   item: "",
-      //   req_quantity: 0,
-      //   subtotal: 0,
-      // },
-    ],
+    purchaseLines: [],
   });
-
   const [addItemData, setAddItemData] = useState({
     item: "",
     brand_item: "",
@@ -64,7 +58,6 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
     req_quantity: 0,
     subtotal: 0,
   });
-
   const [items, setItems] = useState([]);
 
   useEffect(() => {
@@ -165,10 +158,13 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
     e.preventDefault();
     const log_data = createAddLogData(
       user.userCredentials.branch,
+      user.userCredentials.branch_name,
       user.userCredentials.user_id,
       user.userCredentials.username,
       "SUPP_ORDER",
-      purchaseData.branch // to be changed or to create another logger
+      undefined,
+      undefined,
+      purchaseData.branch
     );
 
     const requestData = {
@@ -192,15 +188,16 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
         setPurchaseData((prevState) => ({
           ...prevState,
           purchaseHeader: {
-            ...prevState.purchaseHeader,
             branch: "",
             user: "",
             transaction_type: "SUPPLIER",
+            po_number: "",
             supplier: "",
             total_amount: 0,
             payment_mode: "",
             status: "APPROVED",
           },
+          purchaseLines: [],
         }));
       }
     } catch (error) {
@@ -268,6 +265,10 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                 /> */}
               </Grid>
 
+              <Grid item xs={12} md={3}>
+                <SONumberField setData={setPurchaseData} />
+              </Grid>
+
               <Grid item xs={12} md={4}>
                 {/* Supplier Dropdown  */}
                 <SuppliersDropdown
@@ -275,7 +276,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                   handleChange={handlePHChange}
                 />
               </Grid>
-              <Grid item xs={12} md={4}>
+              <Grid item xs={12} md={2}>
                 {/* Payment Mode  */}
                 <FormControl fullWidth>
                   <InputLabel id="demo-simple-select-label">
@@ -293,7 +294,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                 </FormControl>
               </Grid>
 
-              <Grid item xs={12} md={4}>
+              <Grid item xs={12} md={3}>
                 {/* Created by  */}
                 <TextField
                   required

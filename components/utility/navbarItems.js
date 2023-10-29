@@ -33,7 +33,7 @@ export function MainListItems() {
 
   return (
     <React.Fragment>
-      <HoverListItemButton component={Link} href="/">
+      <HoverListItemButton component={Link} href="/dashboard">
         <ListItemIcon>
           <DashboardIcon />
         </ListItemIcon>

@@ -17,7 +17,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import apiClient from "@/components/utility/api/apiClient";
 import Swal from "sweetalert2";
 import {
-  ItemNumberField,
   BrandsDropdown,
   CategoriesDropdown,
 } from "@/components/utility/get_data";
@@ -46,9 +45,9 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
     const { name, value } = e.target;
     setItemData((prevOrder) => ({ ...prevOrder, [name]: value }));
 
-    if(name === "item_price_w_vat"){
-        const price = value * 0.88
-        setItemData((prevOrder) => ({ ...prevOrder, item_price_wo_vat: price }));
+    if (name === "item_price_w_vat") {
+      const price = value * 0.88;
+      setItemData((prevOrder) => ({ ...prevOrder, item_price_wo_vat: price }));
     }
   };
 
@@ -56,10 +55,12 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
     e.preventDefault();
     const log_data = createAddLogData(
       user.userCredentials.branch,
+      user.userCredentials.branch_name,
       user.userCredentials.user_id,
       user.userCredentials.username,
       "ITEMS",
-      itemData.item_name
+      itemData.item_name,
+      undefined
     );
     try {
       const result = await post_data(
@@ -70,7 +71,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
         mutate,
         log_data
       );
-      
+
       // Reset form fields only after the API request is successfully completed
       if (result) {
         setItemData({
@@ -100,8 +101,6 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
     }
   };
 
-
-
   return (
     <React.Fragment>
       <DialogTitle style={{ backgroundColor: headerColor }}>
@@ -125,7 +124,13 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2} mt={1}>
               <Grid item xs={12} md={3}>
-                <ItemNumberField />
+                <TextField
+                  required
+                  fullWidth
+                  label="Item Code"
+                  name="item_number"
+                  onChange={handleChange}
+                />
               </Grid>
               <Grid item xs={12} md={4}>
                 <TextField

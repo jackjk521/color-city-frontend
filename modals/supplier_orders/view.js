@@ -11,14 +11,19 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import DisplayReactTable from "@/components/utility/tables/displayReactTable";
+import {
+  PurchaseLineColumns,
+  PurchaseLineColumnsVisibility,
+} from "@/components/utility/tables/tableColumns";
 
 export default function ViewModal({ data, headerColor, closeModal }) {
-  // console.log(data);
+  console.log(data);
   return (
     <>
       <DialogTitle style={{ backgroundColor: headerColor }} mb={3}>
         <Typography color="white" variant="h5" align="left">
-          View Inventory Entry
+          View Supplier Order
         </Typography>
       </DialogTitle>
       <IconButton
@@ -35,25 +40,25 @@ export default function ViewModal({ data, headerColor, closeModal }) {
         <Container maxWidth="lg">
           {/* Fields Start  */}
           <Grid container spacing={2} mt={1}>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={4}>
               <TextField
                 required
                 fullWidth
-                name="inventory_id"
+                name="purchase_header_id"
                 label="ID"
-                value={data.inventory_id}
+                value={data.purchaseHeader.purchase_header_id}
                 InputProps={{
                   readOnly: true,
                 }}
               />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={4}>
               <TextField
                 required
                 fullWidth
-                name="item_name"
-                label="Item Name"
-                value={data.item_name}
+                name="branch_name"
+                label="From Branch"
+                value={data.purchaseHeader.branch_name}
                 InputProps={{
                   readOnly: true,
                 }}
@@ -64,9 +69,9 @@ export default function ViewModal({ data, headerColor, closeModal }) {
               <TextField
                 required
                 fullWidth
-                name="total_quantity"
-                label="Total Quantity"
-                value={data.total_quantity}
+                name="username"
+                label="Created By"
+                value={data.purchaseHeader.username}
                 InputProps={{
                   readOnly: true,
                 }}
@@ -77,10 +82,9 @@ export default function ViewModal({ data, headerColor, closeModal }) {
               <TextField
                 required
                 fullWidth
-                name="item_price_w_vat"
-                label="Item Price W/ Vat"
-                value={data.item_price_w_vat}
-
+                name="supplier_name"
+                label="Supplier"
+                value={data.purchaseHeader.supplier_name}
                 InputProps={{
                   readOnly: true,
                 }}
@@ -91,9 +95,22 @@ export default function ViewModal({ data, headerColor, closeModal }) {
               <TextField
                 required
                 fullWidth
-                name="holding_cost"
-                label="Holding Cost"
-                value={parseFloat(data.holding_cost).toFixed(2)} // bug here
+                name="total_amount"
+                label="Total Amount "
+                value={data.purchaseHeader.total_amount}
+                InputProps={{
+                  readOnly: true,
+                }}
+              />
+            </Grid>
+
+            <Grid item xs={12} md={4}>
+              <TextField
+                required
+                fullWidth
+                name="payment_mode"
+                label="Payment Mode"
+                value={data.purchaseHeader.payment_mode}
                 InputProps={{
                   readOnly: true,
                 }}
@@ -101,7 +118,21 @@ export default function ViewModal({ data, headerColor, closeModal }) {
             </Grid>
           </Grid>
 
-          <Grid container spacing={2} mt={2}></Grid>
+          <Grid container spacing={2} mt={2}>
+            <Grid item xs={12}>
+              <Typography variant="h5" align="left">
+                Purchase Lines
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              {/* Table  */}
+              <DisplayReactTable
+                data_columns={PurchaseLineColumns}
+                column_visibility={PurchaseLineColumnsVisibility}
+                fetched_data={data.purchaseLines}
+              />
+            </Grid>
+          </Grid>
         </Container>
       </DialogContent>
     </>

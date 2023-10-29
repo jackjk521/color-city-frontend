@@ -115,7 +115,7 @@ export default function Layout({ children }) {
   };
 
   const handleLogout = () => {
-    loggedIn ? logoutNow() : router.push("/login");
+    loggedIn ? logoutNow() : router.push("/");
   };
 
   return (

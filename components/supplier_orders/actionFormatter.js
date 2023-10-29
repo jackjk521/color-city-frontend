@@ -11,6 +11,7 @@ import {
   ViewBtn,
   EditBtn,
   RemoveBtn,
+  ReceiveBtn
 } from "../utility/tables/actionButtonList";
 import SupplierOrdersModalManager from "../../modals/supplier_orders/supplierOrdersModalManager";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
@@ -38,7 +39,9 @@ const ActionFormatter = ({ rowData, mutate }) => {
     purchaseHeader: {
       purchase_header_id: "",
       branch: "",
+      branch_name: "",
       user: "",
+      username: "",
       transaction_type: "",
       supplier: "",
       total_amount: 0,
@@ -53,36 +56,44 @@ const ActionFormatter = ({ rowData, mutate }) => {
 
   // Action Handlers
   const openView = () => {
-    console.log(rowData);
     // open view logic
     setPurchaseData({
       purchaseHeader: {
+        purchase_header_id: rowData.purchase_header_id,
         branch: rowData.branch,
+        branch_name: rowData.branch_name,
         user: rowData.user,
+        username: rowData.username,
         transaction_type: rowData.transaction_type,
         supplier: rowData.supplier,
+        supplier_name: rowData.supplier_name,
         total_amount: rowData.total_amount,
         payment_mode: rowData.payment_mode,
         status: rowData.status,
       },
-      purchaseLines: [],
+      purchaseLines: rowData.purchase_lines,
     });
 
     openModal("view");
   };
 
-  const openEdit = () => {
+  const openReceive = () => {
     // open edit logic
-    // console.log(rowData);
     setPurchaseData({
-      inventory_id: rowData.inventory_id,
-      item: rowData.item,
-      item_name: rowData.item_name,
-      item_price_w_vat: rowData.item_price_w_vat,
-      branch: rowData.branch,
-      branch_name: rowData.branch_name,
-      total_quantity: rowData.total_quantity,
-      holding_cost: rowData.holding_cost,
+      purchaseHeader: {
+        purchase_header_id: rowData.purchase_header_id,
+        branch: rowData.branch,
+        branch_name: rowData.branch_name,
+        user: rowData.user,
+        username: rowData.username,
+        transaction_type: rowData.transaction_type,
+        supplier: rowData.supplier,
+        supplier_name: rowData.supplier_name,
+        total_amount: rowData.total_amount,
+        payment_mode: rowData.payment_mode,
+        status: rowData.status,
+      },
+      purchaseLines: rowData.purchase_lines,
     });
     openModal("edit");
   };
@@ -123,15 +134,18 @@ const ActionFormatter = ({ rowData, mutate }) => {
               "aria-labelledby": "actions-menu",
             }}>
             <MenuItem onClick={openView}>View</MenuItem>
-            <MenuItem onClick={openEdit}>Edit</MenuItem>
+            {/* <MenuItem onClick={openEdit}>Edit</MenuItem> */}
             <MenuItem onClick={openRemove}>Remove</MenuItem>
+            <MenuItem onClick={openReceive}>Recieve</MenuItem>
+
           </Menu>
         </>
       ) : (
         <Box sx={{ display: "flex", flexWrap: "nowrap", gap: "8px" }}>
           <ViewBtn openView={openView} />
-          <EditBtn openEdit={openEdit} />
+          {/* <EditBtn openEdit={openEdit} /> */}
           <RemoveBtn openRemove={openRemove} />
+          {rowData.status == "APPROVED" && <ReceiveBtn openReceive={openReceive}/>}
         </Box>
       )}
     </>

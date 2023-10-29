@@ -126,6 +126,42 @@ export const get_item_number = async () => {
   }
 };
 
+// PO Number generation
+export const get_so_number = async () => {
+  try {
+    const response = await apiClient.get(`/gen_so_number`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    // Handle the error
+    console.error(error);
+    Swal.fire({
+      title: "Error",
+      text: error,
+      icon: "error",
+    });
+    throw error;
+  }
+};
+export const get_bo_number = async () => {
+  try {
+    const response = await apiClient.get(`/gen_bo_number`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    // Handle the error
+    console.error(error);
+    Swal.fire({
+      title: "Error",
+      text: error,
+      icon: "error",
+    });
+    throw error;
+  }
+};
+
 // Items with category catalyst
 export const get_items_by_catalyst = async () => {
   try {
@@ -186,6 +222,65 @@ export function ItemNumberField() {
       label="Item Number"
       name="item_number"
       value={itemNumber}
+      InputProps={{
+        readOnly: true,
+      }}
+    />
+  );
+}
+
+export function SONumberField({setData}) {
+  const [poNumber, setPONumber] = useState("");
+  useEffect(() => {
+    get_so_number()
+      .then((so_num) => {
+        setPONumber(so_num);
+        setData((prevState) => ({
+          ...prevState,
+          purchaseHeader: {
+            ...prevState.purchaseHeader,
+            po_number: so_num,
+          },
+        }));
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  return (
+    <TextField
+      fullWidth
+      required
+      label="PO Code"
+      name="po_number"
+      value={poNumber}
+      InputProps={{
+        readOnly: true,
+      }}
+    />  
+  );
+}
+
+export function BONumberField(handleChange) {
+  const [poNumber, setPONumber] = useState("");
+  useEffect(() => {
+    get_bo_number()
+      .then((bo_num) => {
+        setPONumber(bo_num);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  return (
+    <TextField
+      fullWidth
+      label="PO Code"
+      name="po_number"
+      value={poNumber}
+      handleChange={handleChange}
       InputProps={{
         readOnly: true,
       }}
@@ -338,18 +433,34 @@ export function CatalystsDropdown({ selectedItem, handleChange }) {
   );
 }
 
-export function BranchesDropdown({ selectedBranch, handleChange }) {
-  const [branches, setItems] = useState([]);
+export function BranchesDropdown({
+  selectedBranch,
+  handleChange = null,
+  setData = null,
+}) {
+  const [branches, setBranches] = useState([]);
 
   useEffect(() => {
     get_branches()
       .then((branches) => {
-        setItems(branches);
+        setBranches(branches);
       })
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+
+    if (setData != null && selectedBranch !== "") {
+      const branch = branches.find(
+        (branch) => branch.branch_id === selectedBranch
+      );
+
+      // console.log(branch)
+      setData((prevOrder) => ({
+        ...prevOrder,
+        branch_name: branch ? branch.branch_name : "",
+      }));
+    }
+  }, [selectedBranch, setData]);
 
   return (
     <FormControl fullWidth>
@@ -380,6 +491,7 @@ export function BranchesDropdown({ selectedBranch, handleChange }) {
 
 export function ItemsDropdown({ selectedItem, handleChange, setAddItemData }) {
   const [items, setItems] = useState([]);
+  const [selected, setSelected] = useState(null);
 
   useEffect(() => {
     get_items()
@@ -391,30 +503,27 @@ export function ItemsDropdown({ selectedItem, handleChange, setAddItemData }) {
       });
   }, []);
 
-  // Add new attribute 'searchableLabel' to each item
-  const formatted_item_list = items.map((item) => ({
-    ...item,
-    label: `${item.brand_name} - ${item.item_name}`,
-  }));
-
   const handleItemChange = (event, value) => {
     if (value) {
       setAddItemData((prevOrder) => ({
         ...prevOrder,
         item: value.item_id,
-        brand_item: value.label,
+        brand_item: value.brand_item,
         item_price_w_vat: value.item_price_w_vat,
       }));
     }
   };
 
+  // console.log(items)
+
   return (
     <FormControl fullWidth>
       <Autocomplete
-        options={formatted_item_list}
+        options={items}
         name="item"
+        // value={selected ? selected : selectedItem}
         onChange={handleItemChange}
-        getOptionLabel={(option) => option.label}
+        getOptionLabel={(option) => option.brand_item}
         getOptionValue={(option) => option.item_id}
         clearOnEscape
         renderInput={(params) => (

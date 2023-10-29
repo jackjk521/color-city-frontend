@@ -31,6 +31,8 @@ const InventoryModalManager = ({
         return "#ff9100";
       case "remove":
         return "#b71c1c";
+      case "receive":
+        return "#b71c1c";
       default:
         return null;
     }
@@ -72,7 +74,16 @@ const InventoryModalManager = ({
             closeModal={closeModal}
             rowData={rowData}
             mutate={mutate}
-
+          />
+        );
+      case "receive":
+        return (
+          <EditModal
+            headerColor={selectedHeaderColor()}
+            closeModal={closeModal}
+            data={data}
+            setData={setData}
+            mutate={mutate}
           />
         );
       default:
@@ -86,8 +97,7 @@ const InventoryModalManager = ({
         <LargeModal
           isOpen={activeModal !== null}
           onClose={closeModal}
-          title={activeModal}
-        >
+          title={activeModal}>
           {renderModalContent()}
         </LargeModal>
       )}
@@ -96,8 +106,7 @@ const InventoryModalManager = ({
         <SmallModal
           isOpen={activeModal !== null}
           onClose={closeModal}
-          title={activeModal}
-        >
+          title={activeModal}>
           {renderModalContent()}
         </SmallModal>
       )}

@@ -36,6 +36,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
     item: "",
     item_name: "",
     item_price_w_vat: "",
+    brand_item: "",
     branch: "",
     branch_name: "",
     total_quantity: "",
@@ -74,10 +75,12 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
     e.preventDefault();
     const log_data = createAddLogData(
       user.userCredentials.branch,
+      user.userCredentials.branch_name,
       user.userCredentials.user_id,
       user.userCredentials.username,
       "INVENTORY",
-      inventoryData.item_name
+      inventoryData.item_name,
+      inventoryData.branch_name
     );
 
     try {
@@ -97,6 +100,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
           item: "",
           item_name: "",
           item_price_w_vat: "",
+          brand_item: "",
           branch: "",
           branch_name: "",
           total_quantity: "",
@@ -138,10 +142,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
             <Grid container spacing={2} mt={1}>
               <Grid item xs={12} md={6}>
                 <ItemsDropdown
-                  selectedItem={inventoryData.item}
-                  handleChange={(e) =>
-                    handleDropdownChange(e, items, setInventoryData)
-                  }
+                  setAddItemData={setInventoryData}
                 />
               </Grid>
               <Grid item xs={12} md={6}>

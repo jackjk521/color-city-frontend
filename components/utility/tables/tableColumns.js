@@ -15,14 +15,14 @@ export const ItemColumns = [
     size: 50,
   },
   {
-    accessorKey: "item_name", //normal accessorKey
-    header: "Name",
-    size: 200,
-  },
-  {
     accessorKey: "brand_name",
     header: "Brand",
     size: 150,
+  },
+  {
+    accessorKey: "item_name", //normal accessorKey
+    header: "Name",
+    size: 200,
   },
   {
     accessorKey: "category_name",
@@ -187,7 +187,7 @@ export const InventoryColumns = [
 
   {
     accessorKey: "item_name", //normal accessorKey
-    header: "Item",
+    header: "Item Name",
     size: 200,
   },
   {
@@ -323,9 +323,9 @@ export const PurchaseLineColumns = [
     header: "Requested Quantity",
     size: 200,
     muiEditTextFieldProps: ({ cell }) => ({
-      name: 'req_quantity',
+      name: "req_quantity",
       required: true,
-      type: 'number',
+      type: "number",
     }),
   },
   {

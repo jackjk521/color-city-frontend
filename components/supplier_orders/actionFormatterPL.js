@@ -18,7 +18,13 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 // Handlers for the inline edit react table
  // Action Handlers
- export const handleEdit = (rowData, local_data, setLocalData) => {
+ export const openEdit = (rowData, local_data, setLocalData) => {
+  // open edit logic
+
+  // Compare teh ids and update the whole entry or addItemData in the purchaseLines array
+};
+
+export const openRemove= (rowData, local_data, setLocalData) => {
   // open edit logic
 
   // Compare teh ids and update the whole entry or addItemData in the purchaseLines array

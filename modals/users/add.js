@@ -123,6 +123,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
               <BranchesDropdown
                   selectedBranch={userData.branch}
                   handleChange={handleChange}
+                  setData={setUserData}
                 />
               </Grid>
 

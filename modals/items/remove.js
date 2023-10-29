@@ -27,11 +27,13 @@ export default function RemoveModal({
     const url = `/item/${item_id}/`;
     const log_data = createRemoveLogData(
       user.userCredentials.branch,
+      user.userCredentials.branch_name,
       user.userCredentials.user_id,
       user.userCredentials.username,
       "ITEMS",
       item_id,
-      rowData.item_name
+      rowData.item_name,
+      undefined
     );
     // Delete logic
     delete_data("item", url, closeModal, mutate, log_data);

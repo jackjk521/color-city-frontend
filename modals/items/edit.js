@@ -51,11 +51,13 @@ export default function EditModal({
 
     const log_data = createEditLogData(
       user.userCredentials.branch,
+      user.userCredentials.branch_name,
       user.userCredentials.user_id,
       user.userCredentials.username,
       "ITEMS",
       item_id,
-      data.item_name
+      data.item_name,
+      undefined
     );
 
     try {
@@ -119,6 +121,16 @@ export default function EditModal({
         <Container maxWidth="lg">
           <form onSubmit={handleSubmit}>
             <Grid container spacing={2} mt={1}>
+              <Grid item xs={12} md={3}>
+                <TextField
+                  required
+                  fullWidth
+                  label="Item Code"
+                  name="item_number"
+                  value={data.item_number}
+                  onChange={handleChange}
+                />
+              </Grid>
               <Grid item xs={12} md={4}>
                 <TextField
                   required
@@ -141,15 +153,15 @@ export default function EditModal({
                   handleChange={handleChange}
                 />
               </Grid>
+            </Grid>
+
+            <Grid container spacing={2} mt={1}>
               <Grid item xs={12} md={3}>
                 <CatalystsDropdown
                   selectedItem={data.catalyst}
                   handleChange={handleChange}
                 />
               </Grid>
-            </Grid>
-
-            <Grid container spacing={2} mt={1}>
               <Grid item xs={12} md={1}>
                 <TextField
                   required
@@ -180,7 +192,7 @@ export default function EditModal({
                 </FormControl>
               </Grid>
 
-              <Grid item xs={12} md={3}>
+              <Grid item xs={12} md={2}>
                 <TextField
                   required
                   fullWidth
@@ -195,7 +207,7 @@ export default function EditModal({
                   }}
                 />
               </Grid>
-              <Grid item xs={12} md={3}>
+              <Grid item xs={12} md={2}>
                 <TextField
                   required
                   fullWidth
@@ -206,7 +218,7 @@ export default function EditModal({
                   onChange={handleChange}
                 />
               </Grid>
-              <Grid item xs={12} md={3}>
+              <Grid item xs={12} md={2}>
                 <TextField
                   required
                   fullWidth

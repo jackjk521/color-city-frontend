@@ -28,11 +28,13 @@ export default function RemoveModal({
     const url = `/inv/${inventory_id}/`
     const log_data = createRemoveLogData(
       user.userCredentials.branch,
+      user.userCredentials.branch_name,
       user.userCredentials.user_id,
       user.userCredentials.username,
       "INVENTORY",
       inventory_id,
-      rowData.item_name
+      rowData.item_name,
+      rowData.branch_name
     );
     
     // Delete logic

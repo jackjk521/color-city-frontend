@@ -19,26 +19,27 @@ export default function RemoveModal({
   rowData,
   mutate,
 }) {
-  console.log(rowData)
-  const {user} = useContext(UserContext)
+  console.log(rowData);
+  const { user } = useContext(UserContext);
 
   const handleRemove = async (e) => {
     // console.log(rowData);
     e.preventDefault();
     const purchase_header_id = rowData.purchase_header_id;
-    const url = `/purchases/${purchase_header_id}/`
+    const url = `/purchases/${purchase_header_id}/`;
 
     const log_data = createRemoveLogData(
       user.userCredentials.branch,
+      user.userCredentials.branch_name,
       user.userCredentials.user_id,
       user.userCredentials.username,
       "SUPP_ORDER",
       purchase_header_id,
-      rowData.branch_name
+      undefined
     );
-    
+
     // Delete logic
-    delete_data('supplier_orders', url, closeModal, mutate, log_data)
+    delete_data("supplier_orders", url, closeModal, mutate, log_data);
   };
 
   return (

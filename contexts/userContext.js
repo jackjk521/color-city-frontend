@@ -17,7 +17,7 @@ export const UserProvider = ({ children }) => {
     const resetTimeout = () => {
       clearTimeout(timeout);
       timeout = setTimeout(() => {
-        router.replace("/login");
+        router.replace("/");
         console.log("Timeout completed");
 
         // Clear the userCredentials state
@@ -27,7 +27,7 @@ export const UserProvider = ({ children }) => {
 
     try {
       // Check if the current path is not "/login"
-      if (router.pathname !== "/login") {
+      if (router.pathname !== "/") {
         const events = [
           "mousedown",
           "mousemove",

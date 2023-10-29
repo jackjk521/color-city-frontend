@@ -1,14 +1,8 @@
 import * as React from "react";
 
-import { useRouter } from "next/router";
-
 // Material UI
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import MuiDrawer from "@mui/material/Drawer";
 import Box from "@mui/material/Box";
-import MuiAppBar from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
 
 // Components

@@ -1,5 +1,33 @@
 // Add Data
-export const createAddLogData = (branch, user, username, type, name) => {
+export const createAddLogData = (
+  branch,
+  branch_name,
+  user,
+  username,
+  type,
+  name, 
+  to_branch = null
+) => {
+
+  if (type == "SUPP_ORDER") {
+    return {
+      branch: branch,
+      user: user,
+      type: type,
+      type_id: 0,
+      message: `${username} from ${branch_name} successfully added a ${type} `,
+    };
+  } else if (type == "INVENTORY") {
+    return {
+      branch: branch,
+      user: user,
+      type: type,
+      type_id: 0,
+      message: `${username} from ${branch_name} have successfully updated ${name} in ${to_branch}'s inventory`,
+    };
+  }
+
+  // Default logger
   return {
     branch: branch,
     user: user,
@@ -10,7 +38,34 @@ export const createAddLogData = (branch, user, username, type, name) => {
 };
 
 // Edit Data
-export const createEditLogData = (branch, user, username, type, id, name) => {
+export const createEditLogData = (
+  branch,
+  branch_name,
+  user,
+  username,
+  type,
+  id,
+  name, 
+  to_branch = null
+) => {
+  if (type == "SUPP_ORDER") {
+    return {
+      branch: branch,
+      user: user,
+      type: type,
+      type_id: id,
+      message: `${username} from ${branch_name} successfully updated a ${type} with id: ${id}`,
+    };
+  } else if (type == "INVENTORY") {
+    return {
+      branch: branch,
+      user: user,
+      type: type,
+      type_id: id,
+      message: `${username} from ${branch_name} have successfully updated ${name} in ${to_branch}'s inventory`,
+    };
+  }
+
   return {
     branch: branch,
     user: user,
@@ -21,7 +76,34 @@ export const createEditLogData = (branch, user, username, type, id, name) => {
 };
 
 // Remove Data
-export const createRemoveLogData = (branch, user, username, type, id, name) => {
+export const createRemoveLogData = (
+  branch,
+  branch_name,
+  user,
+  username,
+  type,
+  id,
+  name,
+  to_branch = null
+) => {
+  if (type == "SUPP_ORDER") {
+    return {
+      branch: branch,
+      user: user,
+      type: type,
+      type_id: id,
+      message: `${username} from ${branch_name} successfully removed a ${type} with id: ${id}`,
+    };
+  } else if (type == "INVENTORY") {
+    return {
+      branch: branch,
+      user: user,
+      type: type,
+      type_id: id,
+      message: `${username} from ${branch_name} have successfully removed ${name} in ${to_branch}'s inventory`,
+    };
+  }
+
   return {
     branch: branch,
     user: user,

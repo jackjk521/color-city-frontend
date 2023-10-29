@@ -11,10 +11,8 @@ import { UserProvider } from "@/contexts/userContext";
 export default function App({ Component, pageProps }) {
   const router = useRouter();
 
-  const isLoginPage = router.pathname === "/login";
-
   const validPaths = [
-    "/",
+    "/dashboard",
     "/branches",
     "/users",
     "/items",
@@ -24,11 +22,11 @@ export default function App({ Component, pageProps }) {
     "/supplier_orders",
     "/branch_orders",
   ];
-  const isPathExist = !isLoginPage && validPaths.includes(router.asPath);
+  const isPathExist = validPaths.includes(router.asPath);
 
   useEffect(() => {
     if (!isPathExist) {
-      router.replace("/login");
+      router.replace("/");
     }
   }, [router.pathname]);
 

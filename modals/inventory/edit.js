@@ -66,11 +66,13 @@ export default function EditModal({
     // Add log data
     const log_data = createEditLogData(
       user.userCredentials.branch,
+      user.userCredentials.branch_name,
       user.userCredentials.user_id,
       user.userCredentials.username,
       "INVENTORY",
       inventory_id,
-      data.item_name
+      data.item_name,
+      data.branch_name
     );
 
     try {
@@ -131,8 +133,7 @@ export default function EditModal({
             <Grid container spacing={2} mt={1}>
               <Grid item xs={12} md={6}>
                 <ItemsDropdown
-                  selectedItem={data.item}
-                  handleChange={(e) => handleDropdownChange(e, items, setData)}
+                  setAddItemData={setData}
                 />
               </Grid>
               <Grid item xs={12} md={6}>
