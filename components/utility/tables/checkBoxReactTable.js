@@ -9,6 +9,8 @@ const CheckBoxReactTable = ({
   rowSelection,
   setRowSelection,
   handleRowSave,
+  rowSelectionSetup,
+  getRowId
 }) => {
   //should be memoized or stable
   const columns = useMemo(() => data_columns, []);
@@ -56,20 +58,13 @@ const CheckBoxReactTable = ({
           columns={columns}
           data={data}
           positionActionsColumn="last"
-          // Can be passed from parameters to be reusable
-          enableRowSelection={(originalRow) => {
+          enableRowSelection={(originalRow) =>
             // If the purchase line is not completed and the received_quantity is not equal to 0 and
-            return (
-              originalRow.status !== "COMPLETED" &&
-              originalRow.original.received_quantity == 0 &&
-              originalRow.original.req_quantity !=
-                originalRow.original.received_quantity
-            );
-          }}
+            rowSelectionSetup(originalRow)
+          }
           enablePagination={false}
           enableStickyHeader
-          // Can be passed from parameters to be reusable
-          getRowId={(originalRow) => originalRow.purchase_line_id} // sets the indexes save in rowSelect the purchase_line_id
+          getRowId={(originalRow) => getRowId(originalRow)} // sets the indexes save in rowSelect the purchase_line_id
           onRowSelectionChange={setRowSelection} //connect internal row selection state to your own
           state={{ rowSelection }}
           // Allow editing for partial

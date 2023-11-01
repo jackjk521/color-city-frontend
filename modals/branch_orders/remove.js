@@ -19,31 +19,34 @@ export default function RemoveModal({
   rowData,
   mutate,
 }) {
-  const {user} = useContext(UserContext)
+  console.log(rowData);
+  const { user } = useContext(UserContext);
 
   const handleRemove = async (e) => {
     // console.log(rowData);
     e.preventDefault();
-    const inventory_id = rowData.inventory_id;
-    const url = `/inv/${inventory_id}/`
+    const purchase_header_id = rowData.purchase_header_id;
+    const url = `/purchases/${purchase_header_id}/`;
+
     const log_data = createRemoveLogData(
       user.userCredentials.branch,
+      user.userCredentials.branch_name,
       user.userCredentials.user_id,
       user.userCredentials.username,
-      "INVENTORY",
-      inventory_id,
-      rowData.item_name
+      "SUPP_ORDER",
+      purchase_header_id,
+      undefined
     );
-    
+
     // Delete logic
-    delete_data('inventory', url, closeModal, mutate, log_data)
+    delete_data("supplier_orders", url, closeModal, mutate, log_data);
   };
 
   return (
     <React.Fragment>
       <DialogTitle style={{ backgroundColor: headerColor }} mb={3}>
         <Typography color="white" variant="h5" align="left">
-          Remove Inventory Entry
+          Remove Branch Order
         </Typography>
       </DialogTitle>
       <IconButton
@@ -59,7 +62,7 @@ export default function RemoveModal({
       <DialogContent sx={{ paddingTop: 0 }}>
         <Container maxWidth="sm" mt={1}>
           <Typography variant="body1" gutterBottom>
-            Are you sure you want to remove this inventory entry?
+            Are you sure you want to remove this supplier order?
           </Typography>
           <DialogActions>
             <Button variant="contained" color="success" onClick={handleRemove}>

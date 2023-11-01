@@ -33,7 +33,7 @@ import {
 } from "@/components/utility/tables/tableColumns";
 
 import ActionFormatterPL from "@/components/supplier_orders/actionFormatterPL";
-
+import { handleRowSave, calculateSubtotal, calculateTotalAmount } from "@/components/supplier_orders/supplier_orders";
 const url = "/purchases/";
 
 export default function AddModal({ headerColor, closeModal, mutate }) {
@@ -87,40 +87,17 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
     setAddItemData((prevOrder) => ({ ...prevOrder, [name]: value }));
   };
 
-  const calculateSubtotal = (item_id, quantity) => {
-    const item = items.find((item) => item.item_id === item_id);
-    if (item) {
-      const subtotal = item.item_price_w_vat * quantity;
-      setAddItemData((prevOrder) => ({
-        ...prevOrder,
-        subtotal: subtotal,
-      }));
-      return subtotal;
-    }
-    return 0;
-  };
-
-  const calculateTotalAmount = () => {
-    const total = purchaseData.purchaseLines.reduce(
-      (accumulator, item) => accumulator + item.subtotal,
-      0
-    );
-    setPurchaseData((prevState) => ({
-      ...prevState,
-      purchaseHeader: {
-        ...prevState.purchaseHeader,
-        total_amount: total,
-      },
-    }));
-    return total;
-  };
-
   const subTotal = useMemo(() => {
-    return calculateSubtotal(addItemData.item, addItemData.req_quantity);
+    return calculateSubtotal(
+      items,
+      addItemData.item,
+      addItemData.req_quantity,
+      setAddItemData
+    );
   }, [addItemData.item, addItemData.req_quantity]);
 
   const totalAmount = useMemo(() => {
-    return calculateTotalAmount();
+    return calculateTotalAmount(purchaseData, setPurchaseData);
   }, [purchaseData.purchaseLines]);
 
   const addPurchaseLine = () => {
@@ -327,11 +304,11 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                   fullWidth
                   type="number"
                   name="req_quantity"
-                  label="Requested Quantity"  
+                  label="Requested Quantity"
                   value={addItemData.req_quantity}
                   onChange={handleChange}
                   InputProps={{
-                    inputProps: { min: 0 }
+                    inputProps: { min: 0 },
                   }}
                 />
               </Grid>
@@ -373,6 +350,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                   local_data={purchaseData.purchaseLines}
                   action_formatter={ActionFormatterPL}
                   setLocalData={setPurchaseData}
+                  handleRowSave={handleRowSave}
                 />
 
                 {/* {purchaseData.purchaseLines.map((line, index) => (

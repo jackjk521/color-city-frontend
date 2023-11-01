@@ -40,7 +40,6 @@ export default function ReceiveModal({
   data,
   setData,
   closeModal,
-  mutate
 }) {
   // console.log(data.purchaseHeader.purchase_header_id);
     const { user } = useContext(UserContext);
@@ -186,7 +185,7 @@ export default function ReceiveModal({
                   setRowSelection={setRowSelection}
                   handleRowSave={handleRowSave}
                   rowSelectionSetup={rowSelectionSetup}
-                  getRowId={getRowId}
+                  getRowId={getRowIdsdddd}
                 />
               </Grid>
               <Grid item xs={12} align="right">

@@ -5,10 +5,10 @@ import SmallModal from "../../components/utility/modals/smallModal";
 // Modal Contents
 import AddModal from "./add";
 import ViewModal from "./view";
-import EditModal from "./edit";
+import ReceiveModal from "./receive";
 import RemoveModal from "./remove";
 
-const InventoryModalManager = ({
+const BranchOrdersModalManager = ({
   data,
   setData,
   activeModal,
@@ -27,10 +27,10 @@ const InventoryModalManager = ({
         return "#2e7d32";
       case "view":
         return "#1976d2";
-      case "edit":
-        return "#ff9100";
       case "remove":
         return "#b71c1c";
+      case "receive":
+        return "#2e7d32";
       default:
         return null;
     }
@@ -55,16 +55,6 @@ const InventoryModalManager = ({
             rowData={rowData}
           />
         );
-      case "edit":
-        return (
-          <EditModal
-            headerColor={selectedHeaderColor()}
-            closeModal={closeModal}
-            data={data}
-            setData={setData}
-            mutate={mutate}
-          />
-        );
       case "remove":
         return (
           <RemoveModal
@@ -72,7 +62,16 @@ const InventoryModalManager = ({
             closeModal={closeModal}
             rowData={rowData}
             mutate={mutate}
-
+          />
+        );
+      case "receive":
+        return (
+          <ReceiveModal
+            headerColor={selectedHeaderColor()}
+            closeModal={closeModal}
+            data={data}
+            setData={setData}
+            mutate={mutate}
           />
         );
       default:
@@ -82,22 +81,20 @@ const InventoryModalManager = ({
 
   return (
     <>
-      {/* {activeModal != null && activeModal != "remove" && (
+      {activeModal != null && activeModal != "remove" && (
         <LargeModal
           isOpen={activeModal !== null}
           onClose={closeModal}
-          title={activeModal}
-        >
+          title={activeModal}>
           {renderModalContent()}
         </LargeModal>
-      )} */}
+      )}
 
-      {activeModal  && (
+      {activeModal == "remove" && (
         <SmallModal
           isOpen={activeModal !== null}
           onClose={closeModal}
-          title={activeModal}
-        >
+          title={activeModal}>
           {renderModalContent()}
         </SmallModal>
       )}
@@ -107,4 +104,4 @@ const InventoryModalManager = ({
   );
 };
 
-export default InventoryModalManager;
+export default BranchOrdersModalManager;

@@ -4,28 +4,25 @@ import useSWR from "swr";
 // Material UI
 import { Button, Grid, Divider } from "@mui/material";
 
-import Swal from "sweetalert2";
-
 // Components
-import ItemsContent from "../../components/items/itemsContent";
 import CardGrid from "../../components/utility/grids/CardGrid";
 import CustomTabPanel from "../../components/utility/customTabPanel";
 
 // Table
 import BasicReactTable from "@/components/utility/tables/basicReactTable";
 import {
-  BranchOrdersColumns,
-  BranchOrdersColumnVisibility,
+  BranchOrderColumns,
+  BranchOrderColumnsVisibility,
 } from "../../components/utility/tables/tableColumns";
 
 // Helper Functions
-import ItemModalManager from "../../modals/items/itemModalManager";
-import ActionFormatter from "@/components/items/actionFormatter";
+import BranchOrdersModalManager from "../../modals/branch_orders/branchOrdersModalManager";
+import ActionFormatter from "@/components/branch_orders/actionFormatter";
 import withAuth from "@/components/utility/with_auth";
 
 import { get_fetcher } from "@/components/utility/api/fetcher";
 
-const url = "/items";
+const url = "/purchases/?type=BRANCH";
 
 function BranchOrders({ rows }) {
   // const [data, setData] = React.useState(rows);
@@ -46,22 +43,10 @@ function BranchOrders({ rows }) {
     fallbackData: rows,
   });
 
-  // React.useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     fetcher();
-  //   }, 5000); // Set the interval to 1 minute
-
-  //   return () => {
-  //     clearInterval(interval); // Cleanup the interval on component unmount
-  //   };
-  // }, []);
-
-  // console.log(data)
   return (
     <>
-      <ItemsContent>
         {/* Modal Config */}
-        <ItemModalManager
+        <BranchOrdersModalManager
           activeModal={activeModal}
           setActiveModal={setActiveModal}
           mutate={mutate}
@@ -75,7 +60,7 @@ function BranchOrders({ rows }) {
               color="success"
               onClick={() => openModal("add")}>
               {" "}
-              Add Item{" "}
+              Create Order{" "}
             </Button>
           </Grid>
         </Grid>
@@ -83,17 +68,14 @@ function BranchOrders({ rows }) {
 
         {/* Different Panel Views  */}
         <CustomTabPanel value={value} index={0}>
-          <CardGrid>
-            <BasicReactTable
-              data_columns={BranchOrdersColumns}
-              column_visibility={BranchOrdersColumnVisibility}
-              fetched_data={fetchedData}
-              action_formatter={ActionFormatter}
-              mutate={mutate}
-            />
-          </CardGrid>
+          <BasicReactTable
+            data_columns={BranchOrderColumns}
+            column_visibility={BranchOrderColumnsVisibility}
+            fetched_data={fetchedData}
+            action_formatter={ActionFormatter}
+            mutate={mutate}
+          />
         </CustomTabPanel>
-      </ItemsContent>
     </>
   );
 }

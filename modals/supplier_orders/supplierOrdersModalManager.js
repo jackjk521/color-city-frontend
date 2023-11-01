@@ -84,6 +84,8 @@ const SupplierOrdersModalManager = ({
             closeModal={closeModal}
             data={data}
             setData={setData}
+            mutate={mutate}
+
           />
         );
       default:

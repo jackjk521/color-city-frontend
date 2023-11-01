@@ -11,6 +11,7 @@ const InlineEditReactTable = ({
   column_visibility,
   local_data,
   setLocalData,
+  handleRowSave
 }) => {
   //should be memoized or stable
   const columns = useMemo(() => data_columns, []);
@@ -23,34 +24,34 @@ const InlineEditReactTable = ({
   const isTablet = useMediaQuery("(max-width: 820px)");
 
   // Purchase Lines
-  const handleRowSave = (e) => {
-    const { values } = e;
+  // const handleRowSave = (e) => {
+  //   const { values } = e;
 
-    const item_id = values.item;
-    const item_price = values.item_price_w_vat;
-    const updated_req_quantity = values.req_quantity;
-    const newSubtotal = item_price * updated_req_quantity;
+  //   const item_id = values.item;
+  //   const item_price = values.item_price_w_vat;
+  //   const updated_req_quantity = values.req_quantity;
+  //   const newSubtotal = item_price * updated_req_quantity;
 
-    setLocalData((prevState) => ({
-      ...prevState,
-      purchaseLines: prevState.purchaseLines.map((line) => {
-        if (line.item === item_id) {
-          console.log(line.item === item_id);
-          console.log(updated_req_quantity);
-          console.log(newSubtotal);
+  //   setLocalData((prevState) => ({
+  //     ...prevState,
+  //     purchaseLines: prevState.purchaseLines.map((line) => {
+  //       if (line.item === item_id) {
+  //         console.log(line.item === item_id);
+  //         console.log(updated_req_quantity);
+  //         console.log(newSubtotal);
 
-          return {
-            ...line,
-            req_quantity: updated_req_quantity,
-            subtotal: newSubtotal,
-          };
-        }
-        return line;
-      }),
-    }));
+  //         return {
+  //           ...line,
+  //           req_quantity: updated_req_quantity,
+  //           subtotal: newSubtotal,
+  //         };
+  //       }
+  //       return line;
+  //     }),
+  //   }));
 
-    e.table.setEditingRow(null);
-  };
+  //   e.table.setEditingRow(null);
+  // };
 
   return (
     <>
@@ -88,12 +89,7 @@ const InlineEditReactTable = ({
           )}
           editDisplayMode="row"
           enableEditing
-          onEditingRowSave={handleRowSave}
-          // muiTableBodyCellEditTextFieldProps={({ cell }) => ({
-          //   onChange: (event) => {
-          //     console.info(event, cell.id);
-          //   },
-          // })}
+          onEditingRowSave={(e) => handleRowSave(e, setLocalData)}
         />
       )}
     </>

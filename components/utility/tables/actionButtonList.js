@@ -59,7 +59,6 @@ export const ApproveBtn = ({ openApprove }) => {
   );
 };
 
-
 export const DeclineBtn = ({ openDecline }) => {
   return (  
     <IconButton

@@ -5,7 +5,6 @@ import useSWR from "swr";
 import { Button, Grid, Divider } from "@mui/material";
 
 // Components
-import ItemsContent from "../../components/items/itemsContent";
 import CardGrid from "../../components/utility/grids/CardGrid";
 import CustomTabPanel from "../../components/utility/customTabPanel";
 
@@ -46,7 +45,6 @@ function SupplierOrders({ rows }) {
 
   return (
     <>
-      <ItemsContent>
         {/* Modal Config */}
         <SupplierOrdersModalManager
           activeModal={activeModal}
@@ -78,7 +76,6 @@ function SupplierOrders({ rows }) {
               mutate={mutate}
             />
         </CustomTabPanel>
-      </ItemsContent>
     </>
   );
 }

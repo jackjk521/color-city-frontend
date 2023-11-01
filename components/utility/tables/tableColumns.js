@@ -275,28 +275,22 @@ export const BranchOrderColumns = [
     size: 200,
   },
   {
-    accessorKey: "date_created", //normal accessorKey
+    accessorKey: "date_created",
     header: "Order Date",
     size: 200,
-    render: (value) => {
-      const date = new Date(value);
-      const formattedDate = date.toLocaleString("en-US", {
-        month: "long",
-        day: "numeric",
-        year: "numeric",
-        hour: "numeric",
-        minute: "numeric",
-        second: "numeric",
-      });
+    Cell: ({ cell }) => {
+      const date = new Date(cell.getValue());
+      const formattedDate = date.toLocaleString("en-US");
       return formattedDate;
     },
   },
   {
     accessorKey: "received_status", //normal accessorKey
-    header: "Status",
+    header: "Received Status",
     size: 200,
   },
 ];
+
 export const BranchOrderColumnsVisibility = {
   purchase_header_id: true,
   branch_name: false,

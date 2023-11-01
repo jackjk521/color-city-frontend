@@ -9,16 +9,18 @@ import {
 } from "@mui/material";
 import {
   ViewBtn,
-  EditBtn,
   RemoveBtn,
   ReceiveBtn,
+  PostBtn,
+  ApproveBtn,
+  DeclineBtn,
 } from "../utility/tables/actionButtonList";
 import { get_data } from "../utility/api/fetcher";
-import SupplierOrdersModalManager from "../../modals/supplier_orders/supplierOrdersModalManager";
+import BranchOrdersModalManager from "../../modals/branch_orders/branchOrdersModalManager";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Swal from "sweetalert2";
 
-// Suppleir Orders Table
+// Branch Orders Table
 const ActionFormatter = ({ rowData, mutate }) => {
   // console.log(rowData);
   const [activeModal, setActiveModal] = React.useState(null);
@@ -45,7 +47,6 @@ const ActionFormatter = ({ rowData, mutate }) => {
       user: "",
       username: "",
       transaction_type: "",
-      supplier: "",
       total_amount: 0,
       payment_mode: "",
       status: "",
@@ -67,7 +68,6 @@ const ActionFormatter = ({ rowData, mutate }) => {
         user: rowData.user,
         username: rowData.username,
         transaction_type: rowData.transaction_type,
-        supplier: rowData.supplier,
         supplier_name: rowData.supplier_name,
         total_amount: rowData.total_amount,
         payment_mode: rowData.payment_mode,
@@ -79,37 +79,16 @@ const ActionFormatter = ({ rowData, mutate }) => {
     openModal("view");
   };
 
-  const openEdit = () => {
-    // open edit logic
-    setPurchaseData({
-      purchaseHeader: {
-        purchase_header_id: rowData.purchase_header_id,
-        branch: rowData.branch,
-        branch_name: rowData.branch_name,
-        user: rowData.user,
-        username: rowData.username,
-        transaction_type: rowData.transaction_type,
-        supplier: rowData.supplier,
-        supplier_name: rowData.supplier_name,
-        total_amount: rowData.total_amount,
-        payment_mode: rowData.payment_mode,
-        status: rowData.status,
-      },
-      purchaseLines: rowData.purchase_lines,
-    });
-    openModal("edit");
-  };
-
   const openReceive = async () => {
     const purchase_header_id = rowData.purchase_header_id;
     const url = `/receiving/${purchase_header_id}/`;
     try {
       // Edit Logic
       const result = await get_data(url);
-      console.log(result)
+      console.log(result);
       // Populate form fields only after the API request is successfully completed
       if (result) {
-        console.log(result)
+        console.log(result);
         const updatedPurchaseLines = result.map((line) => {
           // Add a new field to each object in the purchaseLines array
           return {
@@ -118,7 +97,7 @@ const ActionFormatter = ({ rowData, mutate }) => {
           };
         });
 
-        console.log(updatedPurchaseLines)
+        console.log(updatedPurchaseLines);
 
         setPurchaseData({
           purchaseHeader: {
@@ -128,7 +107,6 @@ const ActionFormatter = ({ rowData, mutate }) => {
             user: rowData.user,
             username: rowData.username,
             transaction_type: rowData.transaction_type,
-            supplier: rowData.supplier,
             supplier_name: rowData.supplier_name,
             total_amount: rowData.total_amount,
             payment_mode: rowData.payment_mode,
@@ -176,7 +154,7 @@ const ActionFormatter = ({ rowData, mutate }) => {
   return (
     <>
       {/* Modal Config */}
-      <SupplierOrdersModalManager
+      <BranchOrdersModalManager
         activeModal={activeModal}
         setActiveModal={setActiveModal}
         data={purchaseData}
@@ -204,6 +182,7 @@ const ActionFormatter = ({ rowData, mutate }) => {
               "aria-labelledby": "actions-menu",
             }}>
             <MenuItem onClick={openView}>View</MenuItem>
+            {/* <MenuItem onClick={openEdit}>Edit</MenuItem> */}
             <MenuItem onClick={openRemove}>Remove</MenuItem>
             <MenuItem onClick={openReceive}>Receive</MenuItem>
           </Menu>
@@ -213,6 +192,14 @@ const ActionFormatter = ({ rowData, mutate }) => {
           <ViewBtn openView={openView} />
           {/* <EditBtn openEdit={openEdit} /> */}
           <RemoveBtn openRemove={openRemove} />
+          {rowData.status == "UNPOSTED" && <PostBtn openPost={openReceive} />}
+          {rowData.status == "POSTED" &&
+            user.userCredentials.user_role == "Administrator" && (
+              <>
+                <ApproveBtn openApprove={openReceive} />
+                <DeclineBtn openDecline={openReceive} />
+              </>
+            )}
           {rowData.status == "APPROVED" &&
             rowData.received_status !== "COMPLETED" && (
               <ReceiveBtn openReceive={openReceive} />

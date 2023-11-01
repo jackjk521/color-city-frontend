@@ -229,7 +229,7 @@ export function ItemNumberField() {
   );
 }
 
-export function SONumberField({setData}) {
+export function SONumberField({ setData }) {
   const [poNumber, setPONumber] = useState("");
   useEffect(() => {
     get_so_number()
@@ -258,16 +258,23 @@ export function SONumberField({setData}) {
       InputProps={{
         readOnly: true,
       }}
-    />  
+    />
   );
 }
 
-export function BONumberField(handleChange) {
+export function BONumberField({ setData }) {
   const [poNumber, setPONumber] = useState("");
   useEffect(() => {
     get_bo_number()
       .then((bo_num) => {
         setPONumber(bo_num);
+        setData((prevState) => ({
+          ...prevState,
+          purchaseHeader: {
+            ...prevState.purchaseHeader,
+            po_number: bo_num,
+          },
+        }));
       })
       .catch((error) => {
         console.error(error);
@@ -277,10 +284,10 @@ export function BONumberField(handleChange) {
   return (
     <TextField
       fullWidth
+      required
       label="PO Code"
       name="po_number"
       value={poNumber}
-      handleChange={handleChange}
       InputProps={{
         readOnly: true,
       }}

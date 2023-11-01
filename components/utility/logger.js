@@ -56,7 +56,16 @@ export const createEditLogData = (
       type_id: id,
       message: `${username} from ${branch_name} successfully updated a ${type} with id: ${id}`,
     };
-  } else if (type == "INVENTORY") {
+  } else if (type == "RECEIVE_ORDER") {
+    return {
+      branch: branch,
+      user: user,
+      type: type,
+      type_id: id,
+      message: `${username} from ${branch_name} have received item/s from purchase order with id of ${id}`,
+    };
+  }
+  else if (type == "INVENTORY") {
     return {
       branch: branch,
       user: user,
