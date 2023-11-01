@@ -13,8 +13,8 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import DisplayReactTable from "@/components/utility/tables/displayReactTable";
 import {
-  PurchaseLineColumns,
-  PurchaseLineColumnsVisibility,
+  PurchaseLineViewColumns,
+  PurchaseLineViewColumnsVisibility,
 } from "@/components/utility/tables/tableColumns";
 
 export default function ViewModal({ data, headerColor, closeModal }) {
@@ -127,8 +127,8 @@ export default function ViewModal({ data, headerColor, closeModal }) {
             <Grid item xs={12}>
               {/* Table  */}
               <DisplayReactTable
-                data_columns={PurchaseLineColumns}
-                column_visibility={PurchaseLineColumnsVisibility}
+                data_columns={PurchaseLineViewColumns}
+                column_visibility={PurchaseLineViewColumnsVisibility}
                 fetched_data={data.purchaseLines}
               />
             </Grid>

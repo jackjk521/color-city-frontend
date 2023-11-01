@@ -164,6 +164,9 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                   name="unit"
                   label="Unit"
                   onChange={handleChange}
+                  InputProps={{
+                    inputProps: { min: 0 }
+                  }}
                 />
               </Grid>
               <Grid item xs={12} md={3}>
@@ -206,6 +209,9 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                   name="item_price_w_vat"
                   label="Item Price W/ Vat"
                   onChange={handleChange}
+                  InputProps={{
+                    inputProps: { min: 0 }
+                  }}
                 />
               </Grid>
               <Grid item xs={12} md={3}>
@@ -216,6 +222,9 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                   name="retail_price"
                   label="Retail Price"
                   onChange={handleChange}
+                  InputProps={{
+                    inputProps: { min: 0 }
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>

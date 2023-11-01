@@ -148,6 +148,9 @@ export default function EditModal({
                   name="age"
                   value={data.age}
                   onChange={handleChange}
+                  InputProps={{
+                    inputProps: { min: 0 }
+                  }}
                 />
               </Grid>
 

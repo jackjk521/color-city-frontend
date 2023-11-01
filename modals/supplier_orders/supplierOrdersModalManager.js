@@ -6,9 +6,10 @@ import SmallModal from "../../components/utility/modals/smallModal";
 import AddModal from "./add";
 import ViewModal from "./view";
 import EditModal from "./edit";
+import ReceiveModal from "./receive";
 import RemoveModal from "./remove";
 
-const InventoryModalManager = ({
+const SupplierOrdersModalManager = ({
   data,
   setData,
   activeModal,
@@ -32,7 +33,7 @@ const InventoryModalManager = ({
       case "remove":
         return "#b71c1c";
       case "receive":
-        return "#b71c1c";
+        return "#2e7d32";
       default:
         return null;
     }
@@ -78,12 +79,11 @@ const InventoryModalManager = ({
         );
       case "receive":
         return (
-          <EditModal
+          <ReceiveModal
             headerColor={selectedHeaderColor()}
             closeModal={closeModal}
             data={data}
             setData={setData}
-            mutate={mutate}
           />
         );
       default:
@@ -116,4 +116,4 @@ const InventoryModalManager = ({
   );
 };
 
-export default InventoryModalManager;
+export default SupplierOrdersModalManager;

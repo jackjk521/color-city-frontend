@@ -31,6 +31,29 @@ export const get_fetcher = async (url) => {
   }
 };
 
+// Get Specific Data
+export const get_data = async (url) => {
+  try {
+    const response = await apiClient.get(url);
+    if (response.status !== 200) {
+      const error = new Error();
+      error.info = response.data;
+      error.status = response.status;
+      error.message = "An error occurred while fetching data";
+      Swal.fire({
+        title: error.info,
+        text: error.message,
+        icon: "error",
+      });
+      throw error;
+    }
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+};
+
 // Create/Insert New Data
 export const post_data = async (
   name,
@@ -124,7 +147,9 @@ export const put_data = async (
           text: "Successfully updated a/an " + name + ".",
           icon: "success",
         });
-        mutate();
+        if (mutate) {
+          mutate();
+        }
       }
     }
   } catch (error) {

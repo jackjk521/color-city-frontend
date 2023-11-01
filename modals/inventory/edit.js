@@ -152,6 +152,9 @@ export default function EditModal({
                   label="Total Quantity"
                   value={data.total_quantity}
                   onChange={handleChange}
+                  InputProps={{
+                    inputProps: { min: 0 }
+                  }}
                 />
               </Grid>
 

@@ -327,11 +327,11 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                   fullWidth
                   type="number"
                   name="req_quantity"
-                  label="Requested Quantity"
+                  label="Requested Quantity"  
                   value={addItemData.req_quantity}
                   onChange={handleChange}
                   InputProps={{
-                    min: 0,
+                    inputProps: { min: 0 }
                   }}
                 />
               </Grid>

@@ -171,6 +171,9 @@ export default function EditModal({
                   label="Unit"
                   value={data.unit}
                   onChange={handleChange}
+                  InputProps={{
+                    inputProps: { min: 0 }
+                  }}
                 />
               </Grid>
               <Grid item xs={12} md={2}>
@@ -216,6 +219,9 @@ export default function EditModal({
                   label="Item Price W/ Vat"
                   value={data.item_price_w_vat}
                   onChange={handleChange}
+                  InputProps={{
+                    inputProps: { min: 0 }
+                  }}
                 />
               </Grid>
               <Grid item xs={12} md={2}>
@@ -227,6 +233,9 @@ export default function EditModal({
                   label="Retail Price"
                   value={data.retail_price}
                   onChange={handleChange}
+                  InputProps={{
+                    inputProps: { min: 0 }
+                  }}
                 />
               </Grid>
               <Grid item xs={12}>

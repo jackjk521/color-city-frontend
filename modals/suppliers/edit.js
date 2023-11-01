@@ -89,6 +89,9 @@ export default function EditPurchaseModal({
                   name="discount_rate"
                   value={data.discount_rate}
                   onChange={handleChange}
+                  InputProps={{
+                    inputProps: { min: 0 }
+                  }}
                 />
               </Grid>
 

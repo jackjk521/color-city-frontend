@@ -153,6 +153,9 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                   label="Age"
                   name="age"
                   onChange={handleChange}
+                  InputProps={{
+                    inputProps: { min: 0 }
+                  }}
                 />
               </Grid>
 

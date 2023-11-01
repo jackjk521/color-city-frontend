@@ -89,6 +89,9 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                   label="Discount Rate"
                   name="discount_rate"
                   onChange={handleChange}
+                  InputProps={{
+                    inputProps: { min: 0 }
+                  }}
                 />
               </Grid>
 

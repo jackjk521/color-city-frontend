@@ -1,6 +1,7 @@
 import React from "react";
 import { BrandItemName } from "../get_data";
 import { TextField } from "@mui/material";
+import LensIcon from "@mui/icons-material/Lens";
 
 // Items
 export const ItemColumns = [
@@ -304,12 +305,133 @@ export const BranchOrderColumnsVisibility = {
   received_status: false,
 };
 
-// Purchase Lines
+// Purchase Lines (display only)
+export const PurchaseLineViewColumns = [
+  {
+    accessorKey: "item", // Primary key
+    header: "Item ID",
+    size: 50,
+    enableEditing: false,
+  },
+  {
+    accessorKey: "brand_item",
+    header: "Item Name",
+    size: 100,
+    enableEditing: false,
+  },
+  {
+    accessorKey: "req_quantity", //normal accessorKey
+    header: "Requested Quantity",
+    size: 100,
+    muiEditTextFieldProps: ({ cell }) => ({
+      name: "req_quantity",
+      required: true,
+      type: "number",
+      inputProps: {
+        min: 0,
+      },
+    }),
+  },
+  {
+    accessorKey: "received_quantity", //normal accessorKey
+    header: "Received Quantity",
+    size: 100,
+    enableEditing: false,
+  },
+  {
+    accessorKey: "item_price_w_vat",
+    header: "Item Price",
+    size: 100,
+    enableEditing: false,
+  },
+  {
+    accessorKey: "subtotal", //normal accessorKey
+    header: "Subtotal",
+    size: 100,
+    enableEditing: false,
+  },
+  {
+    accessorKey: "status", //normal accessorKey
+    header: "Status",
+    size: 100,
+    enableColumnFilterModes: false,
+    enableEditing: false,
+    Cell: ({ cell }) => {
+      const status = cell.getValue();
+      if (status == "COMPLETED") {
+        return <LensIcon style={{ color: "green" }} />;
+      } else if (status == "PARTIAL") {
+        return <LensIcon style={{ color: "orange" }} />;
+      } else {
+        return <LensIcon style={{ color: "red" }} />;
+      }
+    },
+  },
+];
+export const PurchaseLineViewColumnsVisibility = {
+  item: true,
+  item_name: false,
+  brand_item: false,
+  item_price_w_vat: false,
+  req_quantity: false,
+  subtotal: false,
+};
+
+// Purchase Lines (add or edit)
 export const PurchaseLineColumns = [
   {
     accessorKey: "item", // Primary key
     header: "Item ID",
     size: 50,
+    enableEditing: false,
+  },
+  {
+    accessorKey: "brand_item",
+    header: "Item Name",
+    size: 100,
+    enableEditing: false,
+  },
+  {
+    accessorKey: "req_quantity", //normal accessorKey
+    header: "Requested Quantity",
+    size: 100,
+    muiEditTextFieldProps: ({ cell }) => ({
+      name: "req_quantity",
+      required: true,
+      type: "number",
+      inputProps: {
+        min: 0,
+      },
+    }),
+  },
+  {
+    accessorKey: "item_price_w_vat",
+    header: "Item Price",
+    size: 100,
+    enableEditing: false,
+  },
+  {
+    accessorKey: "subtotal", //normal accessorKey
+    header: "Subtotal",
+    size: 100,
+    enableEditing: false,
+  },
+];
+export const PurchaseLineColumnsVisibility = {
+  item: true,
+  item_name: false,
+  brand_item: false,
+  item_price_w_vat: false,
+  req_quantity: false,
+  subtotal: false,
+};
+
+// Receiving Items
+export const ReceivingItemsColumns = [
+  {
+    accessorKey: "purchase_line_id", // Primary key
+    header: "Order ID",
+    size: 20,
     enableEditing: false,
   },
   {
@@ -322,30 +444,45 @@ export const PurchaseLineColumns = [
     accessorKey: "req_quantity", //normal accessorKey
     header: "Requested Quantity",
     size: 200,
+    enableEditing: false,
+  },
+  {
+    accessorKey: "received_quantity",
+    header: "Received Quantity",
+    size: 200,
+    enableEditing: false,
+
+    // muiEditTextFieldProps: ({ cell }) => ({
+    //   name: "req_quantity",
+    //   required: true,
+    //   type: "number",
+    //   inputProps: {
+    //     min: 0,
+    //     max: cell.row.original.req_quantity, // max is the req_quantity
+    //   },
+    // }),
+  },
+  {
+    accessorKey: "receive_qty",
+    header: "To Receive",
+    size: 200,
     muiEditTextFieldProps: ({ cell }) => ({
-      name: "req_quantity",
+      name: "receive_qty",
       required: true,
       type: "number",
+      inputProps: {
+        min: 0,
+        max:
+          cell.row.original.req_quantity - cell.row.original.received_quantity, // max is the req_quantity
+      },
     }),
   },
-  {
-    accessorKey: "item_price_w_vat",
-    header: "Item Price",
-    size: 200,
-    enableEditing: false,
-  },
-  {
-    accessorKey: "subtotal", //normal accessorKey
-    header: "Subtotal",
-    size: 200,
-    enableEditing: false,
-  },
 ];
-export const PurchaseLineColumnsVisibility = {
-  item: true,
-  item_name: false,
-  brand_item: false,
-  item_price_w_vat: false,
-  req_quantity: false,
-  subtotal: false,
+
+export const ReceivingItemsColumnVisibility = {
+  purchase_line_id: false,
+  brand_item: true,
+  req_quantity: true,
+  received_quantity: true,
+  receive_qty: true,
 };

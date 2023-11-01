@@ -160,6 +160,9 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                   name="total_quantity"
                   label="Total Quantity"
                   onChange={handleChange}
+                  InputProps={{
+                    inputProps: { min: 0 }
+                  }}
                 />
               </Grid>
 

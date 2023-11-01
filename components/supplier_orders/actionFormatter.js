@@ -11,14 +11,16 @@ import {
   ViewBtn,
   EditBtn,
   RemoveBtn,
-  ReceiveBtn
+  ReceiveBtn,
 } from "../utility/tables/actionButtonList";
+import { get_data } from "../utility/api/fetcher";
 import SupplierOrdersModalManager from "../../modals/supplier_orders/supplierOrdersModalManager";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import Swal from "sweetalert2";
 
 // Suppleir Orders Table
 const ActionFormatter = ({ rowData, mutate }) => {
-  // console.log(rowData)
+  // console.log(rowData);
   const [activeModal, setActiveModal] = React.useState(null);
   const openModal = (modalType) => {
     setActiveModal(modalType);
@@ -77,7 +79,7 @@ const ActionFormatter = ({ rowData, mutate }) => {
     openModal("view");
   };
 
-  const openReceive = () => {
+  const openEdit = () => {
     // open edit logic
     setPurchaseData({
       purchaseHeader: {
@@ -96,6 +98,74 @@ const ActionFormatter = ({ rowData, mutate }) => {
       purchaseLines: rowData.purchase_lines,
     });
     openModal("edit");
+  };
+
+  const openReceive = async () => {
+    const purchase_header_id = rowData.purchase_header_id;
+    const url = `/receiving/${purchase_header_id}/`;
+    try {
+      // Edit Logic
+      const result = await get_data(url);
+      console.log(result)
+      // Populate form fields only after the API request is successfully completed
+      if (result) {
+        console.log(result)
+        const updatedPurchaseLines = result.map((line) => {
+          // Add a new field to each object in the purchaseLines array
+          return {
+            ...line,
+            receive_qty: 0,
+          };
+        });
+
+        console.log(updatedPurchaseLines)
+
+        setPurchaseData({
+          purchaseHeader: {
+            purchase_header_id: rowData.purchase_header_id,
+            branch: rowData.branch,
+            branch_name: rowData.branch_name,
+            user: rowData.user,
+            username: rowData.username,
+            transaction_type: rowData.transaction_type,
+            supplier: rowData.supplier,
+            supplier_name: rowData.supplier_name,
+            total_amount: rowData.total_amount,
+            payment_mode: rowData.payment_mode,
+            status: rowData.status,
+          },
+          purchaseLines: updatedPurchaseLines,
+        });
+        openModal("receive");
+      }
+    } catch (error) {
+      // Handle the error
+      console.error(error);
+      Swal.fire({
+        title: "Error",
+        text: error,
+        icon: "error",
+      });
+    }
+
+    // open receive logic (with completed status)
+    // setPurchaseData({
+    //   purchaseHeader: {
+    //     purchase_header_id: rowData.purchase_header_id,
+    //     branch: rowData.branch,
+    //     branch_name: rowData.branch_name,
+    //     user: rowData.user,
+    //     username: rowData.username,
+    //     transaction_type: rowData.transaction_type,
+    //     supplier: rowData.supplier,
+    //     supplier_name: rowData.supplier_name,
+    //     total_amount: rowData.total_amount,
+    //     payment_mode: rowData.payment_mode,
+    //     status: rowData.status,
+    //   },
+    //   purchaseLines: rowData.purchase_lines,
+    // });
+    // openModal("receive");
   };
 
   const openRemove = async () => {
@@ -136,8 +206,7 @@ const ActionFormatter = ({ rowData, mutate }) => {
             <MenuItem onClick={openView}>View</MenuItem>
             {/* <MenuItem onClick={openEdit}>Edit</MenuItem> */}
             <MenuItem onClick={openRemove}>Remove</MenuItem>
-            <MenuItem onClick={openReceive}>Recieve</MenuItem>
-
+            <MenuItem onClick={openReceive}>Receive</MenuItem>
           </Menu>
         </>
       ) : (
@@ -145,7 +214,12 @@ const ActionFormatter = ({ rowData, mutate }) => {
           <ViewBtn openView={openView} />
           {/* <EditBtn openEdit={openEdit} /> */}
           <RemoveBtn openRemove={openRemove} />
-          {rowData.status == "APPROVED" && <ReceiveBtn openReceive={openReceive}/>}
+          {rowData.status == "APPROVED" &&
+            rowData.received_status !== "COMPLETED" && (
+              <ReceiveBtn openReceive={openReceive} />
+            )}
+
+          {/* Add a disabled version of the receive btn once the status is completed  */}
         </Box>
       )}
     </>
