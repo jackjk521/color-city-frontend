@@ -19,10 +19,11 @@ import { get_data } from "../utility/api/fetcher";
 import BranchOrdersModalManager from "../../modals/branch_orders/branchOrdersModalManager";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import Swal from "sweetalert2";
-
+import { UserContext } from "@/contexts/userContext";
 // Branch Orders Table
 const ActionFormatter = ({ rowData, mutate }) => {
   // console.log(rowData);
+  const { user } = React.useContext(UserContext);
   const [activeModal, setActiveModal] = React.useState(null);
   const openModal = (modalType) => {
     setActiveModal(modalType);
@@ -125,25 +126,21 @@ const ActionFormatter = ({ rowData, mutate }) => {
         icon: "error",
       });
     }
+  };
 
-    // open receive logic (with completed status)
-    // setPurchaseData({
-    //   purchaseHeader: {
-    //     purchase_header_id: rowData.purchase_header_id,
-    //     branch: rowData.branch,
-    //     branch_name: rowData.branch_name,
-    //     user: rowData.user,
-    //     username: rowData.username,
-    //     transaction_type: rowData.transaction_type,
-    //     supplier: rowData.supplier,
-    //     supplier_name: rowData.supplier_name,
-    //     total_amount: rowData.total_amount,
-    //     payment_mode: rowData.payment_mode,
-    //     status: rowData.status,
-    //   },
-    //   purchaseLines: rowData.purchase_lines,
-    // });
-    // openModal("receive");
+  const openPost = async () => {
+    // open remove logic
+    openModal("post");
+  };
+
+  const openApprove = async () => {
+    // open remove logic
+    openModal("approve");
+  };
+
+  const openDecline = async () => {
+    // open remove logic
+    openModal("decline");
   };
 
   const openRemove = async () => {
@@ -185,23 +182,28 @@ const ActionFormatter = ({ rowData, mutate }) => {
             {/* <MenuItem onClick={openEdit}>Edit</MenuItem> */}
             <MenuItem onClick={openRemove}>Remove</MenuItem>
             <MenuItem onClick={openReceive}>Receive</MenuItem>
+            <MenuItem onClick={openPost}>Post</MenuItem>
+            <MenuItem onClick={openApprove}>Approve</MenuItem>
+            <MenuItem onClick={openDecline}>Decline</MenuItem>
           </Menu>
         </>
       ) : (
         <Box sx={{ display: "flex", flexWrap: "nowrap", gap: "8px" }}>
           <ViewBtn openView={openView} />
-          {/* <EditBtn openEdit={openEdit} /> */}
-          <RemoveBtn openRemove={openRemove} />
-          {rowData.status == "UNPOSTED" && <PostBtn openPost={openReceive} />}
+          {rowData.status !== "APPROVED" && rowData.status !== "POSTED" && (
+            <RemoveBtn openRemove={openRemove} />
+          )}
+          {rowData.status == "UNPOSTED" && <PostBtn openPost={openPost} />}
           {rowData.status == "POSTED" &&
             user.userCredentials.user_role == "Administrator" && (
               <>
-                <ApproveBtn openApprove={openReceive} />
-                <DeclineBtn openDecline={openReceive} />
+                <ApproveBtn openApprove={openApprove} />
+                <DeclineBtn openDecline={openDecline} />
               </>
             )}
           {rowData.status == "APPROVED" &&
-            rowData.received_status !== "COMPLETED" && (
+            rowData.received_status !== "COMPLETED" &&
+            user.userCredentials.user_role == "Manager" && (
               <ReceiveBtn openReceive={openReceive} />
             )}
 

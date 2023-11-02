@@ -22,7 +22,7 @@ import { createAddLogData } from "@/components/utility/logger";
 import { UserContext } from "@/contexts/userContext";
 import {
   ItemsDropdown,
-  SuppliersDropdown,
+  WarehouseItemsDropdown,
   get_items,
   BONumberField,
 } from "@/components/utility/get_data";
@@ -59,6 +59,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
     item: "",
     brand_item: "",
     item_price_w_vat: 0,
+    available_stock: 0,
     req_quantity: 0,
     subtotal: 0,
   });
@@ -130,6 +131,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
       item: "",
       brand_item: "",
       item_price_w_vat: 0,
+      available_stock: 0,
       req_quantity: 0,
       subtotal: 0,
     });
@@ -248,7 +250,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
               <Grid item xs={12} md={4}>
                 <BONumberField setData={setPurchaseData} />
               </Grid>
-              
+
               <Grid item xs={12} md={4}>
                 {/* Payment Mode  */}
                 <FormControl fullWidth>
@@ -286,7 +288,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
               {/* Adding Item for the Purchase Line  */}
               <Grid item xs={12} md={5}>
                 {/* Item Dropdown  */}
-                <ItemsDropdown
+                <WarehouseItemsDropdown
                   // selectedItem={addItemData.item}
                   // handleChange={handleChange}
                   setAddItemData={setAddItemData}
@@ -303,8 +305,9 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                   label="Requested Quantity"
                   value={addItemData.req_quantity}
                   onChange={handleChange}
+                  helperText={`Max in stock: ${addItemData.available_stock}`}
                   InputProps={{
-                    inputProps: { min: 0 },
+                    inputProps: { min: 0, max: addItemData.available_stock },
                   }}
                 />
               </Grid>

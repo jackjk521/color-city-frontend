@@ -107,6 +107,25 @@ export const get_items = async () => {
   }
 };
 
+// Items from Main Inventory
+export const get_warehouse_items = async () => {
+  try {
+    const response = await apiClient.get(`/inventory/?branch=1`);
+    if (response.status === 200) {
+      return response.data;
+    }
+  } catch (error) {
+    // Handle the error
+    console.error(error);
+    Swal.fire({
+      title: "Error",
+      text: error,
+      icon: "error",
+    });
+    throw error;
+  }
+};
+
 // Item Number Generation
 export const get_item_number = async () => {
   try {
@@ -188,6 +207,91 @@ export const get_items_by_id = async (id) => {
     if (response.status === 200) {
       const brand_item_format = response.data;
       return brand_item_format;
+    }
+  } catch (error) {
+    // Handle the error
+    console.error(error);
+    Swal.fire({
+      title: "Error",
+      text: error,
+      icon: "error",
+    });
+    throw error;
+  }
+};
+
+// Update PH status
+export const post_purchase = async (id, closeModal, mutate) => {
+  try {
+    const response = await apiClient.put(`/po_status/${id}/`, {
+      status: "POST",
+    });
+    if (response.status === 200) {
+      closeModal();
+      Swal.fire({
+        title: "Success",
+        text: "Successfully posted the order",
+        icon: "success",
+      });
+      mutate();
+    }
+  } catch (error) {
+    // Handle the error
+    console.error(error);
+    Swal.fire({
+      title: "Error",
+      text: error,
+      icon: "error",
+    });
+    throw error;
+  }
+};
+
+export const approve_purchase = async (
+  id,
+  purchase_lines,
+  closeModal,
+  mutate
+) => {
+  try {
+    const response = await apiClient.put(`/po_status/${id}/`, {
+      status: "APPROVE",
+      purchase_lines: JSON.stringify(purchase_lines),
+    });
+    if (response.status === 200) {
+      closeModal();
+      Swal.fire({
+        title: "Success",
+        text: "Successfully approved the order",
+        icon: "success",
+      });
+      mutate();
+    }
+  } catch (error) {
+    // Handle the error
+    console.error(error);
+    Swal.fire({
+      title: "Error",
+      text: error,
+      icon: "error",
+    });
+    throw error;
+  }
+};
+
+export const decline_purchase = async (id, closeModal, mutate) => {
+  try {
+    const response = await apiClient.put(`/po_status/${id}/`, {
+      status: "DECLINE",
+    });
+    if (response.status === 200) {
+      closeModal();
+      Swal.fire({
+        title: "Success",
+        text: "Successfully declined the order",
+        icon: "success",
+      });
+      mutate();
     }
   } catch (error) {
     // Handle the error
@@ -579,4 +683,74 @@ export function BrandItemName({ id }) {
   }, []);
 
   return <Typography>{brandItem}</Typography>;
+}
+
+export function WarehouseItemsDropdown({ setAddItemData }) {
+  const [items, setItems] = useState([]);
+  const [selected, setSelected] = useState(null);
+
+  useEffect(() => {
+    get_warehouse_items()
+      .then((items) => {
+        setItems(items);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
+  const handleItemChange = (event, value) => {
+    if (value) {
+      setAddItemData((prevOrder) => ({
+        ...prevOrder,
+        item: value.item,
+        brand_item: value.brand_item,
+        item_price_w_vat: value.item_price_w_vat,
+        available_stock: value.available_stock,
+      }));
+    }
+  };
+
+  // console.log(items)
+
+  return (
+    <FormControl fullWidth>
+      <Autocomplete
+        options={items}
+        name="item"
+        // value={selected ? selected : selectedItem}
+        onChange={handleItemChange}
+        getOptionLabel={(option) => option.brand_item}
+        getOptionValue={(option) => option.item}
+        clearOnEscape
+        renderInput={(params) => (
+          <TextField {...params} label="Select an Item" variant="outlined" />
+        )}
+      />
+    </FormControl>
+
+    // <FormControl fullWidth>
+    //   <InputLabel id="items-label">Items</InputLabel>
+    //   <Select
+    //     fullWidth
+    //     labelId="items-label"
+    //     label="items"
+    //     id="items-select"
+    //     name="item"
+    //     value={selectedItem || ""}
+    //     onChange={handleChange}>
+    //     {items.length > 0 ? (
+    //       items.map((item) => (
+    //         <MenuItem key={item.item_id} value={item.item_id}>
+    //           {item.brand_name} - {item.item_name}
+    //         </MenuItem>
+    //       ))
+    //     ) : (
+    //       <MenuItem key={0} value={0}>
+    //         NO ITEMS
+    //       </MenuItem>
+    //     )}
+    //   </Select>
+    // </FormControl>
+  );
 }

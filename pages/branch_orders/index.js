@@ -22,6 +22,7 @@ import withAuth from "@/components/utility/with_auth";
 
 import { get_fetcher } from "@/components/utility/api/fetcher";
 
+// Tabs URL
 const url = "/purchases/?type=BRANCH";
 
 function BranchOrders({ rows }) {

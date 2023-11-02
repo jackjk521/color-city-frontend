@@ -40,6 +40,7 @@ export default function ReceiveModal({
   data,
   setData,
   closeModal,
+  mutate
 }) {
   // console.log(data.purchaseHeader.purchase_header_id);
     const { user } = useContext(UserContext);
@@ -176,6 +177,10 @@ export default function ReceiveModal({
                   Note: The items below are not yet received or partially
                   received
                 </Typography>
+                <br></br>
+                  <Typography variant="subtitle">
+                  LEGEND: Check the items that will be completely received and edit ONLY when receiving partial stocks
+                </Typography>
 
                 <CheckBoxReactTable
                   data_columns={ReceivingItemsColumns}
@@ -185,7 +190,7 @@ export default function ReceiveModal({
                   setRowSelection={setRowSelection}
                   handleRowSave={handleRowSave}
                   rowSelectionSetup={rowSelectionSetup}
-                  getRowId={getRowIdsdddd}
+                  getRowId={getRowId}
                 />
               </Grid>
               <Grid item xs={12} align="right">

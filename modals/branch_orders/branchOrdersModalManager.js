@@ -7,6 +7,9 @@ import AddModal from "./add";
 import ViewModal from "./view";
 import ReceiveModal from "./receive";
 import RemoveModal from "./remove";
+import PostModal from "./post";
+import ApproveModal from "./approve";
+import DeclineModal from "./decline";
 
 const BranchOrdersModalManager = ({
   data,
@@ -31,6 +34,13 @@ const BranchOrdersModalManager = ({
         return "#b71c1c";
       case "receive":
         return "#2e7d32";
+      case "post":
+        return "#1976d2";
+      case "approve":
+        return "#2e7d32";
+      case "decline":
+        return "#b71c1c";
+
       default:
         return null;
     }
@@ -74,14 +84,43 @@ const BranchOrdersModalManager = ({
             mutate={mutate}
           />
         );
+      case "post":
+        return (
+          <PostModal
+            headerColor={selectedHeaderColor()}
+            closeModal={closeModal}
+            rowData={rowData}
+            mutate={mutate}
+          />
+        );
+      case "approve":
+        return (
+          <ApproveModal
+            headerColor={selectedHeaderColor()}
+            closeModal={closeModal}
+            rowData={rowData}
+            mutate={mutate}
+          />
+        );
+      case "decline":
+        return (
+          <DeclineModal
+            headerColor={selectedHeaderColor()}
+            closeModal={closeModal}
+            rowData={rowData}
+            mutate={mutate}
+          />
+        );
       default:
         return null;
     }
   };
+  const modals = ["remove", "post", "approve", "decline"];
+  const lgModals = ["add", "view", "receive"];
 
   return (
     <>
-      {activeModal != null && activeModal != "remove" && (
+      {activeModal != null && lgModals.includes(activeModal) && (
         <LargeModal
           isOpen={activeModal !== null}
           onClose={closeModal}
@@ -90,7 +129,7 @@ const BranchOrdersModalManager = ({
         </LargeModal>
       )}
 
-      {activeModal == "remove" && (
+      {modals.includes(activeModal) && (
         <SmallModal
           isOpen={activeModal !== null}
           onClose={closeModal}

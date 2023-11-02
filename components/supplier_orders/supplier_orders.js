@@ -4,6 +4,7 @@ export const rowSelectionSetup = (originalRow) => {
     return (
         originalRow.status !== "COMPLETED" &&
         originalRow.original.received_quantity == 0 &&
+        originalRow.original.receive_qty == 0 &&
         originalRow.original.req_quantity !=
           originalRow.original.received_quantity
       );

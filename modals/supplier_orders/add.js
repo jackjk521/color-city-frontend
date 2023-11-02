@@ -33,7 +33,11 @@ import {
 } from "@/components/utility/tables/tableColumns";
 
 import ActionFormatterPL from "@/components/supplier_orders/actionFormatterPL";
-import { handleRowSave, calculateSubtotal, calculateTotalAmount } from "@/components/supplier_orders/supplier_orders";
+import {
+  handleRowSave,
+  calculateSubtotal,
+  calculateTotalAmount,
+} from "@/components/supplier_orders/supplier_orders";
 const url = "/purchases/";
 
 export default function AddModal({ headerColor, closeModal, mutate }) {
@@ -55,6 +59,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
     item: "",
     brand_item: "",
     item_price_w_vat: 0,
+    available_stock: 0,
     req_quantity: 0,
     subtotal: 0,
   });
@@ -126,6 +131,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
       item: "",
       brand_item: "",
       item_price_w_vat: 0,
+      available_stock: 0,
       req_quantity: 0,
       subtotal: 0,
     });
@@ -307,6 +313,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                   label="Requested Quantity"
                   value={addItemData.req_quantity}
                   onChange={handleChange}
+                  helperText={`In stock: ${addItemData.available_stock}`}
                   InputProps={{
                     inputProps: { min: 0 },
                   }}
