@@ -9,11 +9,11 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { delete_data } from "@/components/utility/api/fetcher";
-import { createEditLogData } from "@/components/utility/logger";
+import { put_order_data } from "@/components/utility/api/fetcher";
+import { createPostLogData } from "@/components/utility/logger";
 import { UserContext } from "@/contexts/userContext";
 import { post_purchase } from "@/components/utility/get_data";
-import Swal from "sweetalert2"
+import Swal from "sweetalert2";
 
 export default function PostModal({
   headerColor,
@@ -28,7 +28,32 @@ export default function PostModal({
     // console.log(rowData);
     e.preventDefault();
     const purchase_header_id = rowData.purchase_header_id;
-    post_purchase(purchase_header_id, closeModal, mutate)
+    const url = `/po_status/${purchase_header_id}/`;
+
+    const log_data = createPostLogData(
+      user.userCredentials.branch,
+      user.userCredentials.branch_name,
+      user.userCredentials.user_id,
+      user.userCredentials.username,
+      "BRANCH_ORDER",
+      purchase_header_id,
+      undefined,
+      undefined
+    );
+
+    const data = {
+      status: "POST"
+    }
+
+    put_order_data(
+      "branch_order/s",
+      url,
+      data,
+      closeModal,
+      mutate,
+      log_data
+    );
+    // post_purchase(purchase_header_id, closeModal, mutate)
     // Swal.fire({
     //   title: "Success",
     //   text: "Successfully posted a/an " + name + ".",
@@ -36,18 +61,7 @@ export default function PostModal({
     // });
     // closeModal()
     // mutate()
-    // const log_data = createRemoveLogData(
-    //   user.userCredentials.branch,
-    //   user.userCredentials.branch_name,
-    //   user.userCredentials.user_id,
-    //   user.userCredentials.username,
-    //   "SUPP_ORDER",
-    //   purchase_header_id,
-    //   undefined
-    // );
-
-    // Delete logic
-    // delete_data("supplier_orders", url, closeModal, mutate, log_data);
+   
   };
 
   return (
@@ -70,7 +84,8 @@ export default function PostModal({
       <DialogContent sx={{ paddingTop: 0 }}>
         <Container maxWidth="sm" mt={1}>
           <Typography variant="body1" gutterBottom>
-            Are you sure you want to post this branch order? Note: This will inform the main branch of this order
+            Are you sure you want to post this branch order? Note: This will
+            inform the main branch of this order
           </Typography>
           <DialogActions>
             <Button variant="contained" color="success" onClick={handlePost}>

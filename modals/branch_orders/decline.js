@@ -9,8 +9,8 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { delete_data } from "@/components/utility/api/fetcher";
-import { createRemoveLogData } from "@/components/utility/logger";
+import { put_order_data } from "@/components/utility/api/fetcher";
+import { createDeclineLogData } from "@/components/utility/logger";
 import { UserContext } from "@/contexts/userContext";
 import { decline_purchase } from "@/components/utility/get_data";
 
@@ -27,16 +27,24 @@ export default function DeclineModal({
     // console.log(rowData);
     e.preventDefault();
     const purchase_header_id = rowData.purchase_header_id;
-    decline_purchase(purchase_header_id, closeModal, mutate);
-    // const log_data = createRemoveLogData(
-    //   user.userCredentials.branch,
-    //   user.userCredentials.branch_name,
-    //   user.userCredentials.user_id,
-    //   user.userCredentials.username,
-    //   "SUPP_ORDER",
-    //   purchase_header_id,
-    //   undefined
-    // );
+    const url = `/po_status/${purchase_header_id}/`;
+
+    const log_data = createDeclineLogData(
+      user.userCredentials.branch,
+      user.userCredentials.branch_name,
+      user.userCredentials.user_id,
+      user.userCredentials.username,
+      "BRANCH_ORDER",
+      purchase_header_id,
+      undefined,
+      rowData.branch_name
+    );
+
+    const data = {
+      status: "DECLINE",
+    };
+
+    put_order_data("branch_order/s", url, data, closeModal, mutate, log_data);
   };
 
   return (

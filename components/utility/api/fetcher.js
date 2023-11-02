@@ -1,12 +1,5 @@
 import apiClient from "./apiClient";
 import Swal from "sweetalert2";
-import {
-  createAddLogData,
-  createEditLogData,
-  createRemoveLogData,
-} from "../logger";
-import { useContext } from "react";
-import { UserContext } from "@/contexts/userContext";
 
 // Get all
 export const get_fetcher = async (url) => {
@@ -89,44 +82,7 @@ export const post_data = async (
     throw error;
   }
 };
-
-// export const post_order_data = async (
-//   name,
-//   url,
-//   data,
-//   closeModal,
-//   mutate,
-//   log_data = null,
-//   transaction_type,
-//   branch_id
-// ) => {
-//   try {
-//     const response = await apiClient.post(url, data);
-//     if (response.status === 201) {
-//       if (log_data != null) {
-//         log_add_data(name, closeModal, mutate, log_data);
-//       } else {
-//         closeModal();
-//         Swal.fire({
-//           title: "Success",
-//           text: "Branch with id: " + branch_id + "successfully created a " + transaction_type + "  order.",
-//           icon: "success",
-//         });
-//         mutate();
-//       }
-//     }
-//   } catch (error) {
-//     // Handle the error
-//     console.error(error);
-//     Swal.fire({
-//       title: "Error",
-//       text: error,
-//       icon: "error",
-//     });
-//     throw error;
-//   }
-// };
-
+// Update data
 export const put_data = async (
   name,
   url,
@@ -164,6 +120,55 @@ export const put_data = async (
   }
 };
 
+// Update purchase status
+export const put_order_data = async (
+  name,
+  url,
+  data,
+  closeModal,
+  mutate,
+  log_data = null
+) => {
+  try {
+    const response = await apiClient.put(url, data);
+    if (response.status === 200) {
+      if (log_data != null) {
+        if (data.status == "APPROVE") {
+          log_approve_purchase_data(name, closeModal, mutate, log_data);
+        } else if (data.status == "DECLINE") {
+          log_decline_purchase_data(name, closeModal, mutate, log_data);
+        } else if (data.status == "POST") {
+          log_post_purchase_data(name, closeModal, mutate, log_data);
+        }
+
+      } else {
+        // closeModal();
+        // Swal.fire({
+        //   title: "Success",
+        //   text:
+        //     "Branch with id: " +
+        //     branch_id +
+        //     "successfully created a " +
+        //     transaction_type +
+        //     "  order.",
+        //   icon: "success",
+        // });
+        // mutate();
+      }
+    }
+  } catch (error) {
+    // Handle the error
+    console.error(error);
+    Swal.fire({
+      title: "Error",
+      text: error,
+      icon: "error",
+    });
+    throw error;
+  }
+};
+
+// Delete data
 export const delete_data = async (
   name,
   url,
@@ -269,4 +274,87 @@ export const log_delete_data = async (name, closeModal, mutate, log_data) => {
   }
 };
 
+// Purchases Logs
+// Branch Orders Status changes: Posted, Approve, Decline
+export const log_post_purchase_data = async (
+  name,
+  closeModal,
+  mutate,
+  log_data
+) => {
+  try {
+    const response = await apiClient.post(`/logs`, log_data);
+    if (response.status === 201) {
+      closeModal();
+      Swal.fire({
+        title: "Success",
+        text: "Successfully posted a " + name + ".",
+        icon: "success",
+      });
+      mutate();
+    }
+  } catch (error) {
+    // Handle the error
+    Swal.fire({
+      title: "Error",
+      text: error,
+      icon: "error",
+    });
+    throw error;
+  }
+};
+export const log_approve_purchase_data = async (
+  name,
+  closeModal,
+  mutate,
+  log_data
+) => {
+  try {
+    const response = await apiClient.post(`/logs`, log_data);
+    if (response.status === 201) {
+      closeModal();
+      Swal.fire({
+        title: "Success",
+        text: "Successfully approved a " + name + ".",
+        icon: "success",
+      });
+      mutate();
+    }
+  } catch (error) {
+    // Handle the error
+    Swal.fire({
+      title: "Error",
+      text: error,
+      icon: "error",
+    });
+    throw error;
+  }
+};
+export const log_decline_purchase_data = async (
+  name,
+  closeModal,
+  mutate,
+  log_data
+) => {
+  try {
+    const response = await apiClient.post(`/logs`, log_data);
+    if (response.status === 201) {
+      closeModal();
+      Swal.fire({
+        title: "Success",
+        text: "Successfully declined a " + name + ".",
+        icon: "success",
+      });
+      mutate();
+    }
+  } catch (error) {
+    // Handle the error
+    Swal.fire({
+      title: "Error",
+      text: error,
+      icon: "error",
+    });
+    throw error;
+  }
+};
 // Handlers

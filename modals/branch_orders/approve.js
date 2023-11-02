@@ -9,8 +9,8 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { delete_data } from "@/components/utility/api/fetcher";
-import { createRemoveLogData } from "@/components/utility/logger";
+import { put_order_data } from "@/components/utility/api/fetcher";
+import { createApproveLogData } from "@/components/utility/logger";
 import { UserContext } from "@/contexts/userContext";
 import { approve_purchase } from "@/components/utility/get_data";
 
@@ -28,17 +28,45 @@ export default function ApproveModal({
     e.preventDefault();
     const purchase_header_id = rowData.purchase_header_id;
     const purchase_lines = rowData.purchase_lines;
+    const url = `/po_status/${purchase_header_id}/`;
 
-    approve_purchase(purchase_header_id, purchase_lines, closeModal, mutate);
-    // const log_data = createRemoveLogData(
+    const log_data = createApproveLogData(
+      user.userCredentials.branch,
+      user.userCredentials.branch_name,
+      user.userCredentials.user_id,
+      user.userCredentials.username,
+      "BRANCH_ORDER",
+      purchase_header_id,
+      undefined,
+      rowData.branch_name
+    );
+
+    const data = {
+      status: "APPROVE",
+      purchase_lines: JSON.stringify(purchase_lines),
+    }
+
+    put_order_data(
+      "branch_order/s",
+      url,
+      data,
+      closeModal,
+      mutate,
+      log_data
+    );
+    // const log_data = createApproveLogData(
     //   user.userCredentials.branch,
     //   user.userCredentials.branch_name,
     //   user.userCredentials.user_id,
     //   user.userCredentials.username,
-    //   "SUPP_ORDER",
+    //   "BRANCH_ORDER",
     //   purchase_header_id,
-    //   undefined
+    //   undefined,
+    //   rowData.branch_name
     // );
+
+    // approve_purchase(purchase_header_id, purchase_lines, closeModal, mutate);
+
   };
 
   return (

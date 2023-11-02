@@ -144,7 +144,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
       user.userCredentials.branch_name,
       user.userCredentials.user_id,
       user.userCredentials.username,
-      "SUPP_ORDER",
+      "BRANCH_ORDER",
       undefined,
       undefined,
       purchaseData.branch
@@ -158,7 +158,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
     try {
       // Add logic
       const result = await post_data(
-        "supplier_orders",
+        "branch_orders",
         url,
         requestData,
         closeModal,

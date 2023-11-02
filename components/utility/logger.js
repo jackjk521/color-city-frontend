@@ -5,11 +5,10 @@ export const createAddLogData = (
   user,
   username,
   type,
-  name, 
+  name,
   to_branch = null
 ) => {
-
-  if (type == "SUPP_ORDER") {
+  if (type == "SUPP_ORDER" || type == "BRANCH_ORDER") {
     return {
       branch: branch,
       user: user,
@@ -37,7 +36,7 @@ export const createAddLogData = (
   };
 };
 
-// Edit Data
+// Edit Data (and Receive)
 export const createEditLogData = (
   branch,
   branch_name,
@@ -45,7 +44,7 @@ export const createEditLogData = (
   username,
   type,
   id,
-  name, 
+  name,
   to_branch = null
 ) => {
   if (type == "SUPP_ORDER") {
@@ -64,8 +63,7 @@ export const createEditLogData = (
       type_id: id,
       message: `${username} from ${branch_name} have received item/s from purchase order with id of ${id}`,
     };
-  }
-  else if (type == "INVENTORY") {
+  } else if (type == "INVENTORY") {
     return {
       branch: branch,
       user: user,
@@ -122,6 +120,125 @@ export const createRemoveLogData = (
   };
 };
 
-// Approved or declined
-// Received
+// Post
+export const createPostLogData = (
+  branch,
+  branch_name,
+  user,
+  username,
+  type,
+  id,
+  name,
+  to_branch = null
+) => {
+  if (type == "BRANCH_ORDER") {
+    return {
+      branch: branch,
+      user: user,
+      type: type,
+      type_id: id,
+      message: `${username} from ${branch_name} successfully posted a ${type} with id: ${id}. `,
+    };
+  } 
+  // else if (type == "INVENTORY") {
+  //   return {
+  //     branch: branch,
+  //     user: user,
+  //     type: type,
+  //     type_id: 0,
+  //     message: `${username} from ${branch_name} have successfully updated ${name} in ${to_branch}'s inventory`,
+  //   };
+  // }
+
+  // Default logger
+  return {
+    branch: branch,
+    user: user,
+    type: type,
+    type_id: 0,
+    message: `${username} successfully added ${name}`,
+  };
+};
+
+
+// Approved and Declined
+export const createApproveLogData = (
+  branch,
+  branch_name,
+  user,
+  username,
+  type,
+  id,
+  name,
+  to_branch = null
+) => {
+  if (type == "BRANCH_ORDER") {
+    return {
+      branch: branch,
+      user: user,
+      type: type,
+      type_id: 0,
+      message: `${username} from ${branch_name} successfully approved a ${type} with id: ${id} created by  ${to_branch}`,
+    };
+  } 
+  // else if (type == "INVENTORY") {
+  //   return {
+  //     branch: branch,
+  //     user: user,
+  //     type: type,
+  //     type_id: 0,
+  //     message: `${username} from ${branch_name} have successfully updated ${name} in ${to_branch}'s inventory`,
+  //   };
+  // }
+
+  // Default logger
+  return {
+    branch: branch,
+    user: user,
+    type: type,
+    type_id: 0,
+    message: `${username} successfully added ${name}`,
+  };
+};
+
+export const createDeclineLogData = (
+  branch,
+  branch_name,
+  user,
+  username,
+  type,
+  id,
+  name,
+  to_branch = null
+) => {
+  if (type == "BRANCH_ORDER") {
+    return {
+      branch: branch,
+      user: user,
+      type: type,
+      type_id: 0,
+      message: `${username} from ${branch_name} successfully declined a ${type} with ${id} created by  ${to_branch}`,
+    };
+  } 
+  // else if (type == "INVENTORY") {
+  //   return {
+  //     branch: branch,
+  //     user: user,
+  //     type: type,
+  //     type_id: 0,
+  //     message: `${username} from ${branch_name} have successfully updated ${name} in ${to_branch}'s inventory`,
+  //   };
+  // }
+
+  // Default logger
+  return {
+    branch: branch,
+    user: user,
+    type: type,
+    type_id: 0,
+    message: `${username} successfully added ${name}`,
+  };
+};
+
+
 // Logged in or sign out?

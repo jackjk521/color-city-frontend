@@ -33,7 +33,7 @@ export default function RemoveModal({
       user.userCredentials.branch_name,
       user.userCredentials.user_id,
       user.userCredentials.username,
-      "SUPP_ORDER",
+      "BRANCH_ORDER",
       purchase_header_id,
       undefined
     );
