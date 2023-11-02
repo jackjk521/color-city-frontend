@@ -180,11 +180,26 @@ const ActionFormatter = ({ rowData, mutate }) => {
             }}>
             <MenuItem onClick={openView}>View</MenuItem>
             {/* <MenuItem onClick={openEdit}>Edit</MenuItem> */}
-            <MenuItem onClick={openRemove}>Remove</MenuItem>
-            <MenuItem onClick={openReceive}>Receive</MenuItem>
-            <MenuItem onClick={openPost}>Post</MenuItem>
-            <MenuItem onClick={openApprove}>Approve</MenuItem>
-            <MenuItem onClick={openDecline}>Decline</MenuItem>
+            {rowData.status !== "APPROVED" && rowData.status !== "POSTED" && (
+              <MenuItem onClick={openRemove}>Remove</MenuItem>
+            )}
+
+            {rowData.status == "APPROVED" &&
+              rowData.received_status !== "COMPLETED" &&
+              user.userCredentials.user_role == "Manager" && (
+                <MenuItem onClick={openReceive}>Receive</MenuItem>
+              )}
+            {rowData.status == "UNPOSTED" && (
+              <MenuItem onClick={openPost}>Post</MenuItem>
+            )}
+
+            {rowData.status == "POSTED" &&
+              user.userCredentials.user_role == "Administrator" && (
+                <>
+                  <MenuItem onClick={openApprove}>Approve</MenuItem>
+                  <MenuItem onClick={openDecline}>Decline</MenuItem>
+                </>
+              )}
           </Menu>
         </>
       ) : (

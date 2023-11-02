@@ -159,7 +159,7 @@ function Inventory({
         <Divider />
 
         {/* Different Panel Views  */}
-        {/* {user.userCredentials.user_role === "Administrator" && ( */}
+        {user.userCredentials.user_role === "Administrator" && (
           <>
             {renderTabContent({
               tabValue: value,
@@ -216,7 +216,7 @@ function Inventory({
               tabMutate: branch3Mutate,
             })}
           </>
-        {/* )} */}
+        )}
 
         {user.userCredentials.user_role === "Manager" && (
           <>

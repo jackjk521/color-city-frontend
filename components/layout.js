@@ -81,6 +81,10 @@ export default function Layout({ children }) {
   const [loggedIn, setLoggedIn] = React.useState(false);
   const { user } = React.useContext(UserContext);
 
+  if (!user) {
+    router.push("/");
+  }
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -117,6 +121,10 @@ export default function Layout({ children }) {
   const handleLogout = () => {
     loggedIn ? logoutNow() : router.push("/");
   };
+
+  const handlePageClick = () => [
+    setOpen(false)
+  ]
 
   return (
     <>
@@ -174,11 +182,11 @@ export default function Layout({ children }) {
             </Toolbar>
             <Divider />
             <List component="nav">
-              {MainListItems()}
-              {user.userCredentials.user_role === "Administrator" && (
+              {MainListItems(toggleDrawer)}
+              {user && user.userCredentials.user_role === "Administrator" && (
                 <>
                   <Divider sx={{ my: 1 }} />
-                  {SecondaryListItems()}
+                  {SecondaryListItems(toggleDrawer)}
                 </>
               )}
             </List>

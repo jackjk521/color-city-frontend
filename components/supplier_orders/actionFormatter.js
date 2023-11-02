@@ -106,10 +106,10 @@ const ActionFormatter = ({ rowData, mutate }) => {
     try {
       // Edit Logic
       const result = await get_data(url);
-      console.log(result)
+      console.log(result);
       // Populate form fields only after the API request is successfully completed
       if (result) {
-        console.log(result)
+        console.log(result);
         const updatedPurchaseLines = result.map((line) => {
           // Add a new field to each object in the purchaseLines array
           return {
@@ -118,7 +118,7 @@ const ActionFormatter = ({ rowData, mutate }) => {
           };
         });
 
-        console.log(updatedPurchaseLines)
+        console.log(updatedPurchaseLines);
 
         setPurchaseData({
           purchaseHeader: {
@@ -148,24 +148,6 @@ const ActionFormatter = ({ rowData, mutate }) => {
       });
     }
 
-    // open receive logic (with completed status)
-    // setPurchaseData({
-    //   purchaseHeader: {
-    //     purchase_header_id: rowData.purchase_header_id,
-    //     branch: rowData.branch,
-    //     branch_name: rowData.branch_name,
-    //     user: rowData.user,
-    //     username: rowData.username,
-    //     transaction_type: rowData.transaction_type,
-    //     supplier: rowData.supplier,
-    //     supplier_name: rowData.supplier_name,
-    //     total_amount: rowData.total_amount,
-    //     payment_mode: rowData.payment_mode,
-    //     status: rowData.status,
-    //   },
-    //   purchaseLines: rowData.purchase_lines,
-    // });
-    // openModal("receive");
   };
 
   const openRemove = async () => {
@@ -204,15 +186,24 @@ const ActionFormatter = ({ rowData, mutate }) => {
               "aria-labelledby": "actions-menu",
             }}>
             <MenuItem onClick={openView}>View</MenuItem>
-            <MenuItem onClick={openRemove}>Remove</MenuItem>
-            <MenuItem onClick={openReceive}>Receive</MenuItem>
+            {rowData.received_status !== "COMPLETED" && (
+              <MenuItem onClick={openRemove}>Remove</MenuItem>
+            )}
+
+            {rowData.status == "APPROVED" &&
+              rowData.received_status !== "COMPLETED" && (
+                <MenuItem onClick={openReceive}>Receive</MenuItem>
+              )}
           </Menu>
         </>
       ) : (
         <Box sx={{ display: "flex", flexWrap: "nowrap", gap: "8px" }}>
           <ViewBtn openView={openView} />
           {/* <EditBtn openEdit={openEdit} /> */}
-          <RemoveBtn openRemove={openRemove} />
+          {rowData.received_status !== "COMPLETED" && (
+            <RemoveBtn openRemove={openRemove} />
+          )}
+
           {rowData.status == "APPROVED" &&
             rowData.received_status !== "COMPLETED" && (
               <ReceiveBtn openReceive={openReceive} />
