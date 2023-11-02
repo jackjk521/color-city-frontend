@@ -12,7 +12,7 @@ import {
   EditBtn,
   RemoveBtn,
 } from "../utility/tables/actionButtonList";
-import UserModalManager from "../../components/users/modals/userModalManager";
+import UserModalManager from "../../modals/users/userModalManager";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 const ActionFormatter = ({ rowData, mutate }) => {

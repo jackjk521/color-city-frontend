@@ -15,6 +15,7 @@ import StoreIcon from "@mui/icons-material/Store";
 import AssignmentIcon from "@mui/icons-material/Assignment";
 import TransferWithinAStationIcon from "@mui/icons-material/TransferWithinAStation";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import MoveUpIcon from "@mui/icons-material/MoveUp";
 import { styled } from "@mui/system";
 
 const HoverListItemButton = styled(ListItemButton)(({ theme }) => ({
@@ -23,37 +24,79 @@ const HoverListItemButton = styled(ListItemButton)(({ theme }) => ({
   },
 }));
 
-export const mainListItems = () => (
-  <React.Fragment>
-    <HoverListItemButton component={Link} href="/">
-      <ListItemIcon>
-        <DashboardIcon />
-      </ListItemIcon>
-      <ListItemText primary="Dashboard" />
-    </HoverListItemButton>
+export function MainListItems(toggleDrawer) {
+  const [isItemsOpen, setItemsOpen] = React.useState(false);
 
-    <HoverListItemButton component={Link} href="/purchases">
-      <ListItemIcon>
-        <ShoppingCartIcon />
-      </ListItemIcon>
-      <ListItemText primary="Purchases" />
-    </HoverListItemButton>
+  const handleItemsClick = () => {
+    setItemsOpen(!isItemsOpen);
+  };
 
-    <HoverListItemButton component={Link} href="/inventory">
-      <ListItemIcon>
-        <InventoryIcon />
-      </ListItemIcon>
-      <ListItemText primary="Inventory" />
-    </HoverListItemButton>
+  const pageClick = () => {
+    toggleDrawer();
+  };
 
-    {/* <HoverListItemButton component={Link} href="/suppliers">
+  return (
+    <React.Fragment>
+      <HoverListItemButton
+        onClick={pageClick}
+        component={Link}
+        href="/dashboard">
+        <ListItemIcon>
+          <DashboardIcon />
+        </ListItemIcon>
+        <ListItemText primary="Dashboard" />
+      </HoverListItemButton>
+
+      <HoverListItemButton onClick={handleItemsClick}>
+        <ListItemIcon>
+          <ShoppingCartIcon />
+        </ListItemIcon>
+        <ListItemText primary="Purchases" />
+        {isItemsOpen ? <ExpandLess /> : <ExpandMore />}
+      </HoverListItemButton>
+
+      {/* Purchases Side Menu  */}
+      <Collapse in={isItemsOpen} timeout="auto" unmountOnExit>
+        <List component="div">
+          <HoverListItemButton
+            onClick={pageClick}
+            component={Link}
+            href="/supplier_orders">
+            <ListItemIcon>
+              <MoveUpIcon />
+            </ListItemIcon>
+            <ListItemText primary="Supplier Orders" />
+          </HoverListItemButton>
+          <HoverListItemButton
+            onClick={pageClick}
+            component={Link}
+            href="/branch_orders">
+            <ListItemIcon>
+              <TransferWithinAStationIcon />
+            </ListItemIcon>
+            <ListItemText primary="Branch Orders" />
+          </HoverListItemButton>
+        </List>
+      </Collapse>
+
+      <HoverListItemButton
+        onClick={pageClick}
+        component={Link}
+        href="/inventory">
+        <ListItemIcon>
+          <InventoryIcon />
+        </ListItemIcon>
+        <ListItemText primary="Inventory" />
+      </HoverListItemButton>
+
+      {/* <HoverListItemButton component={Link} href="/suppliers">
       <ListItemIcon>
         <TransferWithinAStationIcon />
       </ListItemIcon>
       <ListItemText primary="Suppliers" />
     </HoverListItemButton> */}
 
-    {/* <ListItemButton onClick={() => setSelectedItem("reports")}>
+      {/* <ListItemButton onClick={() => setSelectedItem("reports")}>
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>
@@ -66,15 +109,19 @@ export const mainListItems = () => (
       </ListItemIcon>
       <ListItemText primary="Integrations" />
     </ListItemButton> */}
-  </React.Fragment>
-);
+    </React.Fragment>
+  );
+}
 
-export function secondaryListItems() {
+export function SecondaryListItems(toggleDrawer) {
   const [isItemsOpen, setItemsOpen] = React.useState(false);
 
   const handleItemsClick = () => {
     setItemsOpen(!isItemsOpen);
   };
+  const pageClick = () => {
+    toggleDrawer();
+  };  
 
   return (
     <List component="nav">
@@ -86,33 +133,44 @@ export function secondaryListItems() {
         <ListItemIcon>
           <AssignmentIcon />
         </ListItemIcon>
-        <ListItemText primary="Items" />
+        <ListItemText primary="Products" />
         {isItemsOpen ? <ExpandLess /> : <ExpandMore />}
       </HoverListItemButton>
 
+      {/* Products Side Menu*/}
       <Collapse in={isItemsOpen} timeout="auto" unmountOnExit>
         <List component="div">
-          <HoverListItemButton component={Link} href="/items">
+          <HoverListItemButton
+            onClick={pageClick}
+            component={Link}
+            href="/items">
             <ListItemIcon>
               <AssignmentIcon />
             </ListItemIcon>
             <ListItemText primary="Items" />
           </HoverListItemButton>
-          <HoverListItemButton component={Link} href="/items_info">
+          <HoverListItemButton
+            onClick={pageClick}
+            component={Link}
+            href="/items_info">
             <ListItemIcon>
               <TransferWithinAStationIcon />
             </ListItemIcon>
-            <ListItemText primary="Categories, Brands, Suppliers" />
+            <ListItemText primary="Item Details" />
           </HoverListItemButton>
         </List>
       </Collapse>
-      <HoverListItemButton component={Link} href="/branches">
+
+      <HoverListItemButton
+        onClick={pageClick}
+        component={Link}
+        href="/branches">
         <ListItemIcon>
           <StoreIcon />
         </ListItemIcon>
         <ListItemText primary="Branches" />
       </HoverListItemButton>
-      <HoverListItemButton component={Link} href="/users">
+      <HoverListItemButton onClick={pageClick} component={Link} href="/users">
         <ListItemIcon>
           <PeopleIcon />
         </ListItemIcon>

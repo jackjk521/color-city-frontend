@@ -3,13 +3,18 @@ import { Button, Grid, IconButton } from "@mui/material";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import LocalPostOfficeIcon from '@mui/icons-material/LocalPostOffice';
+import GetAppIcon from '@mui/icons-material/GetApp';
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
+import { LocalActivity } from "@mui/icons-material";
 
 export const ViewBtn = ({ openView }) => {
   return (  
     <IconButton
       color="primary"
       onClick={openView}
-      title="Click to view item data">
+      title="View">
       {" "}
       {/* Hover text  */}
       <MoreHorizIcon />
@@ -22,7 +27,7 @@ export const EditBtn = ({ openEdit }) => {
     <IconButton
       color="warning"
       onClick={openEdit}
-      title="Click to edit item data">
+      title="Edit">
       {" "}
       {/* Hover text  */}
       <EditIcon />
@@ -35,8 +40,61 @@ export const RemoveBtn = ({ openRemove }) => {
     <IconButton
       color="error"
       onClick={openRemove}
-      title="Click to delete item data">
+      title="Delete">
       <DeleteIcon />
     </IconButton>
   );
 };
+
+export const ApproveBtn = ({ openApprove }) => {
+  return (  
+    <IconButton
+      color="primary"
+      onClick={openApprove}
+      title="Approve">
+      {" "}
+      {/* Hover text  */}
+      <ThumbUpAltIcon />
+    </IconButton>
+  );
+};
+
+export const DeclineBtn = ({ openDecline }) => {
+  return (  
+    <IconButton
+      color="primary"
+      onClick={openDecline}
+      title="Decline">
+      {" "}
+      {/* Hover text  */}
+      <ThumbDownAltIcon/>
+    </IconButton>
+  );
+};
+
+export const PostBtn = ({ openPost }) => {
+  return (  
+    <IconButton
+      color="primary"
+      onClick={openPost}
+      title="Post">
+      {" "}
+      {/* Hover text  */}
+      <LocalPostOfficeIcon />
+    </IconButton>
+  );
+};
+
+export const ReceiveBtn = ({ openReceive }) => {
+  return (  
+    <IconButton
+      color="primary"
+      onClick={openReceive}
+      title="Receive">
+      {" "}
+      {/* Hover text  */}
+      <GetAppIcon />
+    </IconButton>
+  );
+};
+

@@ -4,12 +4,8 @@ import useSWR from "swr";
 // Material UI
 import { Button, Grid, Divider, Tabs, Tab } from "@mui/material";
 
-import Swal from "sweetalert2";
-
 // Components
 import ItemsContent from "../../components/items/itemsContent";
-import CardGrid from "../../components/utility/grids/GridLayout3_even";
-import CustomTabPanel from "../../components/utility/customTabPanel";
 
 // Table
 import BasicReactTable from "@/components/utility/tables/basicReactTable";
@@ -23,23 +19,18 @@ import {
 } from "../../components/utility/tables/tableColumns";
 
 // Helper Functions
-import ItemModalManager from "../../components/items/modals/itemModalManager";
-import BrandModalManager from "@/components/brands/modals/brandModalManager";
-import CategoryModalManager from "@/components/categories/modals/categoryModalManager";
-import SupplierModalManager from "@/components/suppliers/modals/supplierModalManager";
+import BrandModalManager from "@/modals/brands/brandModalManager";
+import CategoryModalManager from "@/modals/categories/categoryModalManager";
+import SupplierModalManager from "@/modals/suppliers/supplierModalManager";
 
-import ActionFormatter from "@/components/items/actionFormatter";
 import BrandActionFormatter from "@/components/brands/actionFormatter";
 import CategoryActionFormatter from "@/components/categories/actionFormatter";
 import SupplierActionFormatter from "@/components/suppliers/actionFormatter";
 
-import {
-  brandsFetcher,
-  categoriesFetcher,
-  suppliersFetcher,
-} from "../../components/items_info/fetch_data";
 import { renderTabContent } from "@/components/items_info/tab_tables";
 import withAuth from "@/components/utility/with_auth";
+
+import { get_fetcher } from "@/components/utility/api/fetcher";
 
 function a11yProps(index) {
   return {
@@ -47,6 +38,10 @@ function a11yProps(index) {
     "aria-controls": `simple-tabpanel-${index}`,
   };
 }
+
+const brandsUrl = "/brands"
+const categoriesUrl = "/categories"
+const suppliersUrl = "/suppliers"
 
 function ItemsInfo({ brands, categories, suppliers }) {
   // const [data, setData] = React.useState(rows);
@@ -63,7 +58,7 @@ function ItemsInfo({ brands, categories, suppliers }) {
     data: brandsData,
     mutate: brandsMutate,
     error: brandsError,
-  } = useSWR("/brands", brandsFetcher, {
+  } = useSWR(brandsUrl, get_fetcher, {
     fallbackData: brands,
   });
 
@@ -71,7 +66,7 @@ function ItemsInfo({ brands, categories, suppliers }) {
     data: categoriesData,
     mutate: categoriesMutate,
     error: categoriesError,
-  } = useSWR("/categories", categoriesFetcher, {
+  } = useSWR(categoriesUrl, get_fetcher, {
     fallbackData: categories,
   });
 
@@ -79,7 +74,7 @@ function ItemsInfo({ brands, categories, suppliers }) {
     data: suppliersData,
     mutate: suppliersMutate,
     error: suppliersError,
-  } = useSWR("/suppliers", suppliersFetcher, {
+  } = useSWR(suppliersUrl, get_fetcher, {
     fallbackData: suppliers,
   });
 
@@ -183,9 +178,9 @@ function ItemsInfo({ brands, categories, suppliers }) {
 
 export async function getServerSideProps({ req, res }) {
   try {
-    const initialBrandsData = await brandsFetcher();
-    const initialCategoriesData = await categoriesFetcher();
-    const initialSuppliersData = await suppliersFetcher();
+    const initialBrandsData = await get_fetcher(brandsUrl);
+    const initialCategoriesData = await get_fetcher(categoriesUrl);
+    const initialSuppliersData = await get_fetcher(suppliersUrl);
 
     return {
       props: {

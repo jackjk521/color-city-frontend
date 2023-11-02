@@ -4,10 +4,7 @@ import useSWR from "swr";
 // Material UI
 import { Button, Grid, Divider } from "@mui/material";
 
-import Swal from "sweetalert2";
-
 // Components
-import ItemsContent from "../../components/items/itemsContent";
 import CardGrid from "../../components/utility/grids/CardGrid";
 import CustomTabPanel from "../../components/utility/customTabPanel";
 
@@ -19,39 +16,15 @@ import {
 } from "../../components/utility/tables/tableColumns";
 
 // Helper Functions
-import BranchModalManager from "../../components/branches/modals/branchModalManager";
+import BranchModalManager from "../../modals/branches/branchModalManager";
 import ActionFormatter from "../../components/branches/actionFormatter";
-import apiClient from "../../components/utility/api/apiClient";
 import withAuth from "@/components/utility/with_auth";
+import { get_fetcher } from "@/components/utility/api/fetcher";
 
-const fetcher = async () => {
-  try {
-    const response = await apiClient.get("/branches");
-    if (response.status !== 200) {
-      const error = new Error();
-      error.info = response.data;
-      error.status = response.status;
-      error.message = "An error occurred while fetching data";
-      Swal.fire({
-        title: error.info,
-        text: error.message,
-        icon: "error",
-      });
-      throw error;
-    }
-    return response.data;
-  } catch (error) {
-    console.error(error);
-    throw error;
-  }
-};
+const url = "/branches"
 
 function Branches({ rows }) {
-  // const [data, setData] = React.useState(rows);
   const [value, setValue] = React.useState(0);
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
   const [activeModal, setActiveModal] = React.useState(null);
   const openModal = (modalType) => {
     setActiveModal(modalType);
@@ -61,15 +34,13 @@ function Branches({ rows }) {
     data: fetchedData,
     mutate,
     error: fetchedError,
-  } = useSWR("/branches", fetcher, {
+  } = useSWR(url, get_fetcher, {
     fallbackData: rows,
   });
 
-
   // console.log(data)
   return (
-    <>
-      {/* <ItemsContent> */}
+    <React.Fragment >
         {/* Modal Config */}
         <BranchModalManager
           activeModal={activeModal}
@@ -103,14 +74,13 @@ function Branches({ rows }) {
             />
           </CardGrid>
         </CustomTabPanel>
-      {/* </ItemsContent> */}
-    </>
+    </React.Fragment>
   );
 }
 
 export async function getServerSideProps({ req, res }) {
-  try {
-    const initialData = await fetcher("/branches");
+  try { 
+    const initialData = await get_fetcher(url);
     return {
       props: {
         rows: initialData,

@@ -21,7 +21,7 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import OutputIcon from "@mui/icons-material/Output";
 
 // Components
-import { mainListItems, secondaryListItems } from "./utility/navbarItems";
+import { MainListItems, SecondaryListItems } from "./utility/navbarItems";
 import Header from "./header";
 import Footer from "./footer";
 import { UserContext } from "../contexts/userContext";
@@ -81,16 +81,22 @@ export default function Layout({ children }) {
   const [loggedIn, setLoggedIn] = React.useState(false);
   const { user } = React.useContext(UserContext);
 
+  if (!user) {
+    router.push("/");
+  }
+
   const toggleDrawer = () => {
     setOpen(!open);
   };
 
-  // Navigation Bar Title 
+  // Navigation Bar Title
   const getPageTitle = () => {
     const path = router.pathname;
     switch (path) {
-      case "/purchases":
-        return "Purchases";
+      case "/supplier_orders":
+        return "Supplier Orders";
+      case "/branch_orders":
+        return "Branch Orders";
       case "/inventory":
         return "Inventory";
       case "/items":
@@ -113,8 +119,12 @@ export default function Layout({ children }) {
   };
 
   const handleLogout = () => {
-    loggedIn ? logoutNow() : router.push("/login");
+    loggedIn ? logoutNow() : router.push("/");
   };
+
+  const handlePageClick = () => [
+    setOpen(false)
+  ]
 
   return (
     <>
@@ -172,11 +182,11 @@ export default function Layout({ children }) {
             </Toolbar>
             <Divider />
             <List component="nav">
-              {mainListItems()}
-              {user.userCredentials.user_role === "Administrator" && (
+              {MainListItems(toggleDrawer)}
+              {user && user.userCredentials.user_role === "Administrator" && (
                 <>
                   <Divider sx={{ my: 1 }} />
-                  {secondaryListItems()}
+                  {SecondaryListItems(toggleDrawer)}
                 </>
               )}
             </List>

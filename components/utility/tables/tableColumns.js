@@ -1,45 +1,7 @@
-// Purchases
-export const PurchasesColumns = [
-  {
-    key: "id",
-    label: "Id",
-    fixed: true,
-    width: 70,
-    align: "center",
-    responsive: true,
-  },
-  {
-    key: "title",
-    label: "Title",
-    // fixed: true,
-    width: 130,
-    align: "left",
-    flexGrow: 1,
-    responsive: true,
-  },
-  {
-    key: "price",
-    label: "Price",
-    width: 200,
-    align: "right",
-    flexGrow: 1,
-    responsive: true,
-  },
-  {
-    key: "rating",
-    label: "Ratings",
-    align: "right",
-    flexGrow: 1,
-    responsive: true,
-  },
-  {
-    key: "actions",
-    label: "Actions",
-    align: "center",
-    flexGrow: 1,
-    responsive: true,
-  },
-];
+import React from "react";
+import { BrandItemName } from "../get_data";
+import { TextField } from "@mui/material";
+import LensIcon from "@mui/icons-material/Lens";
 
 // Items
 export const ItemColumns = [
@@ -54,14 +16,14 @@ export const ItemColumns = [
     size: 50,
   },
   {
-    accessorKey: "item_name", //normal accessorKey
-    header: "Name",
-    size: 200,
-  },
-  {
     accessorKey: "brand_name",
     header: "Brand",
     size: 150,
+  },
+  {
+    accessorKey: "item_name", //normal accessorKey
+    header: "Name",
+    size: 200,
   },
   {
     accessorKey: "category_name",
@@ -207,8 +169,6 @@ export const UsersColumns = [
     header: "Role",
     size: 200,
   },
-
- 
 ];
 export const UserColumnsVisibility = {
   user_id: true,
@@ -216,4 +176,307 @@ export const UserColumnsVisibility = {
   user_name: false,
   branch_name: false,
   user_role: false,
+};
+
+// Inventory
+export const InventoryColumns = [
+  {
+    accessorKey: "inventory_id", // Primary key
+    header: "ID",
+    size: 50,
+  },
+
+  {
+    accessorKey: "item_name", //normal accessorKey
+    header: "Item Name",
+    size: 200,
+  },
+  {
+    accessorKey: "branch_name", //normal accessorKey
+    header: "Assigned Branch",
+    size: 200,
+  },
+  {
+    accessorKey: "total_quantity", //normal accessorKey
+    header: "Total Quantity",
+    size: 200,
+  },
+  {
+    accessorKey: "holding_cost", //normal accessorKey
+    header: "Holding Cost",
+    size: 200,
+  },
+];
+export const InventoryColumnsVisibility = {
+  inventory_id: true,
+  item_name: false,
+  branch_name: false,
+  total_quantity: false,
+  holding_cost: false,
+};
+
+// SupplierOrder
+export const SupplierOrderColumns = [
+  {
+    accessorKey: "purchase_header_id", // Primary key
+    header: "ID",
+    size: 50,
+  },
+  {
+    accessorKey: "supplier_name", //normal accessorKey
+    header: "Supplier",
+    size: 200,
+  },
+  {
+    accessorKey: "total_amount", //normal accessorKey
+    header: "Total Amount",
+    size: 200,
+  },
+  {
+    accessorKey: "date_created",
+    header: "Order Date",
+    size: 200,
+    Cell: ({ cell }) => {
+      const date = new Date(cell.getValue());
+      const formattedDate = date.toLocaleString("en-US");
+      return formattedDate;
+    },
+  },
+  {
+    accessorKey: "received_status", //normal accessorKey
+    header: "Received Status",
+    size: 200,
+  },
+];
+
+export const SupplierOrderColumnsVisibility = {
+  purchase_header_id: true,
+  supplier_name: false,
+  total_amount: false,
+  date_created: false,
+  received_status: false,
+};
+
+// BranchOrder
+export const BranchOrderColumns = [
+  {
+    accessorKey: "purchase_header_id", // Primary key
+    header: "ID",
+    size: 50,
+  },
+  {
+    accessorKey: "branch_name", //normal accessorKey
+    header: "From Branch",
+    size: 200,
+  },
+  {
+    accessorKey: "total_amount", //normal accessorKey
+    header: "Total Amount",
+    size: 200,
+  },
+  {
+    accessorKey: "date_created",
+    header: "Order Date",
+    size: 200,
+    Cell: ({ cell }) => {
+      const date = new Date(cell.getValue());
+      const formattedDate = date.toLocaleString("en-US");
+      return formattedDate;
+    },
+  },
+  {
+    accessorKey: "received_status", //normal accessorKey
+    header: "Received Status",
+    size: 200,
+  },
+];
+
+export const BranchOrderColumnsVisibility = {
+  purchase_header_id: true,
+  branch_name: false,
+  total_amount: false,
+  date_created: false,
+  received_status: false,
+};
+
+// Purchase Lines (display only)
+export const PurchaseLineViewColumns = [
+  {
+    accessorKey: "item", // Primary key
+    header: "Item ID",
+    size: 50,
+    enableEditing: false,
+  },
+  {
+    accessorKey: "brand_item",
+    header: "Item Name",
+    size: 100,
+    enableEditing: false,
+  },
+  {
+    accessorKey: "req_quantity", //normal accessorKey
+    header: "Requested Quantity",
+    size: 100,
+    muiEditTextFieldProps: ({ cell }) => ({
+      name: "req_quantity",
+      required: true,
+      type: "number",
+      inputProps: {
+        min: 0,
+      },
+    }),
+  },
+  {
+    accessorKey: "received_quantity", //normal accessorKey
+    header: "Received Quantity",
+    size: 100,
+    enableEditing: false,
+  },
+  {
+    accessorKey: "item_price_w_vat",
+    header: "Item Price",
+    size: 100,
+    enableEditing: false,
+  },
+  {
+    accessorKey: "subtotal", //normal accessorKey
+    header: "Subtotal",
+    size: 100,
+    enableEditing: false,
+  },
+  {
+    accessorKey: "status", //normal accessorKey
+    header: "Status",
+    size: 100,
+    enableColumnFilterModes: false,
+    enableEditing: false,
+    Cell: ({ cell }) => {
+      const status = cell.getValue();
+      if (status == "COMPLETED") {
+        return <LensIcon style={{ color: "green" }} />;
+      } else if (status == "PARTIAL") {
+        return <LensIcon style={{ color: "orange" }} />;
+      } else {
+        return <LensIcon style={{ color: "red" }} />;
+      }
+    },
+  },
+];
+export const PurchaseLineViewColumnsVisibility = {
+  item: true,
+  item_name: false,
+  brand_item: false,
+  item_price_w_vat: false,
+  req_quantity: false,
+  subtotal: false,
+};
+
+// Purchase Lines (add or edit)
+export const PurchaseLineColumns = [
+  {
+    accessorKey: "item", // Primary key
+    header: "Item ID",
+    size: 50,
+    enableEditing: false,
+  },
+  {
+    accessorKey: "brand_item",
+    header: "Item Name",
+    size: 100,
+    enableEditing: false,
+  },
+  {
+    accessorKey: "req_quantity", //normal accessorKey
+    header: "Requested Quantity",
+    size: 100,
+    muiEditTextFieldProps: ({ cell }) => ({
+      name: "req_quantity",
+      required: true,
+      type: "number",
+      inputProps: {
+        min: 0,
+      },
+    }),
+  },
+  {
+    accessorKey: "item_price_w_vat",
+    header: "Item Price",
+    size: 100,
+    enableEditing: false,
+  },
+  {
+    accessorKey: "subtotal", //normal accessorKey
+    header: "Subtotal",
+    size: 100,
+    enableEditing: false,
+  },
+];
+export const PurchaseLineColumnsVisibility = {
+  item: true,
+  item_name: false,
+  brand_item: false,
+  item_price_w_vat: false,
+  req_quantity: false,
+  subtotal: false,
+};
+
+// Receiving Items
+export const ReceivingItemsColumns = [
+  {
+    accessorKey: "purchase_line_id", // Primary key
+    header: "Order ID",
+    size: 20,
+    enableEditing: false,
+  },
+  {
+    accessorKey: "brand_item",
+    header: "Item Name",
+    size: 200,
+    enableEditing: false,
+  },
+  {
+    accessorKey: "req_quantity", //normal accessorKey
+    header: "Requested Quantity",
+    size: 200,
+    enableEditing: false,
+  },
+  {
+    accessorKey: "received_quantity",
+    header: "Received Quantity",
+    size: 200,
+    enableEditing: false,
+
+    // muiEditTextFieldProps: ({ cell }) => ({
+    //   name: "req_quantity",
+    //   required: true,
+    //   type: "number",
+    //   inputProps: {
+    //     min: 0,
+    //     max: cell.row.original.req_quantity, // max is the req_quantity
+    //   },
+    // }),
+  },
+  {
+    accessorKey: "receive_qty",
+    header: "To Receive",
+    size: 200,
+    muiEditTextFieldProps: ({ cell }) => ({
+      name: "receive_qty",
+      required: true,
+      type: "number",
+      inputProps: {
+        min: 0,
+        max:
+          cell.row.original.req_quantity - cell.row.original.received_quantity, // max is the req_quantity
+      },
+    }),
+  },
+];
+
+export const ReceivingItemsColumnVisibility = {
+  purchase_line_id: false,
+  brand_item: true,
+  req_quantity: true,
+  received_quantity: true,
+  receive_qty: true,
 };

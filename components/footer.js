@@ -6,7 +6,7 @@ import Link from "@mui/material/Link";
 
 export default function Footer({props}) {
   return (
-    <Box sx={{ flexGrow: 1, backgroundColor: "#FFFFF" }}>
+    <Box p={2} sx={{ flexGrow: 1, backgroundColor: "#FFFFF" }}>
       <Typography
         variant="body2"
         color="text.secondary"

@@ -1,152 +1,120 @@
-  import * as React from "react";
-  import Head from "next/head";
-  // import Image from 'next/image';
-  // import { Inter } from '@next/font/google';
-  // import styles from "../styles/Home.module.css";
+import * as React from "react";
+import useSWR from "swr";
 
-  import useSWR from "swr";
+// Material UI
+import { Button, Grid, Divider } from "@mui/material";
 
-  // Material UI
-  import { Box, Tabs, Tab, Button, Grid, Divider } from "@mui/material";
+import Swal from "sweetalert2";
 
-  import Swal from 'sweetalert2'
-  // Components
-  import PurchasesContent from "../../components/purchases/purchasesContent";
-  import CardGrid from "../../components/utility/grids/2CardGrid";
-  import CustomTabPanel from "../../components/utility/customTabPanel";
+// Components
+import ItemsContent from "../../components/items/itemsContent";
+import CardGrid from "../../components/utility/grids/CardGrid";
+import CustomTabPanel from "../../components/utility/customTabPanel";
 
-  import CustomTable from "../../components/utility/tables/customDisplayTable";
+// Table
+import BasicReactTable from "@/components/utility/tables/basicReactTable";
+import {
+  ItemColumns,
+  ItemColumnVisibility,
+} from "../../components/utility/tables/tableColumns";
 
-  // Helper Functions
-  import { PurchasesColumns } from "../../components/utility/tables/tableColumns";
-  import PurchaseModalManager from "../../components/purchases/modals/purchaseModalManager";
+// Helper Functions
+import ItemModalManager from "../../modals/items/itemModalManager";
+import ActionFormatter from "@/components/items/actionFormatter";
+import withAuth from "@/components/utility/with_auth";
 
-  const url = "https://dummyjson.com/products";
-  const fetcher = async (url) => {
-    const response = await fetch(url);
-    if (!response.ok) {
-      const errorRes = await res.json();
-  
-      const error = new Error();
-      error.info = errorRes;
-      error.status = res.status;
-      error.message = "An error occurred while fetching data";
-      Swal.fire({
-        title:  error.info ,
-        text: error.message,
-        icon: "error",
-      }, 1500);
-    }
-    const data = await response.json();
-    return data.products;
+import { get_fetcher } from "@/components/utility/api/fetcher";
+
+
+const url = "/items"
+
+ function Items({ rows }) {
+  // const [data, setData] = React.useState(rows);
+  const [value, setValue] = React.useState(0);
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+  const [activeModal, setActiveModal] = React.useState(null);
+  const openModal = (modalType) => {
+    setActiveModal(modalType);
   };
 
-  export default function Purchases({ rows }) {
-    // console.log(rows);
-    const [value, setValue] = React.useState(0);
-    const handleChange = (event, newValue) => {
-      setValue(newValue);
-    };
-    const [activeModal, setActiveModal] = React.useState(null);
-    const openModal = (modalType) => {
-      setActiveModal(modalType);
-    };
-    // const [data, setData] = React.useState(null);
-    // const [isLoading, setIsLoading] = React.useState(false);
-    // const [error, setError] = React.useState(null);
-    const { data: fetchedData, error: fetchedError } = useSWR(url, fetcher, {
-      fallbackData: rows,
-    });
+  const {
+    data: fetchedData,
+    mutate,
+    error: fetchedError,
+  } = useSWR(url, get_fetcher, {
+    fallbackData: rows,
+  });
 
+  // React.useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     fetcher();
+  //   }, 5000); // Set the interval to 1 minute
 
-    // React.useEffect(() => {
-    //   if (fetchedData) {
-    //     setData(fetchedData);
-    //     setIsLoading(false);
-    //   }
+  //   return () => {
+  //     clearInterval(interval); // Cleanup the interval on component unmount
+  //   };
+  // }, []);
 
-    //   if (fetchedError) {
-    //     setError(fetchedError);
-    //     setIsLoading(false);
-    //   }
-    // }, [fetchedData, fetchedError]);
+  // console.log(data)
+  return (
+    <>
+      <ItemsContent>
+        {/* Modal Config */}
+        <ItemModalManager
+          activeModal={activeModal}
+          setActiveModal={setActiveModal}
+          mutate={mutate}
+        />
 
-    // if (isLoading) {
-    //   return <div>Loading...</div>;
-    // }
-
-    // if (error) {
-    //   return <div>Error: {error.message}</div>;
-    // }
-
-    // console.log(data)
-    return (
-      <>
-        <PurchasesContent>
-          {/* Modal Config */}
-          <PurchaseModalManager
-            activeModal={activeModal}
-            setActiveModal={setActiveModal}
-          />
-
-          <Grid container justifyContent="space-between">
-            <Grid item>
-              <Tabs
-                value={value}
-                onChange={handleChange}
-                aria-label="basic tabs example">
-                <Tab label="Branches" />
-                <Tab label="Suppliers" />
-                {/* {...a11yProps(0)} */}
-              </Tabs>
-            </Grid>{" "}
-            <Grid item>
-              <Button
-                variant="contained"
-                color="success"
-                onClick={() => openModal("add")}>
-                {" "}
-                Add Purchase{" "}
-              </Button>
-            </Grid>
+        <Grid container justifyContent="space-between">
+          <Grid item></Grid>{" "}
+          <Grid item>
+            <Button
+              variant="contained"
+              color="success"
+              onClick={() => openModal("add")}>
+              {" "}
+              Add Item{" "}
+            </Button>
           </Grid>
-          <Divider />
+        </Grid>
+        <Divider />
 
-          {/* Different Panel Views  */}
-          <CustomTabPanel value={value} index={0}>
-            <CardGrid>
-              <CustomTable
-                tableHeaders={PurchasesColumns}
-                data={fetchedData}
-                tableType="Purchases"
-              />
-            </CardGrid>
-            {/* <CustomTable tableHeaders={PurchasesColumns} data={rows} /> */}
-          </CustomTabPanel>
-          <CustomTabPanel value={value} index={1}>
-            <CardGrid>
-              {/* <PurchasesTable rows={rows} headCells={PurchaseTableHeaders} /> */}
-            </CardGrid>
-          </CustomTabPanel>
-        </PurchasesContent>
-      </>
-    );
-  }
+        {/* Different Panel Views  */}
+        <CustomTabPanel value={value} index={0}>
+          <CardGrid>
+            <BasicReactTable
+              data_columns={ItemColumns}
+              column_visibility={ItemColumnVisibility}
+              fetched_data={fetchedData}
+              action_formatter={ActionFormatter}
+              mutate={mutate}
+            />
+          </CardGrid>
+        </CustomTabPanel>
+      </ItemsContent>
+    </>
+  );
+}
 
-  export async function getServerSideProps() {
-    try {
-      const initialData = await fetcher(url);
-      return {
-        props: {
-          rows: initialData,
-        },
-      };
-    } catch (error) {
-      console.error("Error fetching API data:", error);
-      return {
-        props: {
-          rows: [],
-        },
-      };
-    }
+export async function getServerSideProps({ req, res }) {
+  try {
+    const initialData = await get_fetcher(url);
+    return {
+      props: {
+        rows: initialData,
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching API data:", error);
+    return {
+      props: {
+        rows: [],
+      },
+    };
   }
+}
+
+export default withAuth(Items)

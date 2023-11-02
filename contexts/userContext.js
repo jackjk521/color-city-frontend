@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import {redirect} from 'next/navigation'
 import React, { createContext, useState, useEffect } from "react";
 
 export const UserContext = createContext();
@@ -11,14 +10,14 @@ export const UserProvider = ({ children }) => {
     setUserCredentials(credentials);
   };
 
-  // Logout after 1-min of inactivity
+  // Logout after 10-min of inactivity
   useEffect(() => {
     let timeout;
 
     const resetTimeout = () => {
       clearTimeout(timeout);
       timeout = setTimeout(() => {
-        router.replace("/login");
+        router.replace("/");
         console.log("Timeout completed");
 
         // Clear the userCredentials state
@@ -28,7 +27,7 @@ export const UserProvider = ({ children }) => {
 
     try {
       // Check if the current path is not "/login"
-      if (router.pathname !== "/login") {
+      if (router.pathname !== "/") {
         const events = [
           "mousedown",
           "mousemove",

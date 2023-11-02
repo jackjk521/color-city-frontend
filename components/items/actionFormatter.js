@@ -12,7 +12,7 @@ import {
   EditBtn,
   RemoveBtn,
 } from "../utility/tables/actionButtonList";
-import ItemModalManager from "../../components/items/modals/itemModalManager";
+import ItemModalManager from "../../modals/items/itemModalManager";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 
 // Formatters
@@ -48,9 +48,9 @@ const ActionFormatter = ({ rowData, mutate }) => {
     item_id: "",
     item_number: "",
     item_name: "",
+    brand_item: "",
     brand: "",
     brand_name: "",
-    total_quantity: "",
     category: "",
     unit: "",
     package: "",
@@ -72,9 +72,9 @@ const ActionFormatter = ({ rowData, mutate }) => {
       item_id: rowData.item_id,
       item_number: rowData.item_number,
       item_name: rowData.item_name,
+      brand_item: rowData.brand_item,
       brand: rowData.brand,
       brand_name: rowData.brand_name,
-      total_quantity: rowData.total_quantity,
       category: rowData.category,
       category_name: rowData.category_name,
       unit: rowData.unit,
@@ -97,7 +97,6 @@ const ActionFormatter = ({ rowData, mutate }) => {
       item_number: rowData.item_number,
       item_name: rowData.item_name,
       brand: rowData.brand,
-      total_quantity: rowData.total_quantity,
       category: rowData.category,
       unit: rowData.unit,
       package: rowData.package,
