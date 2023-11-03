@@ -5,8 +5,6 @@ import useSWR from "swr";
 import { Button, Grid, Divider } from "@mui/material";
 
 // Components
-import CardGrid from "../../components/utility/grids/CardGrid";
-import CustomTabPanel from "../../components/utility/customTabPanel";
 
 // Table
 import BasicReactTable from "@/components/utility/tables/basicReactTable";
@@ -45,37 +43,34 @@ function SupplierOrders({ rows }) {
 
   return (
     <>
-        {/* Modal Config */}
-        <SupplierOrdersModalManager
-          activeModal={activeModal}
-          setActiveModal={setActiveModal}
+      {/* Modal Config */}
+      <SupplierOrdersModalManager
+        activeModal={activeModal}
+        setActiveModal={setActiveModal}
+        mutate={mutate}
+      />
+
+      <Grid container justifyContent="space-between">
+        <Grid item></Grid>{" "}
+        <Grid item mb={2}>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => openModal("add")}>
+            {" "}
+            Create Order{" "}
+          </Button>
+        </Grid>
+      </Grid>
+
+      {/* Different Panel Views  */}
+        <BasicReactTable
+          data_columns={SupplierOrderColumns}
+          column_visibility={SupplierOrderColumnsVisibility}
+          fetched_data={fetchedData}
+          action_formatter={ActionFormatter}
           mutate={mutate}
         />
-
-        <Grid container justifyContent="space-between">
-          <Grid item></Grid>{" "}
-          <Grid item>
-            <Button
-              variant="contained"
-              color="success"
-              onClick={() => openModal("add")}>
-              {" "}
-              Create Order{" "}
-            </Button>
-          </Grid>
-        </Grid>
-        <Divider />
-
-        {/* Different Panel Views  */}
-        <CustomTabPanel value={value} index={0}>
-            <BasicReactTable
-              data_columns={SupplierOrderColumns}
-              column_visibility={SupplierOrderColumnsVisibility}
-              fetched_data={fetchedData}
-              action_formatter={ActionFormatter}
-              mutate={mutate}
-            />
-        </CustomTabPanel>
     </>
   );
 }

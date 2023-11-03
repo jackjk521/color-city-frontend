@@ -5,8 +5,6 @@ import useSWR from "swr";
 import { Button, Grid, Divider } from "@mui/material";
 
 // Components
-import CardGrid from "../../components/utility/grids/CardGrid";
-import CustomTabPanel from "../../components/utility/customTabPanel";
 
 // Table
 import BasicReactTable from "@/components/utility/tables/basicReactTable";
@@ -19,18 +17,11 @@ import {
 import UserModalManager from "../../modals/users/userModalManager";
 import ActionFormatter from "../../components/users/actionFormatter";
 import withAuth from "@/components/utility/with_auth";
-
 import { get_fetcher } from "@/components/utility/api/fetcher";
 
-
-const url = "/users"
+const url = "/users";
 
 function Users({ rows }) {
-  // const [data, setData] = React.useState(rows);
-  const [value, setValue] = React.useState(0);
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
   const [activeModal, setActiveModal] = React.useState(null);
   const openModal = (modalType) => {
     setActiveModal(modalType);
@@ -44,45 +35,37 @@ function Users({ rows }) {
     fallbackData: rows,
   });
 
-
   // console.log(data)
   return (
     <>
-      {/* <ItemsContent> */}
-        {/* Modal Config */}
-        <UserModalManager
-          activeModal={activeModal}
-          setActiveModal={setActiveModal}
-          mutate={mutate}
-        />
+      {/* Modal Config */}
+      <UserModalManager
+        activeModal={activeModal}
+        setActiveModal={setActiveModal}
+        mutate={mutate}
+      />
 
-        <Grid container justifyContent="space-between">
-          <Grid item></Grid>{" "}
-          <Grid item>
-            <Button
-              variant="contained"
-              color="success"
-              onClick={() => openModal("add")}>
-              {" "}
-              Add User{" "}
-            </Button>
-          </Grid>
+      <Grid container justifyContent="space-between">
+        <Grid item></Grid>{" "}
+        <Grid item mb={2}>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => openModal("add")}>
+            {" "}
+            Add User{" "}
+          </Button>
         </Grid>
-        <Divider />
+      </Grid>
 
-        {/* Different Panel Views  */}
-        <CustomTabPanel value={value} index={0}>
-          <CardGrid>
-            <BasicReactTable
-              data_columns={UsersColumns}
-              column_visibility={UserColumnsVisibility}
-              fetched_data={fetchedData}
-              action_formatter={ActionFormatter}
-              mutate={mutate}
-            />
-          </CardGrid>
-        </CustomTabPanel>
-      {/* </ItemsContent> */}
+      {/* User Table  */}
+      <BasicReactTable
+        data_columns={UsersColumns}
+        column_visibility={UserColumnsVisibility}
+        fetched_data={fetchedData}
+        action_formatter={ActionFormatter}
+        mutate={mutate}
+      />
     </>
   );
 }
@@ -105,4 +88,4 @@ export async function getServerSideProps({ req, res }) {
   }
 }
 
-export default withAuth(Users)
+export default withAuth(Users);

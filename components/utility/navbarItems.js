@@ -16,6 +16,8 @@ import AssignmentIcon from "@mui/icons-material/Assignment";
 import TransferWithinAStationIcon from "@mui/icons-material/TransferWithinAStation";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import MoveUpIcon from "@mui/icons-material/MoveUp";
+import PaletteIcon from "@mui/icons-material/Palette";
+import FormatPaintIcon from '@mui/icons-material/FormatPaint';
 import { styled } from "@mui/system";
 
 const HoverListItemButton = styled(ListItemButton)(({ theme }) => ({
@@ -121,7 +123,7 @@ export function SecondaryListItems(toggleDrawer) {
   };
   const pageClick = () => {
     toggleDrawer();
-  };  
+  };
 
   return (
     <List component="nav">
@@ -145,7 +147,7 @@ export function SecondaryListItems(toggleDrawer) {
             component={Link}
             href="/items">
             <ListItemIcon>
-              <AssignmentIcon />
+              <PaletteIcon />
             </ListItemIcon>
             <ListItemText primary="Items" />
           </HoverListItemButton>
@@ -154,7 +156,7 @@ export function SecondaryListItems(toggleDrawer) {
             component={Link}
             href="/items_info">
             <ListItemIcon>
-              <TransferWithinAStationIcon />
+              <FormatPaintIcon />
             </ListItemIcon>
             <ListItemText primary="Item Details" />
           </HoverListItemButton>

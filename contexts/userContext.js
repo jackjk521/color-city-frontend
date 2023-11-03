@@ -5,7 +5,7 @@ export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const router = useRouter();
-  const [userCredentials, setUserCredentials] = useState([]);
+  const [userCredentials, setUserCredentials] = useState(null);
   const updateUserCredentials = (credentials) => {
     setUserCredentials(credentials);
   };

@@ -4,12 +4,8 @@ import useSWR from "swr";
 // Material UI
 import { Button, Grid, Divider } from "@mui/material";
 
-import Swal from "sweetalert2";
-
 // Components
 import ItemsContent from "../../components/items/itemsContent";
-import CardGrid from "../../components/utility/grids/CardGrid";
-import CustomTabPanel from "../../components/utility/customTabPanel";
 
 // Table
 import BasicReactTable from "@/components/utility/tables/basicReactTable";
@@ -25,12 +21,9 @@ import withAuth from "@/components/utility/with_auth";
 
 import { get_fetcher } from "@/components/utility/api/fetcher";
 
+const url = "/items";
 
-const url = "/items"
-
- function Items({ rows }) {
-  // const [data, setData] = React.useState(rows);
-  const [value, setValue] = React.useState(0);
+function Items({ rows }) {
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -70,11 +63,12 @@ const url = "/items"
 
         <Grid container justifyContent="space-between">
           <Grid item></Grid>{" "}
-          <Grid item>
+          <Grid item mb={2}>
             <Button
               variant="contained"
               color="success"
-              onClick={() => openModal("add")}>
+              onClick={() => openModal("add")}
+              >
               {" "}
               Add Item{" "}
             </Button>
@@ -83,17 +77,14 @@ const url = "/items"
         <Divider />
 
         {/* Different Panel Views  */}
-        <CustomTabPanel value={value} index={0}>
-          <CardGrid>
-            <BasicReactTable
-              data_columns={ItemColumns}
-              column_visibility={ItemColumnVisibility}
-              fetched_data={fetchedData}
-              action_formatter={ActionFormatter}
-              mutate={mutate}
-            />
-          </CardGrid>
-        </CustomTabPanel>
+
+        <BasicReactTable
+          data_columns={ItemColumns}
+          column_visibility={ItemColumnVisibility}
+          fetched_data={fetchedData}
+          action_formatter={ActionFormatter}
+          mutate={mutate}
+        />
       </ItemsContent>
     </>
   );
@@ -117,4 +108,4 @@ export async function getServerSideProps({ req, res }) {
   }
 }
 
-export default withAuth(Items)
+export default withAuth(Items);
