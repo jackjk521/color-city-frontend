@@ -23,9 +23,15 @@ import OutputIcon from "@mui/icons-material/Output";
 import Skeleton from "@mui/material/Skeleton";
 
 // Components
-import { MainListItems, PurchasesItems, BranchOrderItem, SecondaryListItems } from "./utility/navbarItems";
+import {
+  MainListItems,
+  PurchasesItems,
+  BranchOrderItem,
+  SecondaryListItems,
+} from "./utility/navbarItems";
 import Header from "./header";
 import Footer from "./footer";
+import TabsTableSkeleton from "./utility/skeletons/tabs_table_skeleton";
 import { UserContext } from "../contexts/userContext";
 
 const drawerWidth = 240;
@@ -203,10 +209,14 @@ export default function Layout({ children }) {
             <Divider />
             <List component="nav">
               {MainListItems(toggleDrawer)}
-              {user && user.userCredentials.user_role === "Manager" && BranchOrderItem(toggleDrawer)}
-              {user && user.userCredentials.user_role === "Administrator" && PurchasesItems(toggleDrawer)}
+              {user &&
+                user?.userCredentials?.user_role === "Manager" &&
+                BranchOrderItem(toggleDrawer)}
+              {user &&
+                user?.userCredentials?.user_role === "Administrator" &&
+                PurchasesItems(toggleDrawer)}
 
-              {user && user.userCredentials.user_role === "Administrator" && (
+              {user && user?.userCredentials?.user_role === "Administrator" && (
                 <>
                   <Divider sx={{ my: 1 }} />
                   {SecondaryListItems(toggleDrawer)}
@@ -235,7 +245,7 @@ export default function Layout({ children }) {
               {/* Render the content component */}
               {!loaded && !isDashboardRoute ? (
                 // Show Skeleton while children are loading
-                <Skeleton variant="rectangular" height={400} />
+                <TabsTableSkeleton />
               ) : (
                 // Render the loaded content
                 <>{children}</>

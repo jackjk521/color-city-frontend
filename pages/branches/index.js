@@ -47,12 +47,12 @@ function Branches({ rows }) {
 
       <Grid container justifyContent="space-between">
         <Grid item></Grid>{" "}
-        <Grid item>
+        <Grid item  mb={2}>
           <Button
             variant="contained"
             color="success"
             onClick={() => openModal("add")}
-            mb={2}>
+           >
             {" "}
             Add Branch{" "}
           </Button>

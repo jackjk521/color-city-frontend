@@ -39,7 +39,9 @@ export default function LoginPage() {
         });
         throw error;
       }
-      // console.log(response.data);
+      // Set JWT as HTTP-only cookie
+      // document.cookie = `token=${response.data.token}; HttpOnly`;
+
       user.updateUserCredentials(response.data);
       router.push("/")
 
