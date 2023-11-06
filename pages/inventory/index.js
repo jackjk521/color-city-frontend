@@ -11,6 +11,8 @@ import InventoryContent from "../../components/inventory/inventoryContent";
 import {
   InventoryColumns,
   InventoryColumnsVisibility,
+  InventoryBranchColumns,
+  InventoryBranchColumnsVisibility,
 } from "../../components/utility/tables/tableColumns";
 
 // Helper Functions
@@ -146,13 +148,13 @@ function Inventory({
             )}
           </Grid>{" "}
           <Grid item>
-            <Button
+            {/* <Button
               variant="contained"
               color="success"
               onClick={() => openModal("add")}>
               {" "}
               Add to Inventory{" "}
-            </Button>
+            </Button> */}
           </Grid>
         </Grid>
 
@@ -177,8 +179,8 @@ function Inventory({
               tabIndex: 1,
               tabName: "Warehouse",
               tabData: warehouseData,
-              dataColumns: InventoryColumns,
-              column_visibility: InventoryColumnsVisibility,
+              dataColumns: InventoryBranchColumns,
+              column_visibility: InventoryBranchColumnsVisibility,
               actionFormatter: ActionFormatter,
               tabMutate: warehouseMutate,
             })}
@@ -188,8 +190,8 @@ function Inventory({
               tabIndex: 2,
               tabName: "Branch 1",
               tabData: branch1Data,
-              dataColumns: InventoryColumns,
-              column_visibility: InventoryColumnsVisibility,
+              dataColumns: InventoryBranchColumns,
+              column_visibility: InventoryBranchColumnsVisibility,
               actionFormatter: ActionFormatter,
               tabMutate: branch1Mutate,
             })}
@@ -199,8 +201,8 @@ function Inventory({
               tabIndex: 3,
               tabName: "Branch 2",
               tabData: branch2Data,
-              dataColumns: InventoryColumns,
-              column_visibility: InventoryColumnsVisibility,
+              dataColumns: InventoryBranchColumns,
+              column_visibility: InventoryBranchColumnsVisibility,
               actionFormatter: ActionFormatter,
               tabMutate: branch2Mutate,
             })}
@@ -210,8 +212,8 @@ function Inventory({
               tabIndex: 4,
               tabName: "Branch 3",
               tabData: branch3Data,
-              dataColumns: InventoryColumns,
-              column_visibility: InventoryColumnsVisibility,
+              dataColumns: InventoryBranchColumns,
+              column_visibility: InventoryBranchColumnsVisibility,
               actionFormatter: ActionFormatter,
               tabMutate: branch3Mutate,
             })}
@@ -225,8 +227,8 @@ function Inventory({
               tabIndex: branch_id,
               tabName: "Branch Inventory",
               tabData: dataArray[branch_id],
-              dataColumns: InventoryColumns,
-              column_visibility: InventoryColumnsVisibility,
+              dataColumns: InventoryBranchColumns,
+              column_visibility: InventoryBranchColumnsVisibility,
               actionFormatter: ActionFormatter,
               tabMutate: mutateArray[branch_id],
             })}

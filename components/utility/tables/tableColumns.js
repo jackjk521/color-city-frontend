@@ -178,7 +178,7 @@ export const UserColumnsVisibility = {
   user_role: false,
 };
 
-// Inventory
+// Inventory (Admin View)
 export const InventoryColumns = [
   {
     accessorKey: "inventory_id", // Primary key
@@ -187,7 +187,7 @@ export const InventoryColumns = [
   },
 
   {
-    accessorKey: "item_name", //normal accessorKey
+    accessorKey: "brand_item", //normal accessorKey
     header: "Item Name",
     size: 200,
   },
@@ -214,6 +214,38 @@ export const InventoryColumnsVisibility = {
   total_quantity: false,
   holding_cost: false,
 };
+
+// Inventory (Branch View)
+export const InventoryBranchColumns = [
+  {
+    accessorKey: "inventory_id", // Primary key
+    header: "ID",
+    size: 50,
+  },
+
+  {
+    accessorKey: "brand_item", //normal accessorKey
+    header: "Item Name",
+    size: 200,
+  },
+  {
+    accessorKey: "total_quantity", //normal accessorKey
+    header: "Total Quantity",
+    size: 200,
+  },
+  {
+    accessorKey: "holding_cost", //normal accessorKey
+    header: "Holding Cost",
+    size: 200,
+  },
+];
+export const InventoryBranchColumnsVisibility = {
+  inventory_id: true,
+  item_name: false,
+  total_quantity: false,
+  holding_cost: false,
+};
+
 
 // SupplierOrder
 export const SupplierOrderColumns = [

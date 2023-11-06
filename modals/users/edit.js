@@ -115,7 +115,6 @@ export default function EditModal({
                 <BranchesDropdown
                   selectedBranch={data.branch}
                   handleChange={handleChange}
-                  setData={setData}
                 />
               </Grid>
 

@@ -53,6 +53,7 @@ function BranchOrders({
 
   const { user } = React.useContext(UserContext);
 
+  console.log(user.userCredentials)
   const {
     data: allBranchOrdersData,
     mutate: allBranchOrdersMutate,
@@ -107,7 +108,7 @@ function BranchOrders({
       <BranchOrdersModalManager
         activeModal={activeModal}
         setActiveModal={setActiveModal}
-        mutate={mutateArray[value]}
+        mutate={mutateArray[branch_id]}
       />
 
       <Grid container justifyContent="space-between">

@@ -17,7 +17,7 @@ import TransferWithinAStationIcon from "@mui/icons-material/TransferWithinAStati
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import MoveUpIcon from "@mui/icons-material/MoveUp";
 import PaletteIcon from "@mui/icons-material/Palette";
-import FormatPaintIcon from '@mui/icons-material/FormatPaint';
+import FormatPaintIcon from "@mui/icons-material/FormatPaint";
 import { styled } from "@mui/system";
 
 const HoverListItemButton = styled(ListItemButton)(({ theme }) => ({
@@ -49,6 +49,79 @@ export function MainListItems(toggleDrawer) {
         <ListItemText primary="Dashboard" />
       </HoverListItemButton>
 
+      <HoverListItemButton
+        onClick={pageClick}
+        component={Link}
+        href="/inventory">
+        <ListItemIcon>
+          <InventoryIcon />
+        </ListItemIcon>
+        <ListItemText primary="Inventory" />
+      </HoverListItemButton>
+
+      {/* <HoverListItemButton component={Link} href="/suppliers">
+      <ListItemIcon>
+        <TransferWithinAStationIcon />
+      </ListItemIcon>
+      <ListItemText primary="Suppliers" />
+    </HoverListItemButton> */}
+
+      {/* <ListItemButton onClick={() => setSelectedItem("reports")}>
+      <ListItemIcon>
+        <BarChartIcon />
+      </ListItemIcon>
+      <ListItemText primary="Reports" />
+    </ListItemButton>
+
+    <ListItemButton onClick={() => setSelectedItem("integrations")}>
+      <ListItemIcon>
+        <LayersIcon />
+      </ListItemIcon>
+      <ListItemText primary="Integrations" />
+    </ListItemButton> */}
+    </React.Fragment>
+  );
+}
+
+export function BranchOrderItem(toggleDrawer) {
+  const [isItemsOpen, setItemsOpen] = React.useState(false);
+
+  const handleItemsClick = () => {
+    setItemsOpen(!isItemsOpen);
+  };
+
+  const pageClick = () => {
+    toggleDrawer();
+  };
+
+  return (
+    <React.Fragment>
+      <HoverListItemButton
+        onClick={pageClick}
+        component={Link}
+        href="/branch_orders">
+        <ListItemIcon>
+          <TransferWithinAStationIcon />
+        </ListItemIcon>
+        <ListItemText primary="Branch Orders" />
+      </HoverListItemButton>
+    </React.Fragment>
+  );
+}
+
+export function PurchasesItems(toggleDrawer) {
+  const [isItemsOpen, setItemsOpen] = React.useState(false);
+
+  const handleItemsClick = () => {
+    setItemsOpen(!isItemsOpen);
+  };
+
+  const pageClick = () => {
+    toggleDrawer();
+  };
+
+  return (
+    <React.Fragment>
       <HoverListItemButton onClick={handleItemsClick}>
         <ListItemIcon>
           <ShoppingCartIcon />
@@ -80,37 +153,6 @@ export function MainListItems(toggleDrawer) {
           </HoverListItemButton>
         </List>
       </Collapse>
-
-      <HoverListItemButton
-        onClick={pageClick}
-        component={Link}
-        href="/inventory">
-        <ListItemIcon>
-          <InventoryIcon />
-        </ListItemIcon>
-        <ListItemText primary="Inventory" />
-      </HoverListItemButton>
-
-      {/* <HoverListItemButton component={Link} href="/suppliers">
-      <ListItemIcon>
-        <TransferWithinAStationIcon />
-      </ListItemIcon>
-      <ListItemText primary="Suppliers" />
-    </HoverListItemButton> */}
-
-      {/* <ListItemButton onClick={() => setSelectedItem("reports")}>
-      <ListItemIcon>
-        <BarChartIcon />
-      </ListItemIcon>
-      <ListItemText primary="Reports" />
-    </ListItemButton>
-
-    <ListItemButton onClick={() => setSelectedItem("integrations")}>
-      <ListItemIcon>
-        <LayersIcon />
-      </ListItemIcon>
-      <ListItemText primary="Integrations" />
-    </ListItemButton> */}
     </React.Fragment>
   );
 }
