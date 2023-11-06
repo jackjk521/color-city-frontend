@@ -126,7 +126,7 @@ const ActionFormatter = ({ rowData, mutate }) => {
       ) : (
         <Box sx={{ display: "flex", flexWrap: "nowrap", gap: "8px" }}>
           <ViewBtn openView={openView} />
-          {/* <EditBtn openEdit={openEdit} /> */}
+          <EditBtn openEdit={openEdit} />
           <RemoveBtn openRemove={openRemove} />
         </Box>
       )}

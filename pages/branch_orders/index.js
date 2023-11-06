@@ -53,7 +53,6 @@ function BranchOrders({
 
   const { user } = React.useContext(UserContext);
 
-  console.log(user.userCredentials)
   const {
     data: allBranchOrdersData,
     mutate: allBranchOrdersMutate,

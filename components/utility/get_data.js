@@ -632,7 +632,7 @@ export function ItemsDropdown({ selectedItem, handleChange, setAddItemData }) {
       <Autocomplete
         options={items}
         name="item"
-        value={selectedItem || ""}
+        value={items.find(item => item.item_id === selectedItem) || ""}
         onChange={handleItemChange}
         getOptionLabel={(option) => option.brand_item}
         getOptionValue={(option) => option.item_id}
