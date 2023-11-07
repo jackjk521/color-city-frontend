@@ -5,11 +5,8 @@ import useSWR from "swr";
 import { Button, Grid, Divider, Tabs, Tab } from "@mui/material";
 
 // Components
-import CardGrid from "../../components/utility/grids/CardGrid";
-import CustomTabPanel from "../../components/utility/customTabPanel";
 
 // Table
-import BasicReactTable from "@/components/utility/tables/basicReactTable";
 import {
   BranchOrderColumns,
   BranchOrderColumnsVisibility,
@@ -19,7 +16,7 @@ import {
 import BranchOrdersModalManager from "../../modals/branch_orders/branchOrdersModalManager";
 import ActionFormatter from "@/components/branch_orders/actionFormatter";
 import withAuth from "@/components/utility/with_auth";
-
+// Tabs Handlers
 import { renderTabContent } from "@/components/branch_orders/tab_tables";
 import { UserContext } from "@/contexts/userContext";
 import { get_fetcher } from "@/components/utility/api/fetcher";
@@ -37,7 +34,6 @@ const branch1Url = "/purchases/?type=BRANCH&branch=2";
 const branch2Url = "/purchases/?type=BRANCH&branch=3";
 const branch3Url = "/purchases/?type=BRANCH&branch=4";
 
-const url = "/purchases/?type=BRANCH";
 
 function BranchOrders({
   // rows,
@@ -56,14 +52,6 @@ function BranchOrders({
   };
 
   const { user } = React.useContext(UserContext);
-
-  // const {
-  //   data: fetchedData,
-  //   mutate,
-  //   error: fetchedError,
-  // } = useSWR(url, get_fetcher, {
-  //   fallbackData: rows,
-  // });
 
   const {
     data: allBranchOrdersData,
@@ -119,7 +107,7 @@ function BranchOrders({
       <BranchOrdersModalManager
         activeModal={activeModal}
         setActiveModal={setActiveModal}
-        mutate={mutateArray[value]}
+        mutate={mutateArray[branch_id]}
       />
 
       <Grid container justifyContent="space-between">
@@ -144,7 +132,7 @@ function BranchOrders({
             </Tabs>
           )}
         </Grid>{" "}
-        <Grid item>
+        <Grid item mb={2}>
           <Button
             variant="contained"
             color="success"
@@ -155,17 +143,6 @@ function BranchOrders({
         </Grid>
       </Grid>
       <Divider />
-
-      {/* Different Panel Views  */}
-      {/* <CustomTabPanel value={value} index={0}>
-        <BasicReactTable
-          data_columns={BranchOrderColumns}
-          column_visibility={BranchOrderColumnsVisibility}
-          fetched_data={fetchedData}
-          action_formatter={ActionFormatter}
-          mutate={mutate}
-        />
-      </CustomTabPanel> */}
 
       {/* Different Panel Views  */}
       {user.userCredentials.user_role === "Administrator" && (

@@ -11,7 +11,7 @@ const InlineEditReactTable = ({
   column_visibility,
   local_data,
   setLocalData,
-  handleRowSave
+  handleRowSave,
 }) => {
   //should be memoized or stable
   const columns = useMemo(() => data_columns, []);
@@ -62,6 +62,7 @@ const InlineEditReactTable = ({
           initialState={{
             columnVisibility: column_visibility,
           }}
+          enableFullScreenToggle={false}
           enableRowActions
           positionActionsColumn="last"
           renderRowActions={({ row }) => (
@@ -78,6 +79,7 @@ const InlineEditReactTable = ({
           data={data}
           enableRowActions
           positionActionsColumn="last"
+          enableFullScreenToggle={false}
           renderRowActions={({ row, table }) => (
             <ActionFormatter
               rowData={row.original}

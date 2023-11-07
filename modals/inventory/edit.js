@@ -133,6 +133,7 @@ export default function EditModal({
             <Grid container spacing={2} mt={1}>
               <Grid item xs={12} md={6}>
                 <ItemsDropdown
+                  selectedItem={data.item}
                   setAddItemData={setData}
                 />
               </Grid>

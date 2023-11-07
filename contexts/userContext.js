@@ -5,7 +5,7 @@ export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
   const router = useRouter();
-  const [userCredentials, setUserCredentials] = useState([]);
+  const [userCredentials, setUserCredentials] = useState(null);
   const updateUserCredentials = (credentials) => {
     setUserCredentials(credentials);
   };
@@ -17,11 +17,11 @@ export const UserProvider = ({ children }) => {
     const resetTimeout = () => {
       clearTimeout(timeout);
       timeout = setTimeout(() => {
-        router.replace("/");
         console.log("Timeout completed");
 
         // Clear the userCredentials state
         setUserCredentials(null);
+        router.replace("/");
       }, 600000); // 10 minutes in milliseconds
     };
 

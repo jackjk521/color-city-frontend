@@ -8,7 +8,6 @@ import { Button, Grid, Divider, Tabs, Tab } from "@mui/material";
 import ItemsContent from "../../components/items/itemsContent";
 
 // Table
-import BasicReactTable from "@/components/utility/tables/basicReactTable";
 import {
   BrandsColumns,
   CategoriesColumns,
@@ -29,7 +28,6 @@ import SupplierActionFormatter from "@/components/suppliers/actionFormatter";
 
 import { renderTabContent } from "@/components/items_info/tab_tables";
 import withAuth from "@/components/utility/with_auth";
-
 import { get_fetcher } from "@/components/utility/api/fetcher";
 
 function a11yProps(index) {
@@ -128,7 +126,7 @@ function ItemsInfo({ brands, categories, suppliers }) {
               {/* {...a11yProps(0)} */}
             </Tabs>
           </Grid>{" "}
-          <Grid item>
+          <Grid item mb={2}>
             <Button
               variant="contained"
               color="success"

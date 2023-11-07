@@ -10,7 +10,7 @@ const CheckBoxReactTable = ({
   setRowSelection,
   handleRowSave,
   rowSelectionSetup,
-  getRowId
+  getRowId,
 }) => {
   //should be memoized or stable
   const columns = useMemo(() => data_columns, []);
@@ -32,6 +32,7 @@ const CheckBoxReactTable = ({
           initialState={{
             columnVisibility: column_visibility,
           }}
+          enableFullScreenToggle={false}
           // Can be passed from parameters to be reusable
           enableRowSelection={(originalRow) => {
             // If the purchase line is not completed and the received_quantity is not equal to 0 and
@@ -58,6 +59,7 @@ const CheckBoxReactTable = ({
           columns={columns}
           data={data}
           positionActionsColumn="last"
+          enableFullScreenToggle={false}
           enableRowSelection={(originalRow) =>
             // If the purchase line is not completed and the received_quantity is not equal to 0 and
             rowSelectionSetup(originalRow)

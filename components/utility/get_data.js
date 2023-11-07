@@ -560,18 +560,18 @@ export function BranchesDropdown({
         console.error(error);
       });
 
-    if (setData != null && selectedBranch !== "") {
-      const branch = branches.find(
-        (branch) => branch.branch_id === selectedBranch
-      );
+    // if (setData != null && selectedBranch !== "") {
+    //   const branch = branches.find(
+    //     (branch) => branch.branch_id === selectedBranch
+    //   );
 
-      // console.log(branch)
-      setData((prevOrder) => ({
-        ...prevOrder,
-        branch_name: branch ? branch.branch_name : "",
-      }));
-    }
-  }, [selectedBranch, setData]);
+    //   // console.log(branch)
+    //   setData((prevOrder) => ({
+    //     ...prevOrder,
+    //     branch_name: branch ? branch.branch_name : "",
+    //   }));
+    // }
+  }, []);
 
   return (
     <FormControl fullWidth>
@@ -632,7 +632,7 @@ export function ItemsDropdown({ selectedItem, handleChange, setAddItemData }) {
       <Autocomplete
         options={items}
         name="item"
-        // value={selected ? selected : selectedItem}
+        value={items.find(item => item.item_id === selectedItem) || ""}
         onChange={handleItemChange}
         getOptionLabel={(option) => option.brand_item}
         getOptionValue={(option) => option.item_id}

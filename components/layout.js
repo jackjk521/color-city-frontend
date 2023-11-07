@@ -20,10 +20,18 @@ import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import OutputIcon from "@mui/icons-material/Output";
 
+import Skeleton from "@mui/material/Skeleton";
+
 // Components
-import { MainListItems, SecondaryListItems } from "./utility/navbarItems";
+import {
+  MainListItems,
+  PurchasesItems,
+  BranchOrderItem,
+  SecondaryListItems,
+} from "./utility/navbarItems";
 import Header from "./header";
 import Footer from "./footer";
+import TabsTableSkeleton from "./utility/skeletons/tabs_table_skeleton";
 import { UserContext } from "../contexts/userContext";
 
 const drawerWidth = 240;
@@ -80,11 +88,12 @@ export default function Layout({ children }) {
   const [open, setOpen] = React.useState(true);
   const [loggedIn, setLoggedIn] = React.useState(false);
   const { user } = React.useContext(UserContext);
-
+  const [loaded, setLoaded] = React.useState(false);
+  const isDashboardRoute = router.pathname === "/dashboard";
   if (!user) {
     router.push("/");
   }
-
+  // Hide sidebar
   const toggleDrawer = () => {
     setOpen(!open);
   };
@@ -101,6 +110,8 @@ export default function Layout({ children }) {
         return "Inventory";
       case "/items":
         return "Items";
+      case "/items_info":
+        return "Item Details";
       case "/branches":
         return "Branches";
       case "/users":
@@ -122,9 +133,24 @@ export default function Layout({ children }) {
     loggedIn ? logoutNow() : router.push("/");
   };
 
-  const handlePageClick = () => [
-    setOpen(false)
-  ]
+  React.useEffect(() => {
+    const handleRouteChangeStart = () => {
+      setLoaded(false);
+    };
+
+    const handleRouteChangeComplete = () => {
+      setLoaded(true);
+    };
+
+    router.events.on("routeChangeStart", handleRouteChangeStart);
+    router.events.on("routeChangeComplete", handleRouteChangeComplete);
+
+    // Clean up event listeners when the component unmounts
+    return () => {
+      router.events.off("routeChangeStart", handleRouteChangeStart);
+      router.events.off("routeChangeComplete", handleRouteChangeComplete);
+    };
+  }, []);
 
   return (
     <>
@@ -183,7 +209,14 @@ export default function Layout({ children }) {
             <Divider />
             <List component="nav">
               {MainListItems(toggleDrawer)}
-              {user && user.userCredentials.user_role === "Administrator" && (
+              {user &&
+                user?.userCredentials?.user_role === "Manager" &&
+                BranchOrderItem(toggleDrawer)}
+              {user &&
+                user?.userCredentials?.user_role === "Administrator" &&
+                PurchasesItems(toggleDrawer)}
+
+              {user && user?.userCredentials?.user_role === "Administrator" && (
                 <>
                   <Divider sx={{ my: 1 }} />
                   {SecondaryListItems(toggleDrawer)}
@@ -210,8 +243,13 @@ export default function Layout({ children }) {
                 mb: 4,
               }}>
               {/* Render the content component */}
-              {/* {renderContent() == null ? children : renderContent()} */}
-              {children}
+              {!loaded && !isDashboardRoute ? (
+                // Show Skeleton while children are loading
+                <TabsTableSkeleton />
+              ) : (
+                // Render the loaded content
+                <>{children}</>
+              )}
               <Footer sx={{ pt: 4 }} />
             </Container>
           </Box>

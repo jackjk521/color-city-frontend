@@ -30,12 +30,16 @@ const DisplayReactTable = ({
           initialState={{
             columnVisibility: column_visibility,
           }}
+          enableFullScreenToggle={false}
+
 
         />
       ) : (
         <MaterialReactTable
           columns={columns}
           data={data}
+          enableFullScreenToggle={false}
+
         />
       )}
     </>

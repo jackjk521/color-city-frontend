@@ -5,8 +5,6 @@ import useSWR from "swr";
 import { Button, Grid, Divider } from "@mui/material";
 
 // Components
-import CardGrid from "../../components/utility/grids/CardGrid";
-import CustomTabPanel from "../../components/utility/customTabPanel";
 
 // Table
 import BasicReactTable from "@/components/utility/tables/basicReactTable";
@@ -21,10 +19,9 @@ import ActionFormatter from "../../components/branches/actionFormatter";
 import withAuth from "@/components/utility/with_auth";
 import { get_fetcher } from "@/components/utility/api/fetcher";
 
-const url = "/branches"
+const url = "/branches";
 
 function Branches({ rows }) {
-  const [value, setValue] = React.useState(0);
   const [activeModal, setActiveModal] = React.useState(null);
   const openModal = (modalType) => {
     setActiveModal(modalType);
@@ -40,46 +37,42 @@ function Branches({ rows }) {
 
   // console.log(data)
   return (
-    <React.Fragment >
-        {/* Modal Config */}
-        <BranchModalManager
-          activeModal={activeModal}
-          setActiveModal={setActiveModal}
-          mutate={mutate}
-        />
+    <React.Fragment>
+      {/* Modal Config */}
+      <BranchModalManager
+        activeModal={activeModal}
+        setActiveModal={setActiveModal}
+        mutate={mutate}
+      />
 
-        <Grid container justifyContent="space-between">
-          <Grid item></Grid>{" "}
-          <Grid item>
-            <Button
-              variant="contained"
-              color="success"
-              onClick={() => openModal("add")}>
-              {" "}
-              Add Branch{" "}
-            </Button>
-          </Grid>
+      <Grid container justifyContent="space-between">
+        <Grid item></Grid>{" "}
+        <Grid item  mb={2}>
+          <Button
+            variant="contained"
+            color="success"
+            onClick={() => openModal("add")}
+           >
+            {" "}
+            Add Branch{" "}
+          </Button>
         </Grid>
-        <Divider />
+      </Grid>
 
-        {/* Different Panel Views  */}
-        <CustomTabPanel value={value} index={0}>
-          <CardGrid>
-            <BasicReactTable
-              data_columns={BranchesColumns}
-              column_visibility={BranchColumnsVisibility}
-              fetched_data={fetchedData}
-              action_formatter={ActionFormatter}
-              mutate={mutate}
-            />
-          </CardGrid>
-        </CustomTabPanel>
+      {/* Branches Table  */}
+      <BasicReactTable
+        data_columns={BranchesColumns}
+        column_visibility={BranchColumnsVisibility}
+        fetched_data={fetchedData}
+        action_formatter={ActionFormatter}
+        mutate={mutate}
+      />
     </React.Fragment>
   );
 }
 
 export async function getServerSideProps({ req, res }) {
-  try { 
+  try {
     const initialData = await get_fetcher(url);
     return {
       props: {
@@ -96,4 +89,4 @@ export async function getServerSideProps({ req, res }) {
   }
 }
 
-export default withAuth(Branches)
+export default withAuth(Branches);

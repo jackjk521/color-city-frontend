@@ -49,7 +49,7 @@ export const RemoveBtn = ({ openRemove }) => {
 export const ApproveBtn = ({ openApprove }) => {
   return (  
     <IconButton
-      color="primary"
+      color="success"
       onClick={openApprove}
       title="Approve">
       {" "}
@@ -62,7 +62,7 @@ export const ApproveBtn = ({ openApprove }) => {
 export const DeclineBtn = ({ openDecline }) => {
   return (  
     <IconButton
-      color="primary"
+      color="danger"
       onClick={openDecline}
       title="Decline">
       {" "}
@@ -88,7 +88,7 @@ export const PostBtn = ({ openPost }) => {
 export const ReceiveBtn = ({ openReceive }) => {
   return (  
     <IconButton
-      color="primary"
+      color="success"
       onClick={openReceive}
       title="Receive">
       {" "}

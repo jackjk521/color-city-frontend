@@ -186,12 +186,13 @@ const ActionFormatter = ({ rowData, mutate }) => {
 
             {rowData.status == "APPROVED" &&
               rowData.received_status !== "COMPLETED" &&
-              user.userCredentials.user_role == "Manager" && (
+              user.userCredentials.user_role === "Manager" && (
                 <MenuItem onClick={openReceive}>Receive</MenuItem>
               )}
-            {rowData.status == "UNPOSTED" && (
-              <MenuItem onClick={openPost}>Post</MenuItem>
-            )}
+            {rowData.status == "UNPOSTED" &&
+              user.userCredentials.user_role === "Manager" && (
+                <MenuItem onClick={openPost}>Post</MenuItem>
+              )}
 
             {rowData.status == "POSTED" &&
               user.userCredentials.user_role == "Administrator" && (
@@ -208,7 +209,10 @@ const ActionFormatter = ({ rowData, mutate }) => {
           {rowData.status !== "APPROVED" && rowData.status !== "POSTED" && (
             <RemoveBtn openRemove={openRemove} />
           )}
-          {rowData.status == "UNPOSTED" && <PostBtn openPost={openPost} />}
+          {rowData.status == "UNPOSTED" &&
+            user.userCredentials.user_role === "Manager" && (
+              <PostBtn openPost={openPost} />
+            )}
           {rowData.status == "POSTED" &&
             user.userCredentials.user_role == "Administrator" && (
               <>
@@ -218,7 +222,7 @@ const ActionFormatter = ({ rowData, mutate }) => {
             )}
           {rowData.status == "APPROVED" &&
             rowData.received_status !== "COMPLETED" &&
-            user.userCredentials.user_role == "Manager" && (
+            user.userCredentials.user_role === "Manager" && (
               <ReceiveBtn openReceive={openReceive} />
             )}
 

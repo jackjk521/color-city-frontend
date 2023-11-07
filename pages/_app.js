@@ -1,6 +1,6 @@
 import "../styles/globals.css";
 import "../styles/main_styles.css";
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 
 // Components

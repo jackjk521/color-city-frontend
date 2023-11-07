@@ -38,6 +38,7 @@ const BasicReactTable = ({
           }}
           enableRowActions
           positionActionsColumn="last"
+          enableFullScreenToggle={false}
           renderRowActions={({ row }) =>
             action_formatter({
               rowData: row.original,
@@ -52,6 +53,7 @@ const BasicReactTable = ({
           data={data}
           enableRowActions
           positionActionsColumn="last"
+          enableFullScreenToggle={false}
           renderRowActions={({ row }) =>
             action_formatter({
               rowData: row.original,

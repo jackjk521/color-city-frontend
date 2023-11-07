@@ -119,7 +119,7 @@ const ActionFormatter = ({ rowData, mutate }) => {
               "aria-labelledby": "actions-menu",
             }}>
             <MenuItem onClick={openView}>View</MenuItem>
-            <MenuItem onClick={openEdit}>Edit</MenuItem>
+            {/* <MenuItem onClick={openEdit}>Edit</MenuItem> */}
             <MenuItem onClick={openRemove}>Remove</MenuItem>
           </Menu>
         </>

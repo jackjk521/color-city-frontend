@@ -11,12 +11,10 @@ export function renderTabContent({
   actionFormatter,
   tabMutate,
 }) {
-  // if (itemsError) {
-  //   return <div>Error: {itemsError.message}</div>;
-  // }
 
-  console.log(tabData)
+  // console.log(tabData)
   if (!tabData) {
+    // Change to skeleton
     return <div>Loading...</div>;
   }
 
