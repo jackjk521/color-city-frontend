@@ -17,11 +17,11 @@ export const UserProvider = ({ children }) => {
     const resetTimeout = () => {
       clearTimeout(timeout);
       timeout = setTimeout(() => {
-        router.replace("/");
         console.log("Timeout completed");
 
         // Clear the userCredentials state
         setUserCredentials(null);
+        router.replace("/");
       }, 600000); // 10 minutes in milliseconds
     };
 
