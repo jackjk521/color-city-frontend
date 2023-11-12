@@ -22,7 +22,7 @@ import { get_fetcher } from "@/components/utility/api/fetcher";
 
 const url = "/purchases/?type=SUPPLIER";
 
-function SupplierOrders({ rows }) {
+function SupplierOrders() {
   // const [data, setData] = React.useState(rows);
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
@@ -37,9 +37,7 @@ function SupplierOrders({ rows }) {
     data: fetchedData,
     mutate,
     error: fetchedError,
-  } = useSWR(url, get_fetcher, {
-    fallbackData: rows,
-  });
+  } = useSWR(url, get_fetcher);
 
   return (
     <>
@@ -64,6 +62,7 @@ function SupplierOrders({ rows }) {
       </Grid>
 
       {/* Different Panel Views  */}
+      {fetchedData && (
         <BasicReactTable
           data_columns={SupplierOrderColumns}
           column_visibility={SupplierOrderColumnsVisibility}
@@ -71,26 +70,27 @@ function SupplierOrders({ rows }) {
           action_formatter={ActionFormatter}
           mutate={mutate}
         />
+      )}
     </>
   );
 }
 
-export async function getServerSideProps({ req, res }) {
-  try {
-    const initialData = await get_fetcher(url);
-    return {
-      props: {
-        rows: initialData,
-      },
-    };
-  } catch (error) {
-    console.error("Error fetching API data:", error);
-    return {
-      props: {
-        rows: [],
-      },
-    };
-  }
-}
+// export async function getServerSideProps({ req, res }) {
+//   try {
+//     const initialData = await get_fetcher(url);
+//     return {
+//       props: {
+//         rows: initialData,
+//       },
+//     };
+//   } catch (error) {
+//     console.error("Error fetching API data:", error);
+//     return {
+//       props: {
+//         rows: [],
+//       },
+//     };
+//   }
+// }
 
 export default withAuth(SupplierOrders);

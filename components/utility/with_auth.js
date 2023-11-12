@@ -10,7 +10,7 @@ export default function withAuth(Component) {
 
     useEffect(() => {
       if (!isAuthenticated) {
-        router.replace("/");
+        router.replace("/login");
       }
     }, [isAuthenticated, router]);
 

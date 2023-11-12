@@ -1,99 +1,32 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { useRouter } from "next/router";
 import { Grid, TextField, Button, Container } from "@mui/material";
-import Image from "next/image";
 import { UserContext } from "@/contexts/userContext";
-import apiClient from "@/components/utility/api/apiClient";
-import Swal from "sweetalert2";
+import LoadingScreen from "@/components/utility/skeletons/loading_screen";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { status, user } = useContext(UserContext);
-  const [userCred, setUserCred] = useState({
-    username: "",
-    password: "",
-  });
+  const { user } = useContext(UserContext);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUserCred((prevCred) => ({ ...prevCred, [name]: value }));
-  };
+  useEffect(() => {
+    // Simulate authentication check delay
+    const delay = setTimeout(() => {
+      setIsLoading(false);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await apiClient.post("/auth_user/", {
-        username: userCred.username,
-        password: userCred.password,
-      });
-      if (response.status !== 200) {
-        const error = new Error();
-        error.info = response.data;
-        error.status = response.status;
-        error.message = "Invalid User Credentials";
-        Swal.fire({
-          title: error.info,
-          text: error.message,
-          icon: "error",
-        });
-        throw error;
+      // Check if user is not authenticated and redirect to "/login"
+      const isAuthenticated = user.userCrendentials != null;
+      if (!isAuthenticated) {
+        router.replace('/login');
       }
-      // console.log(response.data);
-      user.updateUserCredentials(response.data);
-      router.push("/dashboard")
+    }, 2000); // Simulating a 2-second delay
 
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
-  };
+    return () => clearTimeout(delay);
+  }, []);
 
-  return (
-    <Container maxWidth="sm">
-      <Grid container spacing={2} justifyContent="center" alignItems="center">
-        {/* ADD YOUR IMAGE OR LOGO HERE */}
-        <Grid item xs={12} textAlign="center">
-          <Image
-            src="/images/icon-256x256.png"
-            alt="Logo"
-            width={200}
-            height={200}
-          />
-        </Grid>
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
 
-        <Grid item xs={12}>
-          <form onSubmit={handleLogin}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  label="Username"
-                  name="username"
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  label="Password"
-                  name="password"
-                  type="password"
-                  onChange={handleChange}
-                />
-              </Grid>
-
-              <Grid item xs={12} textAlign="center">
-                <Button type="submit" variant="contained" color="primary">
-                  Login
-                </Button>
-              </Grid>
-            </Grid>
-          </form>
-        </Grid>
-      </Grid>
-    </Container>
-  );
+  return null;
 }

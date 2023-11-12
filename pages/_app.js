@@ -5,8 +5,8 @@ import { useRouter } from "next/router";
 
 // Components
 import Layout from "../components/layout";
-import LoginLayout from "../components/login_layout";
 import { UserProvider } from "@/contexts/userContext";
+import LoginPage from "./login";
 
 export default function App({ Component, pageProps }) {
   const router = useRouter();
@@ -26,7 +26,7 @@ export default function App({ Component, pageProps }) {
 
   useEffect(() => {
     if (!isPathExist) {
-      router.replace("/");
+      router.replace("/login");
     }
   }, [router.pathname]);
 
@@ -38,9 +38,7 @@ export default function App({ Component, pageProps }) {
             <Component {...pageProps} />
           </Layout>
         ) : (
-          <LoginLayout>
-            <Component {...pageProps} />
-          </LoginLayout>
+            <LoginPage />
         )}
       </UserProvider>
     </>

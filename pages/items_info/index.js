@@ -56,25 +56,19 @@ function ItemsInfo({ brands, categories, suppliers }) {
     data: brandsData,
     mutate: brandsMutate,
     error: brandsError,
-  } = useSWR(brandsUrl, get_fetcher, {
-    fallbackData: brands,
-  });
+  } = useSWR(brandsUrl, get_fetcher);
 
   const {
     data: categoriesData,
     mutate: categoriesMutate,
     error: categoriesError,
-  } = useSWR(categoriesUrl, get_fetcher, {
-    fallbackData: categories,
-  });
+  } = useSWR(categoriesUrl, get_fetcher);
 
   const {
     data: suppliersData,
     mutate: suppliersMutate,
     error: suppliersError,
-  } = useSWR(suppliersUrl, get_fetcher, {
-    fallbackData: suppliers,
-  });
+  } = useSWR(suppliersUrl, get_fetcher);
 
   const modalComponents = {
     0: (
@@ -139,7 +133,7 @@ function ItemsInfo({ brands, categories, suppliers }) {
         <Divider />
 
         {/* Different Panel Views  */}
-        {renderTabContent({
+        {brandsData && renderTabContent({
           tabValue: value,
           tabIndex: 0,
           tabName: "Brands",
@@ -149,7 +143,7 @@ function ItemsInfo({ brands, categories, suppliers }) {
           actionFormatter: BrandActionFormatter,
           tabMutate: brandsMutate,
         })}
-        {renderTabContent({
+        {categoriesData && renderTabContent({
           tabValue: value,
           tabIndex: 1,
           tabName: "Categories",
@@ -159,7 +153,7 @@ function ItemsInfo({ brands, categories, suppliers }) {
           actionFormatter: CategoryActionFormatter,
           tabMutate: categoriesMutate,
         })}
-        {renderTabContent({
+        {suppliersData && renderTabContent({
           tabValue: value,
           tabIndex: 2,
           tabName: "Suppliers",
@@ -174,29 +168,29 @@ function ItemsInfo({ brands, categories, suppliers }) {
   );
 }
 
-export async function getServerSideProps({ req, res }) {
-  try {
-    const initialBrandsData = await get_fetcher(brandsUrl);
-    const initialCategoriesData = await get_fetcher(categoriesUrl);
-    const initialSuppliersData = await get_fetcher(suppliersUrl);
+// export async function getServerSideProps({ req, res }) {
+//   try {
+//     const initialBrandsData = await get_fetcher(brandsUrl);
+//     const initialCategoriesData = await get_fetcher(categoriesUrl);
+//     const initialSuppliersData = await get_fetcher(suppliersUrl);
 
-    return {
-      props: {
-        brands: initialBrandsData,
-        categories: initialCategoriesData,
-        suppliers: initialSuppliersData,
-      },
-    };
-  } catch (error) {
-    console.error("Error fetching API data:", error);
-    return {
-      props: {
-        brands: [],
-        categories: [],
-        suppliers: [],
-      },
-    };
-  }
-}
+//     return {
+//       props: {
+//         brands: initialBrandsData,
+//         categories: initialCategoriesData,
+//         suppliers: initialSuppliersData,
+//       },
+//     };
+//   } catch (error) {
+//     console.error("Error fetching API data:", error);
+//     return {
+//       props: {
+//         brands: [],
+//         categories: [],
+//         suppliers: [],
+//       },
+//     };
+//   }
+// }
 
 export default withAuth(ItemsInfo)

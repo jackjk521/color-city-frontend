@@ -1,14 +1,15 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { useRouter } from "next/router";
-import { Grid, TextField, Button, Container } from "@mui/material";
+import { Grid, TextField, Button, Container, Box } from "@mui/material";
 import Image from "next/image";
 import { UserContext } from "@/contexts/userContext";
 import apiClient from "@/components/utility/api/apiClient";
 import Swal from "sweetalert2";
+import Footer from "@/components/footer";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { status, user } = useContext(UserContext);
+  const { user } = useContext(UserContext);
   const [userCred, setUserCred] = useState({
     username: "",
     password: "",
@@ -39,12 +40,9 @@ export default function LoginPage() {
         });
         throw error;
       }
-      // Set JWT as HTTP-only cookie
-      // document.cookie = `token=${response.data.token}; HttpOnly`;
-
+      // console.log(response.data);
       user.updateUserCredentials(response.data);
-      router.push("/")
-
+      router.push("/dashboard");
     } catch (error) {
       console.error(error);
       throw error;
@@ -52,50 +50,62 @@ export default function LoginPage() {
   };
 
   return (
-    <Container maxWidth="sm">
-      <Grid container spacing={2} justifyContent="center" alignItems="center">
-        {/* ADD YOUR IMAGE OR LOGO HERE */}
-        <Grid item xs={12} textAlign="center">
-          <Image
-            src="/images/icon-256x256.png"
-            alt="Logo"
-            width={200}
-            height={200}
-          />
-        </Grid>
+    <Box
+      sx={{
+        backgroundColor: (theme) =>
+          theme.palette.mode === "light"
+            ? theme.palette.grey[100]
+            : theme.palette.grey[900],
+        flexGrow: 1,
+        height: "100vh",
+        overflow: "auto",
+      }}>
+      <Container maxWidth={"sm"}>
+        <Grid container spacing={2} justifyContent="center" alignItems="center">
+          {/* ADD YOUR IMAGE OR LOGO HERE */}
+          <Grid item xs={12} textAlign="center">
+            <Image
+              src="/images/icon-256x256.png"
+              alt="Logo"
+              width={200}
+              height={200}
+            />
+          </Grid>
 
-        <Grid item xs={12}>
-          <form onSubmit={handleLogin}>
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  label="Username"
-                  name="username"
-                  onChange={handleChange}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  label="Password"
-                  name="password"
-                  type="password"
-                  onChange={handleChange}
-                />
-              </Grid>
+          <Grid item xs={12}>
+            <form onSubmit={handleLogin}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    label="Username"
+                    name="username"
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    required
+                    fullWidth
+                    label="Password"
+                    name="password"
+                    type="password"
+                    onChange={handleChange}
+                  />
+                </Grid>
 
-              <Grid item xs={12} textAlign="center">
-                <Button type="submit" variant="contained" color="primary">
-                  Login
-                </Button>
+                <Grid item xs={12} textAlign="center">
+                  <Button type="submit" variant="contained" color="primary">
+                    Login
+                  </Button>
+                </Grid>
               </Grid>
-            </Grid>
-          </form>
+            </form>
+          </Grid>
         </Grid>
-      </Grid>
-    </Container>
+      </Container>
+      <Footer sx={{ pt: 4 }} />
+    </Box>
   );
 }

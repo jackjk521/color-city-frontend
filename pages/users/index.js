@@ -3,9 +3,6 @@ import useSWR from "swr";
 
 // Material UI
 import { Button, Grid, Divider } from "@mui/material";
-
-// Components
-
 // Table
 import BasicReactTable from "@/components/utility/tables/basicReactTable";
 import {
@@ -21,7 +18,7 @@ import { get_fetcher } from "@/components/utility/api/fetcher";
 
 const url = "/users";
 
-function Users({ rows }) {
+function Users() {
   const [activeModal, setActiveModal] = React.useState(null);
   const openModal = (modalType) => {
     setActiveModal(modalType);
@@ -31,9 +28,7 @@ function Users({ rows }) {
     data: fetchedData,
     mutate,
     error: fetchedError,
-  } = useSWR(url, get_fetcher, {
-    fallbackData: rows,
-  });
+  } = useSWR(url, get_fetcher);
 
   // console.log(data)
   return (
@@ -59,33 +54,35 @@ function Users({ rows }) {
       </Grid>
 
       {/* User Table  */}
-      <BasicReactTable
-        data_columns={UsersColumns}
-        column_visibility={UserColumnsVisibility}
-        fetched_data={fetchedData}
-        action_formatter={ActionFormatter}
-        mutate={mutate}
-      />
+      {fetchedData && (
+        <BasicReactTable
+          data_columns={UsersColumns}
+          column_visibility={UserColumnsVisibility}
+          fetched_data={fetchedData}
+          action_formatter={ActionFormatter}
+          mutate={mutate}
+        />
+      )}
     </>
   );
 }
 
-export async function getServerSideProps({ req, res }) {
-  try {
-    const initialData = await get_fetcher(url);
-    return {
-      props: {
-        rows: initialData,
-      },
-    };
-  } catch (error) {
-    console.error("Error fetching API data:", error);
-    return {
-      props: {
-        rows: [],
-      },
-    };
-  }
-}
+// export async function getServerSideProps({ req, res }) {
+//   try {
+//     const initialData = await get_fetcher(url);
+//     return {
+//       props: {
+//         rows: initialData,
+//       },
+//     };
+//   } catch (error) {
+//     console.error("Error fetching API data:", error);
+//     return {
+//       props: {
+//         rows: [],
+//       },
+//     };
+//   }
+// }
 
 export default withAuth(Users);

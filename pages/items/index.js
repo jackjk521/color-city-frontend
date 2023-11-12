@@ -23,10 +23,7 @@ import { get_fetcher } from "@/components/utility/api/fetcher";
 
 const url = "/items";
 
-function Items({ rows }) {
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
+function Items() {
   const [activeModal, setActiveModal] = React.useState(null);
   const openModal = (modalType) => {
     setActiveModal(modalType);
@@ -36,21 +33,8 @@ function Items({ rows }) {
     data: fetchedData,
     mutate,
     error: fetchedError,
-  } = useSWR(url, get_fetcher, {
-    fallbackData: rows,
-  });
+  } = useSWR(url, get_fetcher);
 
-  // React.useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     fetcher();
-  //   }, 5000); // Set the interval to 1 minute
-
-  //   return () => {
-  //     clearInterval(interval); // Cleanup the interval on component unmount
-  //   };
-  // }, []);
-
-  // console.log(data)
   return (
     <>
       <ItemsContent>
@@ -67,8 +51,7 @@ function Items({ rows }) {
             <Button
               variant="contained"
               color="success"
-              onClick={() => openModal("add")}
-              >
+              onClick={() => openModal("add")}>
               {" "}
               Add Item{" "}
             </Button>
@@ -77,35 +60,36 @@ function Items({ rows }) {
         <Divider />
 
         {/* Different Panel Views  */}
-
-        <BasicReactTable
-          data_columns={ItemColumns}
-          column_visibility={ItemColumnVisibility}
-          fetched_data={fetchedData}
-          action_formatter={ActionFormatter}
-          mutate={mutate}
-        />
+        {fetchedData && (
+          <BasicReactTable
+            data_columns={ItemColumns}
+            column_visibility={ItemColumnVisibility}
+            fetched_data={fetchedData}
+            action_formatter={ActionFormatter}
+            mutate={mutate}
+          />
+        )}
       </ItemsContent>
     </>
   );
 }
 
-export async function getServerSideProps({ req, res }) {
-  try {
-    const initialData = await get_fetcher(url);
-    return {
-      props: {
-        rows: initialData,
-      },
-    };
-  } catch (error) {
-    console.error("Error fetching API data:", error);
-    return {
-      props: {
-        rows: [],
-      },
-    };
-  }
-}
+// export async function getServerSideProps({ req, res }) {
+//   try {
+//     const initialData = await get_fetcher(url);
+//     return {
+//       props: {
+//         rows: initialData,
+//       },
+//     };
+//   } catch (error) {
+//     console.error("Error fetching API data:", error);
+//     return {
+//       props: {
+//         rows: [],
+//       },
+//     };
+//   }
+// }
 
 export default withAuth(Items);

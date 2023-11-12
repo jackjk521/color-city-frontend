@@ -31,9 +31,7 @@ function Branches({ rows }) {
     data: fetchedData,
     mutate,
     error: fetchedError,
-  } = useSWR(url, get_fetcher, {
-    fallbackData: rows,
-  });
+  } = useSWR(url, get_fetcher);
 
   // console.log(data)
   return (
@@ -47,12 +45,11 @@ function Branches({ rows }) {
 
       <Grid container justifyContent="space-between">
         <Grid item></Grid>{" "}
-        <Grid item  mb={2}>
+        <Grid item mb={2}>
           <Button
             variant="contained"
             color="success"
-            onClick={() => openModal("add")}
-           >
+            onClick={() => openModal("add")}>
             {" "}
             Add Branch{" "}
           </Button>
@@ -60,33 +57,35 @@ function Branches({ rows }) {
       </Grid>
 
       {/* Branches Table  */}
-      <BasicReactTable
-        data_columns={BranchesColumns}
-        column_visibility={BranchColumnsVisibility}
-        fetched_data={fetchedData}
-        action_formatter={ActionFormatter}
-        mutate={mutate}
-      />
+      {fetchedData && (
+        <BasicReactTable
+          data_columns={BranchesColumns}
+          column_visibility={BranchColumnsVisibility}
+          fetched_data={fetchedData}
+          action_formatter={ActionFormatter}
+          mutate={mutate}
+        />
+      )}
     </React.Fragment>
   );
 }
 
-export async function getServerSideProps({ req, res }) {
-  try {
-    const initialData = await get_fetcher(url);
-    return {
-      props: {
-        rows: initialData,
-      },
-    };
-  } catch (error) {
-    console.error("Error fetching API data:", error);
-    return {
-      props: {
-        rows: [],
-      },
-    };
-  }
-}
+// export async function getServerSideProps({ req, res }) {
+//   try {
+//     const initialData = await get_fetcher(url);
+//     return {
+//       props: {
+//         rows: initialData,
+//       },
+//     };
+//   } catch (error) {
+//     console.error("Error fetching API data:", error);
+//     return {
+//       props: {
+//         rows: [],
+//       },
+//     };
+//   }
+// }
 
 export default withAuth(Branches);
