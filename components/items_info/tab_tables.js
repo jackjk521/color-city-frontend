@@ -14,10 +14,10 @@ export function renderTabContent({
 }) {
 
   // console.log(tabData)
-  if (!tabData) {
-    // Change to skeleton
-    return <div>Loading...</div>;
-  }
+  // if (!tabData) {
+  //   // Change to skeleton
+  //   return <div>Loading...</div>;
+  // }
 
   return (
     <CustomTabPanel value={tabValue} index={tabIndex}>

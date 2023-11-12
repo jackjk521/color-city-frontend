@@ -18,6 +18,7 @@ import BranchModalManager from "../../modals/branches/branchModalManager";
 import ActionFormatter from "../../components/branches/actionFormatter";
 import withAuth from "@/components/utility/with_auth";
 import { get_fetcher } from "@/components/utility/api/fetcher";
+import TableRowsSkeleton from "@/components/utility/skeletons/table_rows_skeleton";
 
 const url = "/branches";
 
@@ -32,7 +33,6 @@ function Branches({ rows }) {
     mutate,
     error: fetchedError,
     isValidating: isLoading,
-
   } = useSWR(url, get_fetcher);
 
   // console.log(data)
@@ -59,7 +59,7 @@ function Branches({ rows }) {
       </Grid>
 
       {/* Branches Table  */}
-      {fetchedData && (
+      {fetchedData ? (
         <BasicReactTable
           data_columns={BranchesColumns}
           column_visibility={BranchColumnsVisibility}
@@ -68,6 +68,8 @@ function Branches({ rows }) {
           mutate={mutate}
           isLoading={isLoading}
         />
+      ) : (
+        <TableRowsSkeleton />
       )}
     </React.Fragment>
   );
