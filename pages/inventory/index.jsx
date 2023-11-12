@@ -23,6 +23,7 @@ import withAuth from "@/components/utility/with_auth";
 import { renderTabContent } from "@/components/items_info/tab_tables";
 import { UserContext } from "@/contexts/userContext";
 import { get_fetcher } from "@/components/utility/api/fetcher";
+import TableRowsSkeleton from "@/components/utility/skeletons/table_rows_skeleton";
 
 function a11yProps(index) {
   return {
@@ -166,81 +167,105 @@ function Inventory({
         {/* Different Panel Views  */}
         {user.userCredentials.user_role === "Administrator" && (
           <>
-            {renderTabContent({
-              tabValue: value,
-              tabIndex: 0,
-              tabName: "All",
-              tabData: allInventoryData,
-              dataColumns: InventoryColumns,
-              column_visibility: InventoryColumnsVisibility,
-              actionFormatter: ActionFormatter,
-              tabMutate: allInventoryMutate,
-              tabLoading: allInvLoading,
-            })}
+            {allInventoryData ? (
+              renderTabContent({
+                tabValue: value,
+                tabIndex: 0,
+                tabName: "All",
+                tabData: allInventoryData,
+                dataColumns: InventoryColumns,
+                column_visibility: InventoryColumnsVisibility,
+                actionFormatter: ActionFormatter,
+                tabMutate: allInventoryMutate,
+                tabLoading: allInvLoading,
+              })
+            ) : (
+              <TableRowsSkeleton />
+            )}
 
-            {renderTabContent({
-              tabValue: value,
-              tabIndex: 1,
-              tabName: "Warehouse",
-              tabData: warehouseData,
-              dataColumns: InventoryBranchColumns,
-              column_visibility: InventoryBranchColumnsVisibility,
-              actionFormatter: ActionFormatter,
-              tabMutate: warehouseMutate,
-              tabLoading: branch1InvLoading,
-            })}
+            {warehouseData ? (
+              renderTabContent({
+                tabValue: value,
+                tabIndex: 1,
+                tabName: "Warehouse",
+                tabData: warehouseData,
+                dataColumns: InventoryBranchColumns,
+                column_visibility: InventoryBranchColumnsVisibility,
+                actionFormatter: ActionFormatter,
+                tabMutate: warehouseMutate,
+                tabLoading: branch1InvLoading,
+              })
+            ) : (
+              <TableRowsSkeleton />
+            )}
 
-            {renderTabContent({
-              tabValue: value,
-              tabIndex: 2,
-              tabName: "Branch 1",
-              tabData: branch1Data,
-              dataColumns: InventoryBranchColumns,
-              column_visibility: InventoryBranchColumnsVisibility,
-              actionFormatter: ActionFormatter,
-              tabMutate: branch1Mutate,
-              tabLoading: branch1InvLoading,
-            })}
+            {branch1Data ? (
+              renderTabContent({
+                tabValue: value,
+                tabIndex: 2,
+                tabName: "Branch 1",
+                tabData: branch1Data,
+                dataColumns: InventoryBranchColumns,
+                column_visibility: InventoryBranchColumnsVisibility,
+                actionFormatter: ActionFormatter,
+                tabMutate: branch1Mutate,
+                tabLoading: branch1InvLoading,
+              })
+            ) : (
+              <TableRowsSkeleton />
+            )}
 
-            {renderTabContent({
-              tabValue: value,
-              tabIndex: 3,
-              tabName: "Branch 2",
-              tabData: branch2Data,
-              dataColumns: InventoryBranchColumns,
-              column_visibility: InventoryBranchColumnsVisibility,
-              actionFormatter: ActionFormatter,
-              tabMutate: branch2Mutate,
-              tabLoading: branch2InvLoading,
-            })}
+            {branch2Data ? (
+              renderTabContent({
+                tabValue: value,
+                tabIndex: 3,
+                tabName: "Branch 2",
+                tabData: branch2Data,
+                dataColumns: InventoryBranchColumns,
+                column_visibility: InventoryBranchColumnsVisibility,
+                actionFormatter: ActionFormatter,
+                tabMutate: branch2Mutate,
+                tabLoading: branch2InvLoading,
+              })
+            ) : (
+              <TableRowsSkeleton />
+            )}
 
-            {renderTabContent({
-              tabValue: value,
-              tabIndex: 4,
-              tabName: "Branch 3",
-              tabData: branch3Data,
-              dataColumns: InventoryBranchColumns,
-              column_visibility: InventoryBranchColumnsVisibility,
-              actionFormatter: ActionFormatter,
-              tabMutate: branch3Mutate,
-              tabLoading: branch3InvLoading,
-            })}
+            {branch3Data ? (
+              renderTabContent({
+                tabValue: value,
+                tabIndex: 4,
+                tabName: "Branch 3",
+                tabData: branch3Data,
+                dataColumns: InventoryBranchColumns,
+                column_visibility: InventoryBranchColumnsVisibility,
+                actionFormatter: ActionFormatter,
+                tabMutate: branch3Mutate,
+                tabLoading: branch3InvLoading,
+              })
+            ) : (
+              <TableRowsSkeleton />
+            )}
           </>
         )}
 
         {user.userCredentials.user_role === "Manager" && (
           <>
-            {renderTabContent({
-              tabValue: branch_id,
-              tabIndex: branch_id,
-              tabName: "Branch Inventory",
-              tabData: dataArray[branch_id],
-              dataColumns: InventoryBranchColumns,
-              column_visibility: InventoryBranchColumnsVisibility,
-              actionFormatter: ActionFormatter,
-              tabMutate: mutateArray[branch_id],
-              tabLoading: loadingArray[branch_id],
-            })}
+            {dataArray[branch_id] ? (
+              renderTabContent({
+                tabValue: branch_id,
+                tabIndex: branch_id,
+                tabName: "Branch Inventory",
+                tabData: dataArray[branch_id],
+                dataColumns: InventoryBranchColumns,
+                column_visibility: InventoryBranchColumnsVisibility,
+                actionFormatter: ActionFormatter,
+                tabMutate: mutateArray[branch_id],
+                tabLoading: loadingArray[branch_id],
+              })
+            ) : (
+              <TableRowsSkeleton />
+            )}
           </>
         )}
       </InventoryContent>

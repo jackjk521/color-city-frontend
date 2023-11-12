@@ -20,6 +20,7 @@ import withAuth from "@/components/utility/with_auth";
 import { renderTabContent } from "@/components/branch_orders/tab_tables";
 import { UserContext } from "@/contexts/userContext";
 import { get_fetcher } from "@/components/utility/api/fetcher";
+import TableRowsSkeleton from "@/components/utility/skeletons/table_rows_skeleton";
 
 function a11yProps(index) {
   return {
@@ -149,69 +150,89 @@ function BranchOrders({
       {/* Different Panel Views  */}
       {user.userCredentials.user_role === "Administrator" && (
         <>
-          {renderTabContent({
-            tabValue: value,
-            tabIndex: 0,
-            tabName: "All",
-            tabData: allBranchOrdersData,
-            dataColumns: BranchOrderColumns,
-            column_visibility: BranchOrderColumnsVisibility,
-            actionFormatter: ActionFormatter,
-            tabMutate: allBranchOrdersMutate,
-            tabLoading: allBranchLoading,
-          })}
+          {allBranchOrdersData ? (
+            renderTabContent({
+              tabValue: value,
+              tabIndex: 0,
+              tabName: "All",
+              tabData: allBranchOrdersData,
+              dataColumns: BranchOrderColumns,
+              column_visibility: BranchOrderColumnsVisibility,
+              actionFormatter: ActionFormatter,
+              tabMutate: allBranchOrdersMutate,
+              tabLoading: allBranchLoading,
+            })
+          ) : (
+            <TableRowsSkeleton />
+          )}
 
-          {renderTabContent({
-            tabValue: value,
-            tabIndex: 1,
-            tabName: "Branch 1",
-            tabData: branch1OrdersData,
-            dataColumns: BranchOrderColumns,
-            column_visibility: BranchOrderColumnsVisibility,
-            actionFormatter: ActionFormatter,
-            tabMutate: branch1OrdersMutate,
-            tabLoading: branch1Loading,
-          })}
+          {branch1OrdersData ? (
+            renderTabContent({
+              tabValue: value,
+              tabIndex: 1,
+              tabName: "Branch 1",
+              tabData: branch1OrdersData,
+              dataColumns: BranchOrderColumns,
+              column_visibility: BranchOrderColumnsVisibility,
+              actionFormatter: ActionFormatter,
+              tabMutate: branch1OrdersMutate,
+              tabLoading: branch1Loading,
+            })
+          ) : (
+            <TableRowsSkeleton />
+          )}
 
-          {renderTabContent({
-            tabValue: value,
-            tabIndex: 2,
-            tabName: "Branch 2",
-            tabData: branch2OrdersData,
-            dataColumns: BranchOrderColumns,
-            column_visibility: BranchOrderColumnsVisibility,
-            actionFormatter: ActionFormatter,
-            tabMutate: branch2OrdersMutate,
-            tabLoading: branch2Loading,
-          })}
+          {branch2OrdersData ? (
+            renderTabContent({
+              tabValue: value,
+              tabIndex: 2,
+              tabName: "Branch 2",
+              tabData: branch2OrdersData,
+              dataColumns: BranchOrderColumns,
+              column_visibility: BranchOrderColumnsVisibility,
+              actionFormatter: ActionFormatter,
+              tabMutate: branch2OrdersMutate,
+              tabLoading: branch2Loading,
+            })
+          ) : (
+            <TableRowsSkeleton />
+          )}
 
-          {renderTabContent({
-            tabValue: value,
-            tabIndex: 3,
-            tabName: "Branch 3",
-            tabData: branch3OrdersData,
-            dataColumns: BranchOrderColumns,
-            column_visibility: BranchOrderColumnsVisibility,
-            actionFormatter: ActionFormatter,
-            tabMutate: branch3OrdersMutate,
-            tabLoading: branch3Loading,
-          })}
+          {branch3OrdersData ? (
+            renderTabContent({
+              tabValue: value,
+              tabIndex: 3,
+              tabName: "Branch 3",
+              tabData: branch3OrdersData,
+              dataColumns: BranchOrderColumns,
+              column_visibility: BranchOrderColumnsVisibility,
+              actionFormatter: ActionFormatter,
+              tabMutate: branch3OrdersMutate,
+              tabLoading: branch3Loading,
+            })
+          ) : (
+            <TableRowsSkeleton />
+          )}
         </>
       )}
 
       {user.userCredentials.user_role === "Manager" && (
         <>
-          {renderTabContent({
-            tabValue: branch_id,
-            tabIndex: branch_id,
-            tabName: "Branch Orders",
-            tabData: dataArray[branch_id],
-            dataColumns: BranchOrderColumns,
-            column_visibility: BranchOrderColumnsVisibility,
-            actionFormatter: ActionFormatter,
-            tabMutate: mutateArray[branch_id],
-            tabLoading: loadingArray[branch_id],
-          })}
+          {dataArray[branch_id] ? (
+            renderTabContent({
+              tabValue: branch_id,
+              tabIndex: branch_id,
+              tabName: "Branch Orders",
+              tabData: dataArray[branch_id],
+              dataColumns: BranchOrderColumns,
+              column_visibility: BranchOrderColumnsVisibility,
+              actionFormatter: ActionFormatter,
+              tabMutate: mutateArray[branch_id],
+              tabLoading: loadingArray[branch_id],
+            })
+          ) : (
+            <TableRowsSkeleton />
+          )}
         </>
       )}
     </>

@@ -4,7 +4,7 @@ import { Grid, TextField, Button, Container } from "@mui/material";
 import { UserContext } from "@/contexts/userContext";
 import LoadingScreen from "@/components/utility/skeletons/loading_screen";
 
-export default function LoginPage() {
+export default function LandingPage() {
   const router = useRouter();
   const { user } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(true);

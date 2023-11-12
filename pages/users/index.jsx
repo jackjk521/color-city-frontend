@@ -15,6 +15,7 @@ import UserModalManager from "../../modals/users/userModalManager";
 import ActionFormatter from "../../components/users/actionFormatter";
 import withAuth from "@/components/utility/with_auth";
 import { get_fetcher } from "@/components/utility/api/fetcher";
+import TableRowsSkeleton from "@/components/utility/skeletons/table_rows_skeleton";
 
 const url = "/users";
 
@@ -55,7 +56,7 @@ function Users() {
       </Grid>
 
       {/* User Table  */}
-      {fetchedData && (
+      {fetchedData ? (
         <BasicReactTable
           data_columns={UsersColumns}
           column_visibility={UserColumnsVisibility}
@@ -64,6 +65,8 @@ function Users() {
           mutate={mutate}
           isLoading={isLoading}
         />
+      ) : (
+        <TableRowsSkeleton />
       )}
     </>
   );

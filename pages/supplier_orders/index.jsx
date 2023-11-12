@@ -19,6 +19,7 @@ import ActionFormatter from "@/components/supplier_orders/actionFormatter";
 import withAuth from "@/components/utility/with_auth";
 
 import { get_fetcher } from "@/components/utility/api/fetcher";
+import TableRowsSkeleton from "@/components/utility/skeletons/table_rows_skeleton";
 
 const url = "/purchases/?type=SUPPLIER";
 
@@ -63,7 +64,7 @@ function SupplierOrders() {
       </Grid>
 
       {/* Different Panel Views  */}
-      {fetchedData && (
+      {fetchedData ? (
         <BasicReactTable
           data_columns={SupplierOrderColumns}
           column_visibility={SupplierOrderColumnsVisibility}
@@ -72,6 +73,8 @@ function SupplierOrders() {
           mutate={mutate}
           isLoading={isLoading}
         />
+      ) : (
+        <TableRowsSkeleton />
       )}
     </>
   );

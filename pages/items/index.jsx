@@ -20,6 +20,7 @@ import ActionFormatter from "@/components/items/actionFormatter";
 import withAuth from "@/components/utility/with_auth";
 
 import { get_fetcher } from "@/components/utility/api/fetcher";
+import TableRowsSkeleton from "@/components/utility/skeletons/table_rows_skeleton";
 
 const url = "/items";
 
@@ -61,7 +62,7 @@ function Items() {
         <Divider />
 
         {/* Different Panel Views  */}
-        {fetchedData && (
+        {fetchedData ? (
           <BasicReactTable
             data_columns={ItemColumns}
             column_visibility={ItemColumnVisibility}
@@ -70,6 +71,8 @@ function Items() {
             mutate={mutate}
             isLoading={isLoading}
           />
+        ) : (
+          <TableRowsSkeleton />
         )}
       </ItemsContent>
     </>

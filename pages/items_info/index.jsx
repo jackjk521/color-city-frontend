@@ -29,6 +29,7 @@ import SupplierActionFormatter from "@/components/suppliers/actionFormatter";
 import { renderTabContent } from "@/components/items_info/tab_tables";
 import withAuth from "@/components/utility/with_auth";
 import { get_fetcher } from "@/components/utility/api/fetcher";
+import TableRowsSkeleton from "@/components/utility/skeletons/table_rows_skeleton";
 
 function a11yProps(index) {
   return {
@@ -136,7 +137,7 @@ function ItemsInfo({ brands, categories, suppliers }) {
         <Divider />
 
         {/* Different Panel Views  */}
-        {brandsData &&
+        {brandsData ? (
           renderTabContent({
             tabValue: value,
             tabIndex: 0,
@@ -147,8 +148,11 @@ function ItemsInfo({ brands, categories, suppliers }) {
             actionFormatter: BrandActionFormatter,
             tabMutate: brandsMutate,
             tabLoading: brandsLoading,
-          })}
-        {categoriesData &&
+          })
+        ) : (
+          <TableRowsSkeleton />
+        )}
+        {categoriesData ? (
           renderTabContent({
             tabValue: value,
             tabIndex: 1,
@@ -159,8 +163,11 @@ function ItemsInfo({ brands, categories, suppliers }) {
             actionFormatter: CategoryActionFormatter,
             tabMutate: categoriesMutate,
             tabLoading: categoriesLoading,
-          })}
-        {suppliersData &&
+          })
+        ) : (
+          <TableRowsSkeleton />
+        )}
+        {suppliersData ? (
           renderTabContent({
             tabValue: value,
             tabIndex: 2,
@@ -171,7 +178,10 @@ function ItemsInfo({ brands, categories, suppliers }) {
             actionFormatter: SupplierActionFormatter,
             tabMutate: suppliersMutate,
             tabLoading: suppliersLoading,
-          })}
+          })
+        ) : (
+          <TableRowsSkeleton />
+        )}
       </ItemsContent>
     </>
   );

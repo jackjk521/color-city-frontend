@@ -7,19 +7,19 @@ export default function TableRowsSkeleton() {
     <React.Fragment>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Skeleton animation="wave" variant="rectangular" height={100} />
+          <Skeleton animation="wave" variant="rectangular" height={50} />
         </Grid>
         <Grid item xs={12}>
-          <Skeleton animation="wave" variant="rectangular" height={100} />
+          <Skeleton animation="wave" variant="rectangular" height={50} />
         </Grid>
         <Grid item xs={12}>
-          <Skeleton animation="wave" variant="rectangular" height={100} />
+          <Skeleton animation="wave" variant="rectangular" height={50} />
         </Grid>
         <Grid item xs={12}>
-          <Skeleton animation="wave" variant="rectangular" height={100} />
+          <Skeleton animation="wave" variant="rectangular" height={50} />
         </Grid>
         <Grid item xs={12}>
-          <Skeleton animation="wave" variant="rectangular" height={100} />
+          <Skeleton animation="wave" variant="rectangular" height={50} />
         </Grid>
       </Grid>
     </React.Fragment>

@@ -14,6 +14,16 @@ export default function withAuth(Component) {
       }
     }, [isAuthenticated, router]);
 
+    useEffect(() => {
+      const revalidationTimeout = setTimeout(() => {
+        !isAuthenticated ?  router.replace("/login") : user
+      }, 10000); // Revalidate every 10 seconds (adjust the time interval as needed)
+
+      return () => {
+        clearTimeout(revalidationTimeout);
+      };
+    }, [user]);
+
     return isAuthenticated ? (
       <Component {...props} userCredentials={user?.userCredentials} />
     ) : null;
