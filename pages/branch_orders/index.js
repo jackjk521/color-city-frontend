@@ -34,7 +34,6 @@ const branch1Url = "/purchases/?type=BRANCH&branch=2";
 const branch2Url = "/purchases/?type=BRANCH&branch=3";
 const branch3Url = "/purchases/?type=BRANCH&branch=4";
 
-
 function BranchOrders({
   // rows,
   allBranchOrders,
@@ -57,33 +56,29 @@ function BranchOrders({
     data: allBranchOrdersData,
     mutate: allBranchOrdersMutate,
     error: allBranchOrdersError,
-  } = useSWR(allUrl, get_fetcher, {
-    fallbackData: allBranchOrders,
-  });
+    isValidating: allBranchLoading,
+  } = useSWR(allUrl, get_fetcher);
 
   const {
     data: branch1OrdersData,
     mutate: branch1OrdersMutate,
     error: branch1OrdersError,
-  } = useSWR(branch1Url, get_fetcher, {
-    fallbackData: branch1Orders,
-  });
+    isValidating: branch1Loading,
+  } = useSWR(branch1Url, get_fetcher);
 
   const {
     data: branch2OrdersData,
     mutate: branch2OrdersMutate,
     error: branch2OrdersError,
-  } = useSWR(branch2Url, get_fetcher, {
-    fallbackData: branch2Orders,
-  });
+    isValidating: branch2Loading,
+  } = useSWR(branch2Url, get_fetcher);
 
   const {
     data: branch3OrdersData,
     mutate: branch3OrdersMutate,
     error: branch3OrdersError,
-  } = useSWR(branch3Url, get_fetcher, {
-    fallbackData: branch3Orders,
-  });
+    isValidating: branch3Loading,
+  } = useSWR(branch3Url, get_fetcher);
 
   const mutateArray = {
     0: allBranchOrdersMutate,
@@ -99,7 +94,14 @@ function BranchOrders({
     3: branch3OrdersData,
   };
 
-  const branch_id = user.userCredentials.branch - 1;
+  const loadingArray = {
+    0: allBranchLoading,
+    1: branch1Loading,
+    2: branch2Loading,
+    3: branch3Loading,
+  };
+
+  const branch_id = user.userCredentials.branch + 1;
 
   return (
     <>
@@ -156,6 +158,7 @@ function BranchOrders({
             column_visibility: BranchOrderColumnsVisibility,
             actionFormatter: ActionFormatter,
             tabMutate: allBranchOrdersMutate,
+            tabLoading: allBranchLoading,
           })}
 
           {renderTabContent({
@@ -167,6 +170,7 @@ function BranchOrders({
             column_visibility: BranchOrderColumnsVisibility,
             actionFormatter: ActionFormatter,
             tabMutate: branch1OrdersMutate,
+            tabLoading: branch1Loading,
           })}
 
           {renderTabContent({
@@ -178,6 +182,7 @@ function BranchOrders({
             column_visibility: BranchOrderColumnsVisibility,
             actionFormatter: ActionFormatter,
             tabMutate: branch2OrdersMutate,
+            tabLoading: branch2Loading,
           })}
 
           {renderTabContent({
@@ -189,9 +194,10 @@ function BranchOrders({
             column_visibility: BranchOrderColumnsVisibility,
             actionFormatter: ActionFormatter,
             tabMutate: branch3OrdersMutate,
+            tabLoading: branch3Loading,
           })}
         </>
-      )}  
+      )}
 
       {user.userCredentials.user_role === "Manager" && (
         <>
@@ -204,6 +210,7 @@ function BranchOrders({
             column_visibility: BranchOrderColumnsVisibility,
             actionFormatter: ActionFormatter,
             tabMutate: mutateArray[branch_id],
+            tabLoading: loadingArray[branch_id],
           })}
         </>
       )}
@@ -211,32 +218,32 @@ function BranchOrders({
   );
 }
 
-export async function getServerSideProps({ req, res }) {
-  try {
-    // const initialData = await get_fetcher(url);
-    const initialAllBranchOrders = await get_fetcher(allUrl);
-    const initialBranch1Orders = await get_fetcher(branch1Url);
-    const initialBranch2Orders = await get_fetcher(branch2Url);
-    const initialBranch3Orders = await get_fetcher(branch3Url);
-    return {
-      props: {
-        allBranchOrders: initialAllBranchOrders,
-        branch1Orders: initialBranch1Orders,
-        branch2Orders: initialBranch2Orders,
-        branch3Orders: initialBranch3Orders,
-      },
-    };
-  } catch (error) {
-    console.error("Error fetching API data:", error);
-    return {
-      props: {
-        allBranchOrders: [],
-        branch1Orders: [],
-        branch2Orders: [],
-        branch3Orders: [],
-      },
-    };
-  }
-}
+// export async function getServerSideProps({ req, res }) {
+//   try {
+//     // const initialData = await get_fetcher(url);
+//     const initialAllBranchOrders = await get_fetcher(allUrl);
+//     const initialBranch1Orders = await get_fetcher(branch1Url);
+//     const initialBranch2Orders = await get_fetcher(branch2Url);
+//     const initialBranch3Orders = await get_fetcher(branch3Url);
+//     return {
+//       props: {
+//         allBranchOrders: initialAllBranchOrders,
+//         branch1Orders: initialBranch1Orders,
+//         branch2Orders: initialBranch2Orders,
+//         branch3Orders: initialBranch3Orders,
+//       },
+//     };
+//   } catch (error) {
+//     console.error("Error fetching API data:", error);
+//     return {
+//       props: {
+//         allBranchOrders: [],
+//         branch1Orders: [],
+//         branch2Orders: [],
+//         branch3Orders: [],
+//       },
+//     };
+//   }
+// }
 
 export default withAuth(BranchOrders);

@@ -10,6 +10,7 @@ export function renderTabContent({
   column_visibility,
   actionFormatter,
   tabMutate,
+  tabLoading
 }) {
 
   // console.log(tabData)
@@ -27,6 +28,7 @@ export function renderTabContent({
         fetched_data={tabData}
         action_formatter={actionFormatter}
         mutate={tabMutate}
+        isLoading={tabLoading}
       />
     </CustomTabPanel>
   );

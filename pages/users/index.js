@@ -28,6 +28,7 @@ function Users() {
     data: fetchedData,
     mutate,
     error: fetchedError,
+    isValidating: isLoading,
   } = useSWR(url, get_fetcher);
 
   // console.log(data)
@@ -61,6 +62,7 @@ function Users() {
           fetched_data={fetchedData}
           action_formatter={ActionFormatter}
           mutate={mutate}
+          isLoading={isLoading}
         />
       )}
     </>

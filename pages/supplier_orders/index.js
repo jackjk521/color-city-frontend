@@ -37,6 +37,7 @@ function SupplierOrders() {
     data: fetchedData,
     mutate,
     error: fetchedError,
+    isValidating: isLoading,
   } = useSWR(url, get_fetcher);
 
   return (
@@ -69,6 +70,7 @@ function SupplierOrders() {
           fetched_data={fetchedData}
           action_formatter={ActionFormatter}
           mutate={mutate}
+          isLoading={isLoading}
         />
       )}
     </>

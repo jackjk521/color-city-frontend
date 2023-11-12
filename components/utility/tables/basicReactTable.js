@@ -11,6 +11,7 @@ const BasicReactTable = ({
   fetched_data,
   action_formatter,
   mutate = null,
+  isLoading = null,
 }) => {
   //should be memoized or stable
   const columns = useMemo(() => data_columns, []);
@@ -33,6 +34,7 @@ const BasicReactTable = ({
         <MaterialReactTable
           columns={columns}
           data={data}
+          state={{ isLoading: isLoading ? true : false }}
           initialState={{
             columnVisibility: column_visibility,
           }}
@@ -51,6 +53,7 @@ const BasicReactTable = ({
         <MaterialReactTable
           columns={columns}
           data={data}
+          state={{ isLoading: isLoading ? true : false }}
           enableRowActions
           positionActionsColumn="last"
           enableFullScreenToggle={false}

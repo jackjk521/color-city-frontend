@@ -31,6 +31,8 @@ function Branches({ rows }) {
     data: fetchedData,
     mutate,
     error: fetchedError,
+    isValidating: isLoading,
+
   } = useSWR(url, get_fetcher);
 
   // console.log(data)
@@ -64,6 +66,7 @@ function Branches({ rows }) {
           fetched_data={fetchedData}
           action_formatter={ActionFormatter}
           mutate={mutate}
+          isLoading={isLoading}
         />
       )}
     </React.Fragment>

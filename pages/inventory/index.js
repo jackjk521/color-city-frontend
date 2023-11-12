@@ -60,41 +60,36 @@ function Inventory({
     data: allInventoryData,
     mutate: allInventoryMutate,
     error: allInventoryError,
-  } = useSWR(allUrl, get_fetcher, {
-    fallbackData: allInventory,
-  });
+    isValidating: allInvLoading,
+  } = useSWR(allUrl, get_fetcher);
 
   const {
     data: warehouseData,
     mutate: warehouseMutate,
     error: warehouseDataError,
-  } = useSWR(warehouseUrl, get_fetcher, {
-    fallbackData: warehouseInventory,
-  });
+    isValidating: warehouseInvLoading,
+  } = useSWR(warehouseUrl, get_fetcher);
 
   const {
     data: branch1Data,
     mutate: branch1Mutate,
     error: branch1Error,
-  } = useSWR(branch1Url, get_fetcher, {
-    fallbackData: branch1Inventory,
-  });
+    isValidating: branch1InvLoading,
+  } = useSWR(branch1Url, get_fetcher);
 
   const {
     data: branch2Data,
     mutate: branch2Mutate,
     error: branch2Error,
-  } = useSWR(branch2Url, get_fetcher, {
-    fallbackData: branch2Inventory,
-  });
+    isValidating: branch2InvLoading,
+  } = useSWR(branch2Url, get_fetcher);
 
   const {
     data: branch3Data,
     mutate: branch3Mutate,
     error: branch3Error,
-  } = useSWR(branch3Url, get_fetcher, {
-    fallbackData: branch3Inventory,
-  });
+    isValidating: branch3InvLoading,
+  } = useSWR(branch3Url, get_fetcher);
 
   const mutateArray = {
     0: allInventoryMutate,
@@ -110,6 +105,14 @@ function Inventory({
     2: branch1Data,
     3: branch2Data,
     4: branch3Data,
+  };
+
+  const loadingArray = {
+    0: allInvLoading,
+    1: warehouseInvLoading,
+    2: branch1InvLoading,
+    3: branch2InvLoading,
+    4: branch3InvLoading,
   };
 
   const branch_id = user.userCredentials.branch;
@@ -172,6 +175,7 @@ function Inventory({
               column_visibility: InventoryColumnsVisibility,
               actionFormatter: ActionFormatter,
               tabMutate: allInventoryMutate,
+              tabLoading: allInvLoading,
             })}
 
             {renderTabContent({
@@ -183,6 +187,7 @@ function Inventory({
               column_visibility: InventoryBranchColumnsVisibility,
               actionFormatter: ActionFormatter,
               tabMutate: warehouseMutate,
+              tabLoading: branch1InvLoading,
             })}
 
             {renderTabContent({
@@ -194,6 +199,7 @@ function Inventory({
               column_visibility: InventoryBranchColumnsVisibility,
               actionFormatter: ActionFormatter,
               tabMutate: branch1Mutate,
+              tabLoading: branch1InvLoading,
             })}
 
             {renderTabContent({
@@ -205,6 +211,7 @@ function Inventory({
               column_visibility: InventoryBranchColumnsVisibility,
               actionFormatter: ActionFormatter,
               tabMutate: branch2Mutate,
+              tabLoading: branch2InvLoading,
             })}
 
             {renderTabContent({
@@ -216,6 +223,7 @@ function Inventory({
               column_visibility: InventoryBranchColumnsVisibility,
               actionFormatter: ActionFormatter,
               tabMutate: branch3Mutate,
+              tabLoading: branch3InvLoading,
             })}
           </>
         )}
@@ -231,6 +239,7 @@ function Inventory({
               column_visibility: InventoryBranchColumnsVisibility,
               actionFormatter: ActionFormatter,
               tabMutate: mutateArray[branch_id],
+              tabLoading: loadingArray[branch_id],
             })}
           </>
         )}
@@ -239,35 +248,35 @@ function Inventory({
   );
 }
 
-export async function getServerSideProps({ req, res }) {
-  try {
-    const initialAllInventoryData = await get_fetcher(allUrl);
-    const initialWarehouseData = await get_fetcher(warehouseUrl);
-    const initialBranch1Data = await get_fetcher(branch1Url);
-    const initialBranch2Data = await get_fetcher(branch2Url);
-    const initialBranch3Data = await get_fetcher(branch3Url);
+// export async function getServerSideProps({ req, res }) {
+//   try {
+//     const initialAllInventoryData = await get_fetcher(allUrl);
+//     const initialWarehouseData = await get_fetcher(warehouseUrl);
+//     const initialBranch1Data = await get_fetcher(branch1Url);
+//     const initialBranch2Data = await get_fetcher(branch2Url);
+//     const initialBranch3Data = await get_fetcher(branch3Url);
 
-    return {
-      props: {
-        allInventoryData: initialAllInventoryData,
-        warehouseData: initialWarehouseData,
-        branch1Inventory: initialBranch1Data,
-        branch2Inventory: initialBranch2Data,
-        branch3Inventory: initialBranch3Data,
-      },
-    };
-  } catch (error) {
-    console.error("Error fetching API data:", error);
-    return {
-      props: {
-        allInventoryData: [],
-        warehouseData: [],
-        branch1Inventory: [],
-        branch2Inventory: [],
-        branch3Inventory: [],
-      },
-    };
-  }
-}
+//     return {
+//       props: {
+//         allInventoryData: initialAllInventoryData,
+//         warehouseData: initialWarehouseData,
+//         branch1Inventory: initialBranch1Data,
+//         branch2Inventory: initialBranch2Data,
+//         branch3Inventory: initialBranch3Data,
+//       },
+//     };
+//   } catch (error) {
+//     console.error("Error fetching API data:", error);
+//     return {
+//       props: {
+//         allInventoryData: [],
+//         warehouseData: [],
+//         branch1Inventory: [],
+//         branch2Inventory: [],
+//         branch3Inventory: [],
+//       },
+//     };
+//   }
+// }
 
 export default withAuth(Inventory);

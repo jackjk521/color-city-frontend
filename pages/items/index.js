@@ -33,6 +33,7 @@ function Items() {
     data: fetchedData,
     mutate,
     error: fetchedError,
+    isValidating: isLoading,
   } = useSWR(url, get_fetcher);
 
   return (
@@ -67,6 +68,7 @@ function Items() {
             fetched_data={fetchedData}
             action_formatter={ActionFormatter}
             mutate={mutate}
+            isLoading={isLoading}
           />
         )}
       </ItemsContent>

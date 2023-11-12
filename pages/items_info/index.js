@@ -37,9 +37,9 @@ function a11yProps(index) {
   };
 }
 
-const brandsUrl = "/brands"
-const categoriesUrl = "/categories"
-const suppliersUrl = "/suppliers"
+const brandsUrl = "/brands";
+const categoriesUrl = "/categories";
+const suppliersUrl = "/suppliers";
 
 function ItemsInfo({ brands, categories, suppliers }) {
   // const [data, setData] = React.useState(rows);
@@ -56,18 +56,21 @@ function ItemsInfo({ brands, categories, suppliers }) {
     data: brandsData,
     mutate: brandsMutate,
     error: brandsError,
+    isValidating: brandsLoading,
   } = useSWR(brandsUrl, get_fetcher);
 
   const {
     data: categoriesData,
     mutate: categoriesMutate,
     error: categoriesError,
+    isValidating: categoriesLoading,
   } = useSWR(categoriesUrl, get_fetcher);
 
   const {
     data: suppliersData,
     mutate: suppliersMutate,
     error: suppliersError,
+    isValidating: suppliersLoading,
   } = useSWR(suppliersUrl, get_fetcher);
 
   const modalComponents = {
@@ -133,36 +136,42 @@ function ItemsInfo({ brands, categories, suppliers }) {
         <Divider />
 
         {/* Different Panel Views  */}
-        {brandsData && renderTabContent({
-          tabValue: value,
-          tabIndex: 0,
-          tabName: "Brands",
-          tabData: brandsData,
-          dataColumns: BrandsColumns,
-          column_visibility: BrandColumnsVisibility,
-          actionFormatter: BrandActionFormatter,
-          tabMutate: brandsMutate,
-        })}
-        {categoriesData && renderTabContent({
-          tabValue: value,
-          tabIndex: 1,
-          tabName: "Categories",
-          tabData: categoriesData,
-          dataColumns: CategoriesColumns,
-          column_visibility: CategoryColumnsVisibility,
-          actionFormatter: CategoryActionFormatter,
-          tabMutate: categoriesMutate,
-        })}
-        {suppliersData && renderTabContent({
-          tabValue: value,
-          tabIndex: 2,
-          tabName: "Suppliers",
-          tabData: suppliersData,
-          dataColumns: SuppliersColumns,
-          column_visibility: SupplierColumnsVisibility,
-          actionFormatter: SupplierActionFormatter,
-          tabMutate: suppliersMutate,
-        })}
+        {brandsData &&
+          renderTabContent({
+            tabValue: value,
+            tabIndex: 0,
+            tabName: "Brands",
+            tabData: brandsData,
+            dataColumns: BrandsColumns,
+            column_visibility: BrandColumnsVisibility,
+            actionFormatter: BrandActionFormatter,
+            tabMutate: brandsMutate,
+            tabLoading: brandsLoading,
+          })}
+        {categoriesData &&
+          renderTabContent({
+            tabValue: value,
+            tabIndex: 1,
+            tabName: "Categories",
+            tabData: categoriesData,
+            dataColumns: CategoriesColumns,
+            column_visibility: CategoryColumnsVisibility,
+            actionFormatter: CategoryActionFormatter,
+            tabMutate: categoriesMutate,
+            tabLoading: categoriesLoading,
+          })}
+        {suppliersData &&
+          renderTabContent({
+            tabValue: value,
+            tabIndex: 2,
+            tabName: "Suppliers",
+            tabData: suppliersData,
+            dataColumns: SuppliersColumns,
+            column_visibility: SupplierColumnsVisibility,
+            actionFormatter: SupplierActionFormatter,
+            tabMutate: suppliersMutate,
+            tabLoading: suppliersLoading,
+          })}
       </ItemsContent>
     </>
   );
@@ -193,4 +202,4 @@ function ItemsInfo({ brands, categories, suppliers }) {
 //   }
 // }
 
-export default withAuth(ItemsInfo)
+export default withAuth(ItemsInfo);
