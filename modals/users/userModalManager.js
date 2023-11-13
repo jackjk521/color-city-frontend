@@ -1,12 +1,31 @@
-import React, { useState, useEffect } from "react";
-import LargeModal from "../../components/utility/modals/largeModal";
-import SmallModal from "../../components/utility/modals/smallModal";
+import React from "react";
+import dynamic from "next/dynamic";
+// import LargeModal from "../../components/utility/modals/largeModal";
 
 // Modal Contents
-import AddModal from "./add";
-import ViewModal from "./view";
-import EditModal from "./edit";
-import RemoveModal from "./remove";
+const AddModal = dynamic(() => import("./add"), {
+  ssr: false,
+});
+
+const ViewModal = dynamic(() => import("./view"), {
+  ssr: false,
+});
+
+const EditModal = dynamic(() => import("./edit"), {
+  ssr: false,
+});
+
+const RemoveModal = dynamic(() => import("./remove"), {
+  ssr: false,
+});
+
+// Dynamic Import
+const SmallModal = dynamic(
+  () => import("../../components/utility/modals/smallModal"),
+  {
+    ssr: false,
+  }
+);
 
 const UserModalManager = ({
   data,
@@ -72,7 +91,6 @@ const UserModalManager = ({
             closeModal={closeModal}
             rowData={rowData}
             mutate={mutate}
-
           />
         );
       default:
@@ -96,8 +114,7 @@ const UserModalManager = ({
         <SmallModal
           isOpen={activeModal !== null}
           onClose={closeModal}
-          title={activeModal}
-        >
+          title={activeModal}>
           {renderModalContent()}
         </SmallModal>
       )}

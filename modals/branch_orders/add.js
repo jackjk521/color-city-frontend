@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useMemo } from "react";
+import * as React from "react";
 import {
   TextField,
   InputAdornment,
@@ -42,8 +42,8 @@ import {
 const url = "/purchases/";
 
 export default function AddModal({ headerColor, closeModal, mutate }) {
-  const { user } = useContext(UserContext);
-  const [purchaseData, setPurchaseData] = useState({
+  const { user } = React.useContext(UserContext);
+  const [purchaseData, setPurchaseData] = React.useState({
     purchaseHeader: {
       branch: user.userCredentials.branch,
       user: user.userCredentials.user_id,
@@ -55,7 +55,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
     },
     purchaseLines: [],
   });
-  const [addItemData, setAddItemData] = useState({
+  const [addItemData, setAddItemData] = React.useState({
     item: "",
     brand_item: "",
     item_price_w_vat: 0,
@@ -63,7 +63,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
     req_quantity: 0,
     subtotal: 0,
   });
-  const [items, setItems] = useState([]);
+  const [items, setItems] = React.useState([]);
 
   useEffect(() => {
     get_items()
@@ -92,7 +92,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
     setAddItemData((prevOrder) => ({ ...prevOrder, [name]: value }));
   };
 
-  const subTotal = useMemo(() => {
+  const subTotal = React.useMemo(() => {
     return calculateSubtotal(
       items,
       addItemData.item,
@@ -101,7 +101,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
     );
   }, [addItemData.item, addItemData.req_quantity]);
 
-  const totalAmount = useMemo(() => {
+  const totalAmount = React.useMemo(() => {
     return calculateTotalAmount(purchaseData, setPurchaseData);
   }, [purchaseData.purchaseLines]);
 

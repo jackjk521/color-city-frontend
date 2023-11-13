@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useMemo } from "react";
+import * as React from "react";
 import {
   TextField,
   InputAdornment,
@@ -43,9 +43,9 @@ export default function ReceiveModal({
   mutate
 }) {
   // console.log(data.purchaseHeader.purchase_header_id);
-    const { user } = useContext(UserContext);
-    const [rowSelection, setRowSelection] = useState({});
-    const [rowIdSelection, setRowIdSelection] = useState([]);
+    const { user } = React.useContext(UserContext);
+    const [rowSelection, setRowSelection] = React.useState({});
+    const [rowIdSelection, setRowIdSelection] = React.useState([]);
 
     useEffect(() => {
       // Get the ids from the table

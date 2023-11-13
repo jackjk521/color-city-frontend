@@ -13,7 +13,7 @@ import {
 } from "../../components/utility/tables/tableColumns";
 
 // Helper Functions
-import BranchOrdersModalManager from "../../modals/branch_orders/branchOrdersModalManager";
+// import BranchOrdersModalManager from "../../modals/branch_orders/branchOrdersModalManager";
 import ActionFormatter from "@/components/branch_orders/actionFormatter";
 import withAuth from "@/components/utility/with_auth";
 // Tabs Handlers
@@ -34,6 +34,14 @@ const allUrl = "/purchases/?type=BRANCH";
 const branch1Url = "/purchases/?type=BRANCH&branch=2";
 const branch2Url = "/purchases/?type=BRANCH&branch=3";
 const branch3Url = "/purchases/?type=BRANCH&branch=4";
+
+// Dynamic Import
+const ModalManager = dynamic(
+  () => import("../../modals/branch_orders/branchOrdersModalManager"),
+  {
+    ssr: false,
+  }
+);
 
 function BranchOrders({
   // rows,
@@ -107,11 +115,13 @@ function BranchOrders({
   return (
     <>
       {/* Modal Config */}
-      <BranchOrdersModalManager
-        activeModal={activeModal}
-        setActiveModal={setActiveModal}
-        mutate={mutateArray[branch_id]}
-      />
+      {activeModal && (
+        <ModalManager
+          activeModal={activeModal}
+          setActiveModal={setActiveModal}
+          mutate={mutate}
+        />
+      )}
 
       <Grid container justifyContent="space-between">
         <Grid item>

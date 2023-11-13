@@ -14,13 +14,21 @@ import {
 } from "../../components/utility/tables/tableColumns";
 
 // Helper Functions
-import BranchModalManager from "../../modals/branches/branchModalManager";
+// import BranchModalManager from "../../modals/branches/branchModalManager";
 import ActionFormatter from "../../components/branches/actionFormatter";
 import withAuth from "@/components/utility/with_auth";
 import { get_fetcher } from "@/components/utility/api/fetcher";
 import TableRowsSkeleton from "@/components/utility/skeletons/table_rows_skeleton";
 
 const url = "/branches";
+
+// Dynamic Import
+const ModalManager = dynamic(
+  () => import("../../modals/branches/branchModalManagerr"),
+  {
+    ssr: false,
+  }
+);
 
 function Branches({ rows }) {
   const [activeModal, setActiveModal] = React.useState(null);
@@ -39,11 +47,13 @@ function Branches({ rows }) {
   return (
     <React.Fragment>
       {/* Modal Config */}
-      <BranchModalManager
-        activeModal={activeModal}
-        setActiveModal={setActiveModal}
-        mutate={mutate}
-      />
+      {activeModal && (
+        <ModalManager
+          activeModal={activeModal}
+          setActiveModal={setActiveModal}
+          mutate={mutate}
+        />
+      )}
 
       <Grid container justifyContent="space-between">
         <Grid item></Grid>{" "}

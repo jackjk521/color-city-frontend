@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useMemo } from "react";
+import * as React from "react";
 import {
   TextField,
   InputAdornment,
@@ -36,9 +36,9 @@ export default function EditModal({
   closeModal,
   mutate,
 }) {
-  const { user } = useContext(UserContext);
+  const { user } = React.useContext(UserContext);
 
-  const [items, setItems] = useState([]);
+  const [items, setItems] = React.useState([]);
 
   useEffect(() => {
     get_items()

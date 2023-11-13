@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import * as React from "react";
 import {
   Button,
   DialogActions,
@@ -21,7 +21,7 @@ export default function ApproveModal({
   mutate,
 }) {
   console.log(rowData);
-  const { user } = useContext(UserContext);
+  const { user } = React.useContext(UserContext);
 
   const handleApprove = async (e) => {
     // console.log(rowData);

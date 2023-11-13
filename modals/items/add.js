@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import * as React from "react";
 import {
   TextField,
   FormControl,
@@ -26,7 +26,7 @@ import { post_data } from "@/components/utility/api/fetcher";
 
 const url = "/items/";
 export default function AddModal({ headerColor, closeModal, mutate }) {
-  const [itemData, setItemData] = useState({
+  const [itemData, setItemData] = React.useState({
     item_number: "",
     item_name: "",
     brand: "",
@@ -39,7 +39,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
     retail_price: "",
     catalyst: 0,
   });
-  const { user } = useContext(UserContext);
+  const { user } = React.useContext(UserContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

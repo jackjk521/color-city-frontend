@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useMemo } from "react";
+import * as React from "react";
 import {
   TextField,
   InputAdornment,
@@ -41,16 +41,16 @@ export default function EditModal({
 }) {
   console.log(data);
 
-  const { user } = useContext(UserContext);
+  const { user } = React.useContext(UserContext);
 
-  const [addItemData, setAddItemData] = useState({
+  const [addItemData, setAddItemData] = React.useState({
     item: "",
     brand_item: "",
     item_price_w_vat: 0,
     req_quantity: 0,
     subtotal: 0,
   });
-  const [items, setItems] = useState([]);
+  const [items, setItems] = React.useState([]);
 
   useEffect(() => {
     get_items()
@@ -111,7 +111,7 @@ export default function EditModal({
   //   return calculateSubtotal(addItemData.item, addItemData.req_quantity);
   // }, [addItemData.item, addItemData.req_quantity]);
 
-  const totalAmount = useMemo(() => {
+  const totalAmount = React.useMemo(() => {
     return calculateTotalAmount();
   }, [data.purchaseLines]);
 

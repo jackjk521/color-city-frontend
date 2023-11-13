@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import * as React from "react";
 import {
   Button,
   DialogActions,
@@ -21,7 +21,7 @@ export default function DeclineModal({
   mutate,
 }) {
   console.log(rowData);
-  const { user } = useContext(UserContext);
+  const { user } = React.useContext(UserContext);
 
   const handleDecline = async (e) => {
     // console.log(rowData);

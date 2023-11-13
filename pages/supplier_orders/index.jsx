@@ -14,7 +14,7 @@ import {
 } from "../../components/utility/tables/tableColumns";
 
 // Helper Functions
-import SupplierOrdersModalManager from "../../modals/supplier_orders/supplierOrdersModalManager";
+// import SupplierOrdersModalManager from "../../modals/supplier_orders/supplierOrdersModalManager";
 import ActionFormatter from "@/components/supplier_orders/actionFormatter";
 import withAuth from "@/components/utility/with_auth";
 
@@ -23,12 +23,15 @@ import TableRowsSkeleton from "@/components/utility/skeletons/table_rows_skeleto
 
 const url = "/purchases/?type=SUPPLIER";
 
+// Dynamic Import
+const ModalManager = dynamic(
+  () => import("../../modals/supplier_orders/supplierOrdersModalManager"),
+  {
+    ssr: false,
+  }
+);
+
 function SupplierOrders() {
-  // const [data, setData] = React.useState(rows);
-  const [value, setValue] = React.useState(0);
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-  };
   const [activeModal, setActiveModal] = React.useState(null);
   const openModal = (modalType) => {
     setActiveModal(modalType);
@@ -44,11 +47,13 @@ function SupplierOrders() {
   return (
     <>
       {/* Modal Config */}
-      <SupplierOrdersModalManager
-        activeModal={activeModal}
-        setActiveModal={setActiveModal}
-        mutate={mutate}
-      />
+      {activeModal && (
+        <ModalManager
+          activeModal={activeModal}
+          setActiveModal={setActiveModal}
+          mutate={mutate}
+        />
+      )}
 
       <Grid container justifyContent="space-between">
         <Grid item></Grid>{" "}

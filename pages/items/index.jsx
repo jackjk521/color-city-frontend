@@ -15,7 +15,7 @@ import {
 } from "../../components/utility/tables/tableColumns";
 
 // Helper Functions
-import ItemModalManager from "../../modals/items/itemModalManager";
+// import ItemModalManager from "../../modals/items/itemModalManager";
 import ActionFormatter from "@/components/items/actionFormatter";
 import withAuth from "@/components/utility/with_auth";
 
@@ -23,6 +23,15 @@ import { get_fetcher } from "@/components/utility/api/fetcher";
 import TableRowsSkeleton from "@/components/utility/skeletons/table_rows_skeleton";
 
 const url = "/items";
+
+// Dynamic Import
+const ModalManager = dynamic(
+  () => import("../../modals/items/itemModalManager"),
+  {
+    ssr: false,
+  }
+);
+
 
 function Items() {
   const [activeModal, setActiveModal] = React.useState(null);
@@ -41,11 +50,13 @@ function Items() {
     <>
       <ItemsContent>
         {/* Modal Config */}
-        <ItemModalManager
+        {activeModal && (
+        <ModalManager
           activeModal={activeModal}
           setActiveModal={setActiveModal}
           mutate={mutate}
         />
+      )}
 
         <Grid container justifyContent="space-between">
           <Grid item></Grid>{" "}

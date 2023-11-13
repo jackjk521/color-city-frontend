@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useMemo } from "react";
+import * as React from "react";
 import {
   TextField,
   InputAdornment,
@@ -32,7 +32,7 @@ import {
 
 const url = "/inventory/";
 export default function AddModal({ headerColor, closeModal, mutate }) {
-  const [inventoryData, setInventoryData] = useState({
+  const [inventoryData, setInventoryData] = React.useState({
     item: "",
     item_name: "",
     item_price_w_vat: "",
@@ -42,9 +42,9 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
     total_quantity: "",
     holding_cost: 0,
   });
-  const { user } = useContext(UserContext);
+  const { user } = React.useContext(UserContext);
 
-  const [items, setItems] = useState([]);
+  const [items, setItems] = React.useState([]);
 
   useEffect(() => {
     get_items()

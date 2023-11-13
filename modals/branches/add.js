@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import * as React from "react";
 import {
   TextField,
   Button,
@@ -15,7 +15,7 @@ import { post_data } from "@/components/utility/api/fetcher";
 const url = "/branches";
 
 export default function AddModal({ headerColor, closeModal, mutate }) {
-  const [branchData, setBranchData] = useState({
+  const [branchData, setBranchData] = React.useState({
     branch_id: "",
     branch_name: "",
     address: "",

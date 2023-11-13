@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import * as React from "react";
 import {
   Button,
   DialogActions,
@@ -19,7 +19,7 @@ export default function RemoveModal({
   rowData,
   mutate,
 }) {
-  const { user } = useContext(UserContext);
+  const { user } = React.useContext(UserContext);
   const handleRemove = async (e) => {
     // console.log(rowData);
     e.preventDefault();

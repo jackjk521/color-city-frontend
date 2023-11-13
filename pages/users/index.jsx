@@ -1,5 +1,6 @@
 import * as React from "react";
 import useSWR from "swr";
+import dynamic from "next/dynamic";
 
 // Material UI
 import { Button, Grid, Divider } from "@mui/material";
@@ -11,11 +12,19 @@ import {
 } from "../../components/utility/tables/tableColumns";
 
 // Helper Functions
-import UserModalManager from "../../modals/users/userModalManager";
+// import UserModalManager from "../../modals/users/userModalManager";
 import ActionFormatter from "../../components/users/actionFormatter";
 import withAuth from "@/components/utility/with_auth";
 import { get_fetcher } from "@/components/utility/api/fetcher";
 import TableRowsSkeleton from "@/components/utility/skeletons/table_rows_skeleton";
+
+// Dynamic Import
+const ModalManager = dynamic(
+  () => import("../../modals/users/userModalManager"),
+  {
+    ssr: false,
+  }
+);
 
 const url = "/users";
 
@@ -36,11 +45,13 @@ function Users() {
   return (
     <>
       {/* Modal Config */}
-      <UserModalManager
-        activeModal={activeModal}
-        setActiveModal={setActiveModal}
-        mutate={mutate}
-      />
+      {activeModal && (
+        <ModalManager
+          activeModal={activeModal}
+          setActiveModal={setActiveModal}
+          mutate={mutate}
+        />
+      )}
 
       <Grid container justifyContent="space-between">
         <Grid item></Grid>{" "}

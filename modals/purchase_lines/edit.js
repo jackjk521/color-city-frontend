@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import * as React from "react";
 import {
   TextField,
   InputAdornment,
@@ -31,7 +31,7 @@ export default function EditModal({
   setData,
   closeModal,
 }) {
-  const { user } = useContext(UserContext);
+  const { user } = React.useContext(UserContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
