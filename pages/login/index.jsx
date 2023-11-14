@@ -28,24 +28,25 @@ export default function LoginPage() {
         username: userCred.username,
         password: userCred.password,
       });
-      if (response.status !== 200) {
-        const error = new Error();
-        error.info = response.data;
-        error.status = response.status;
-        error.message = "Invalid User Credentials";
+
+      if (response.status === 200) {
+        user.updateUserCredentials(response.data);
+        router.push("/dashboard");
+      }
+    } catch (error) {
+      if (error.response.status === 401) {
         Swal.fire({
-          title: error.info,
-          text: error.message,
+          title: "Error",
+          text: error.response.data.message,
+          icon: "warning",
+        });
+      } else if (error.response.status === 404) {
+        Swal.fire({
+          title: "Error",
+          text: error.response.data.message,
           icon: "error",
         });
-        throw error;
       }
-      // console.log(response.data);
-      user.updateUserCredentials(response.data);
-      router.push("/dashboard");
-    } catch (error) {
-      console.error(error);
-      throw error;
     }
   };
 

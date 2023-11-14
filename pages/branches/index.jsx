@@ -1,5 +1,6 @@
 import * as React from "react";
 import useSWR from "swr";
+import dynamic from "next/dynamic";
 
 // Material UI
 import { Button, Grid, Divider } from "@mui/material";
@@ -24,7 +25,7 @@ const url = "/branches";
 
 // Dynamic Import
 const ModalManager = dynamic(
-  () => import("../../modals/branches/branchModalManagerr"),
+  () => import("../../modals/branches/branchModalManager"),
   {
     ssr: false,
   }

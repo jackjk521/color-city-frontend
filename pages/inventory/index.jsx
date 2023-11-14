@@ -1,5 +1,6 @@
 import * as React from "react";
 import useSWR from "swr";
+import dynamic from "next/dynamic";
 
 // Material UI
 import { Button, Grid, Divider, Tabs, Tab } from "@mui/material";
