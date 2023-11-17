@@ -39,12 +39,16 @@ export default function LoginPage() {
           title: "Error",
           text: error.response.data.message,
           icon: "warning",
+          showConfirmButton: false,
+          timer: 2000,
         });
       } else if (error.response.status === 404) {
         Swal.fire({
           title: "Error",
           text: error.response.data.message,
           icon: "error",
+          showConfirmButton: false,
+          timer: 2000,
         });
       }
     }

@@ -65,8 +65,10 @@ export const post_data = async (
         closeModal();
         Swal.fire({
           title: "Success",
-          text: "Successfully added a/an " + name + ".",
+          text: "Successfully created a/an " + name + ".",
           icon: "success",
+          showConfirmButton: false,
+          timer: 2000,
         });
         mutate();
       }
@@ -76,11 +78,30 @@ export const post_data = async (
     console.error(error);
     Swal.fire({
       title: "Error",
-      text: error,
+      text: error.response.data.message,
       icon: "error",
+      showConfirmButton: false,
+      timer: 2000,
     });
     throw error;
   }
+
+  //   Swal.fire({
+  //     title: "User Created",
+  //     text: response.data.message,
+  //     icon: "success",
+  //     showConfirmButton: false,
+  //     timer: 2000,
+  //   });
+  // } catch (error) {
+  //   Swal.fire({
+  //     title: "User not created",
+  //     text: error.response.data.message,
+  //     icon: "error",
+  //     showConfirmButton: false,
+  //     timer: 2000,
+  //   });
+  // }
 };
 // Update data
 export const put_data = async (
@@ -102,6 +123,8 @@ export const put_data = async (
           title: "Success",
           text: "Successfully updated a/an " + name + ".",
           icon: "success",
+          showConfirmButton: false,
+          timer: 2000,
         });
         if (mutate) {
           mutate();
@@ -113,8 +136,10 @@ export const put_data = async (
     console.error(error);
     Swal.fire({
       title: "Error",
-      text: error,
+      text: error.response.data.message,
       icon: "error",
+      showConfirmButton: false,
+      timer: 2000,
     });
     throw error;
   }
@@ -140,7 +165,6 @@ export const put_order_data = async (
         } else if (data.status == "POST") {
           log_post_purchase_data(name, closeModal, mutate, log_data);
         }
-
       } else {
         // closeModal();
         // Swal.fire({
@@ -161,8 +185,10 @@ export const put_order_data = async (
     console.error(error);
     Swal.fire({
       title: "Error",
-      text: error,
+      text: error.response.data.message,
       icon: "error",
+      showConfirmButton: false,
+      timer: 2000,
     });
     throw error;
   }
@@ -187,6 +213,8 @@ export const delete_data = async (
           title: "Success",
           text: "Successfully deleted a/an " + name + ".",
           icon: "success",
+          showConfirmButton: false,
+          timer: 2000,
         });
         mutate();
       }
@@ -196,8 +224,10 @@ export const delete_data = async (
     console.error(error);
     Swal.fire({
       title: "Error",
-      text: error,
+      text: error.response.data.message,
       icon: "error",
+      showConfirmButton: false,
+      timer: 2000,
     });
     throw error;
   }
@@ -212,8 +242,10 @@ export const log_add_data = async (name, closeModal, mutate, log_data) => {
       closeModal();
       Swal.fire({
         title: "Success",
-        text: "Successfully added a/an " + name + ".",
+        text: "Successfully created a/an " + name + ".",
         icon: "success",
+        showConfirmButton: false,
+        timer: 2000,
       });
       mutate();
     }
@@ -221,8 +253,10 @@ export const log_add_data = async (name, closeModal, mutate, log_data) => {
     // Handle the error
     Swal.fire({
       title: "Error",
-      text: error,
+      text: error.response.data.message,
       icon: "error",
+      showConfirmButton: false,
+      timer: 2000,
     });
     throw error;
   }
@@ -237,6 +271,8 @@ export const log_edit_data = async (name, closeModal, mutate, log_data) => {
         title: "Success",
         text: "Successfully updated a/an " + name + ".",
         icon: "success",
+        showConfirmButton: false,
+        timer: 2000,
       });
       mutate();
     }
@@ -244,8 +280,10 @@ export const log_edit_data = async (name, closeModal, mutate, log_data) => {
     // Handle the error
     Swal.fire({
       title: "Error",
-      text: error,
+      text: error.response.data.message,
       icon: "error",
+      showConfirmButton: false,
+      timer: 2000,
     });
     throw error;
   }
@@ -260,6 +298,8 @@ export const log_delete_data = async (name, closeModal, mutate, log_data) => {
         title: "Success",
         text: "Successfully deleted a/an " + name + ".",
         icon: "success",
+        showConfirmButton: false,
+        timer: 2000,
       });
       mutate();
     }
@@ -267,8 +307,10 @@ export const log_delete_data = async (name, closeModal, mutate, log_data) => {
     // Handle the error
     Swal.fire({
       title: "Error",
-      text: error,
+      text: error.response.data.message,
       icon: "error",
+      showConfirmButton: false,
+      timer: 2000,
     });
     throw error;
   }
@@ -290,6 +332,8 @@ export const log_post_purchase_data = async (
         title: "Success",
         text: "Successfully posted a " + name + ".",
         icon: "success",
+        showConfirmButton: false,
+        timer: 2000,
       });
       mutate();
     }
@@ -297,8 +341,10 @@ export const log_post_purchase_data = async (
     // Handle the error
     Swal.fire({
       title: "Error",
-      text: error,
+      text: error.response.data.message,
       icon: "error",
+      showConfirmButton: false,
+      timer: 2000,
     });
     throw error;
   }
@@ -317,6 +363,8 @@ export const log_approve_purchase_data = async (
         title: "Success",
         text: "Successfully approved a " + name + ".",
         icon: "success",
+        showConfirmButton: false,
+        timer: 2000,
       });
       mutate();
     }
@@ -324,8 +372,10 @@ export const log_approve_purchase_data = async (
     // Handle the error
     Swal.fire({
       title: "Error",
-      text: error,
+      text: error.response.data.message,
       icon: "error",
+      showConfirmButton: false,
+      timer: 2000,
     });
     throw error;
   }
@@ -344,6 +394,8 @@ export const log_decline_purchase_data = async (
         title: "Success",
         text: "Successfully declined a " + name + ".",
         icon: "success",
+        showConfirmButton: false,
+        timer: 2000,
       });
       mutate();
     }
@@ -351,8 +403,10 @@ export const log_decline_purchase_data = async (
     // Handle the error
     Swal.fire({
       title: "Error",
-      text: error,
+      text: error.response.data.message,
       icon: "error",
+      showConfirmButton: false,
+      timer: 2000,
     });
     throw error;
   }
