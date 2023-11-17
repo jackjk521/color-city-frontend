@@ -16,12 +16,10 @@ import {
   IconButton,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import apiClient from "@/components/utility/api/apiClient";
-import Swal from "sweetalert2";
 import { BranchesDropdown } from "@/components/utility/get_data";
 import { post_data } from "@/components/utility/api/fetcher";
 
-const url = "/users"
+const url = "/users";
 export default function AddModal({ headerColor, closeModal, mutate }) {
   const [userData, setUserData] = React.useState({
     user_id: "",
@@ -43,8 +41,8 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-     // Add logic
-     post_data("user", url, userData, closeModal, mutate);
+    // Add logic
+    post_data("user", url, userData, closeModal, mutate);
 
     // Reset form fields
     setUserData({
@@ -102,10 +100,8 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
               </Grid>
 
               <Grid item xs={12} md={6}>
-              <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">
-                    Role
-                  </InputLabel>
+                <FormControl fullWidth>
+                  <InputLabel id="demo-simple-select-label">Role</InputLabel>
                   <Select
                     fullWidth
                     label="Role"
@@ -120,7 +116,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                 </FormControl>
               </Grid>
               <Grid item xs={12} md={6}>
-              <BranchesDropdown
+                <BranchesDropdown
                   selectedBranch={userData.branch}
                   handleChange={handleChange}
                 />
@@ -153,7 +149,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
                   name="age"
                   onChange={handleChange}
                   InputProps={{
-                    inputProps: { min: 0 }
+                    inputProps: { min: 0 },
                   }}
                 />
               </Grid>

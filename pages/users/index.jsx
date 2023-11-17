@@ -54,7 +54,8 @@ function Users() {
       )}
 
       <Grid container justifyContent="space-between">
-        <Grid item></Grid>{" "}
+        <Grid item>
+        </Grid>{" "}
         <Grid item mb={2}>
           <Button
             variant="contained"

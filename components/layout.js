@@ -31,6 +31,7 @@ import Header from "./header";
 import Footer from "./footer";
 import { UserContext } from "../contexts/userContext";
 
+
 const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
@@ -185,6 +186,7 @@ export default function Layout({ children }) {
             </Toolbar>
             <Divider />
             <List component="nav">
+
               {MainListItems(toggleDrawer)}
               {user &&
                 user?.userCredentials?.user_role === "Manager" &&
