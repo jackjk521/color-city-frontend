@@ -7,9 +7,17 @@ import {
   TextField,
   Typography,
   Autocomplete,
+  Grid,
+  Button,
+  Chip,
+  Card,
+  CardContent,
 } from "@mui/material";
 import apiClient from "./api/apiClient";
 import Swal from "sweetalert2";
+import Image from "next/image";
+import SendIcon from "@mui/icons-material/Send";
+import Link from "next/link";
 
 // Api calls to get data
 
@@ -292,6 +300,25 @@ export const decline_purchase = async (id, closeModal, mutate) => {
         icon: "success",
       });
       mutate();
+    }
+  } catch (error) {
+    // Handle the error
+    console.error(error);
+    Swal.fire({
+      title: "Error",
+      text: error,
+      icon: "error",
+    });
+    throw error;
+  }
+};
+
+// Get overview cards data for dasboard
+export const get_overview_data = async () => {
+  try {
+    const response = await apiClient.get(`/dashboard/?type=summary`);
+    if (response.status === 200) {
+      return response.data;
     }
   } catch (error) {
     // Handle the error
@@ -632,7 +659,7 @@ export function ItemsDropdown({ selectedItem, handleChange, setAddItemData }) {
       <Autocomplete
         options={items}
         name="item"
-        value={items.find(item => item.item_id === selectedItem) || ""}
+        value={items.find((item) => item.item_id === selectedItem) || ""}
         onChange={handleItemChange}
         getOptionLabel={(option) => option.brand_item}
         getOptionValue={(option) => option.item_id}
@@ -754,3 +781,178 @@ export function WarehouseItemsDropdown({ setAddItemData }) {
     // </FormControl>
   );
 }
+// Dashboard components
+export function OverviewCards() {
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    get_overview_data()
+      .then((data) => {
+        // console.log(data);
+        setData(data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+  return (
+    <React.Fragment>
+      <Grid item xs={12} sm={4}>
+        <Card>
+          <CardContent>
+            <Grid container spacing={2} alignItems="center">
+              <Grid item xs={6}>
+                <Typography
+                  sx={{ fontSize: 14 }}
+                  color="text.secondary"
+                  gutterBottom>
+                  Total Users/Employees
+                </Typography>
+                <Typography variant="h5" component="div" textAlign="center">
+                  {data.users}
+                </Typography>
+              </Grid>
+              <Grid item xs={6} display="flex" justifyContent="center">
+                <Image
+                  src="/images/icon-256x256.png"
+                  alt="Logo"
+                  width={100}
+                  height={100}
+                />
+              </Grid>
+            </Grid>
+            <Button
+              size="small"
+              component={Link}
+              href="/users"
+              endIcon={<SendIcon />}>
+              View All Users
+            </Button>
+          </CardContent>
+        </Card>
+      </Grid>
+      <Grid item xs={12} sm={4}>
+        <Card>
+          <CardContent>
+            <Grid container spacing={2} alignItems="center">
+              <Grid item xs={6}>
+                <Typography
+                  sx={{ fontSize: 14 }}
+                  color="text.secondary"
+                  gutterBottom>
+                  Total Branches
+                </Typography>
+                <Typography variant="h5" component="div" textAlign="center">
+                  {data.branches}
+                </Typography>
+              </Grid>
+              <Grid item xs={6} display="flex" justifyContent="center">
+                <Image
+                  src="/images/icon-256x256.png"
+                  alt="Logo"
+                  width={100}
+                  height={100}
+                />
+              </Grid>
+            </Grid>
+            <Button
+              size="small"
+              component={Link}
+              href="/branches"
+              endIcon={<SendIcon />}>
+              View All Branches
+            </Button>
+          </CardContent>
+        </Card>
+      </Grid>
+      <Grid item xs={12} sm={4}>
+        <Card>
+          <CardContent>
+            <Grid container spacing={2} alignItems="center">
+              <Grid item xs={6}>
+                <Typography
+                  sx={{ fontSize: 14 }}
+                  color="text.secondary"
+                  gutterBottom>
+                  Total Items
+                </Typography>
+                <Typography variant="h5" component="div" textAlign="center">
+                  {data.items}
+                </Typography>
+              </Grid>
+              <Grid item xs={6} display="flex" justifyContent="center">
+                <Image
+                  src="/images/icon-256x256.png"
+                  alt="Logo"
+                  width={100}
+                  height={100}
+                />
+              </Grid>
+            </Grid>
+            <Button
+              size="small"
+              component={Link}
+              href="/items"
+              endIcon={<SendIcon />}>
+              View All Items
+            </Button>
+          </CardContent>
+        </Card>
+      </Grid>
+    </React.Fragment>
+  );
+}
+
+// export function OrderOverviewTables() {
+//   const [data, setData] = useState([]);
+
+//   useEffect(() => {
+//     get_dashboard_data()
+//       .then((data) => {
+//         // console.log(data);
+//         setData(data);
+//       })
+//       .catch((error) => {
+//         console.error(error);
+//       });
+//   }, []);
+  
+//   return (
+//     <React.Fragment>
+//        {/* For Approval */}
+//        <Grid item xs={12} sm={4}>
+//         <BasicReactTable
+//           data_columns={PurchaseOrderColumns}
+//           column_visibility={PurchaseOrderColumnsVisibility}
+//           fetched_data={fetchedData}
+//           action_formatter={null}
+//           mutate={mutate}
+//           isLoading={isLoading}
+//         />
+//         </Grid>
+//           {/* For Approval */}
+//           <Grid item xs={12} sm={4}>
+//         <BasicReactTable
+//           data_columns={PurchaseOrderColumns}
+//           column_visibility={PurchaseOrderColumnsVisibility}
+//           fetched_data={fetchedData}
+//           action_formatter={null}
+//           mutate={mutate}
+//           isLoading={isLoading}
+//         />
+//         </Grid>
+//           {/* For Approval */}
+//           <Grid item xs={12} sm={4}>
+//         <BasicReactTable
+//           data_columns={PurchaseOrderColumns}
+//           column_visibility={PurchaseOrderColumnsVisibility}
+//           fetched_data={fetchedData}
+//           action_formatter={null}
+//           mutate={mutate}
+//           isLoading={isLoading}
+//         />
+//         </Grid>
+//     </React.Fragment>
+//   );
+// }
+

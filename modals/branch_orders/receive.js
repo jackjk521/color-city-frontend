@@ -47,7 +47,7 @@ export default function ReceiveModal({
     const [rowSelection, setRowSelection] = React.useState({});
     const [rowIdSelection, setRowIdSelection] = React.useState([]);
 
-    useEffect(() => {
+    React.useEffect(() => {
       // Get the ids from the table
       get_all_ids();  
       // console.log(rowIdSelection);

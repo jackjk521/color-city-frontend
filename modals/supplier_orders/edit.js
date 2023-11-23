@@ -52,7 +52,7 @@ export default function EditModal({
   });
   const [items, setItems] = React.useState([]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     get_items()
       .then((items) => {
         setItems(items);

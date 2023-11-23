@@ -18,7 +18,7 @@ import {
 } from "@/components/utility/tables/tableColumns";
 
 export default function ViewModal({ data, headerColor, closeModal }) {
-  console.log(data);
+  // console.log(data);
   return (
     <>
       <DialogTitle style={{ backgroundColor: headerColor }} mb={3}>

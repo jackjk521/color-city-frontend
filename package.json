@@ -13,6 +13,7 @@
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.13",
     "@mui/material": "^5.14.13",
+    "@mui/x-charts": "^6.18.1",
     "@mui/x-date-pickers": "^6.16.2",
     "axios": "^1.5.1",
     "bcryptjs": "^2.4.3",

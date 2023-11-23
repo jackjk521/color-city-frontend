@@ -20,7 +20,7 @@ export default function RemoveModal({
   mutate,
 }) {
   console.log(rowData);
-  const { user } = useContext(UserContext);
+  const { user } = React.useContext(UserContext);
 
   const handleRemove = async (e) => {
     // console.log(rowData);

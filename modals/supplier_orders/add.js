@@ -65,7 +65,7 @@ export default function AddModal({ headerColor, closeModal, mutate }) {
   });
   const [items, setItems] = React.useState([]);
 
-  useEffect(() => {
+  React.useEffect(() => {
     get_items()
       .then((items) => {
         setItems(items);

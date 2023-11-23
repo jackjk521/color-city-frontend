@@ -111,7 +111,7 @@ function BranchOrders({
     3: branch3Loading,
   };
 
-  const branch_id = user.userCredentials.branch + 1;
+  const branch_id = user.userCredentials.branch - 1;
 
   return (
     <>
@@ -120,7 +120,7 @@ function BranchOrders({
         <ModalManager
           activeModal={activeModal}
           setActiveModal={setActiveModal}
-          mutate={mutate}
+          mutate={mutateArray[branch_id]}
         />
       )}
 

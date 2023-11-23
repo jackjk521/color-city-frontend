@@ -331,6 +331,19 @@ export const BranchOrderColumnsVisibility = {
   received_status: false,
 };
 
+// Orders for dashboard
+export const PurchaseOrderColumns = [
+  {
+    accessorKey: "branch_name", //normal accessorKey
+    header: "Branch",
+  },
+];
+
+export const PurchaseOrderColumnsVisibility = {
+  branch_name: true,
+};
+
+
 // Purchase Lines (display only)
 export const PurchaseLineViewColumns = [
   {
