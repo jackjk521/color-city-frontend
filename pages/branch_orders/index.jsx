@@ -111,7 +111,7 @@ function BranchOrders({
     3: branch3Loading,
   };
 
-  const branch_id = user.userCredentials.branch - 1;
+  const branch_id = user?.userCredentials?.branch - 1 ?? 0;
 
   return (
     <>
@@ -126,7 +126,7 @@ function BranchOrders({
 
       <Grid container justifyContent="space-between">
         <Grid item>
-          {user.userCredentials.user_role === "Administrator" && (
+          {user?.userCredentials?.user_role === "Administrator" && (
             <Tabs
               value={value}
               onChange={handleChange}
@@ -137,7 +137,7 @@ function BranchOrders({
               <Tab label="Branch 3" {...a11yProps(3)} />
             </Tabs>
           )}
-          {user.userCredentials.user_role === "Manager" && (
+          {user?.userCredentials?.user_role === "Manager" && (
             <Tabs
               value={value}
               onChange={handleChange}
@@ -159,7 +159,7 @@ function BranchOrders({
       <Divider />
 
       {/* Different Panel Views  */}
-      {user.userCredentials.user_role === "Administrator" && (
+      {user?.userCredentials?.user_role === "Administrator" && (
         <>
           {allBranchOrdersData ? (
             renderTabContent({
@@ -227,7 +227,7 @@ function BranchOrders({
         </>
       )}
 
-      {user.userCredentials.user_role === "Manager" && (
+      {user?.userCredentials?.user_role === "Manager" && (
         <>
           {dataArray[branch_id] ? (
             renderTabContent({

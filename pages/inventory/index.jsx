@@ -117,7 +117,7 @@ function Inventory({
     4: branch3InvLoading,
   };
 
-  const branch_id = user.userCredentials.branch;
+  const branch_id = user?.userCredentials?.branch ?? 0;
 
   return (
     <>
@@ -131,7 +131,7 @@ function Inventory({
 
         <Grid container justifyContent="space-between">
           <Grid item>
-            {user.userCredentials.user_role === "Administrator" && (
+            {user?.userCredentials?.user_role === "Administrator" && (
               <Tabs
                 value={value}
                 onChange={handleChange}
@@ -143,7 +143,7 @@ function Inventory({
                 <Tab label="Branch 3" {...a11yProps(4)} />
               </Tabs>
             )}
-            {user.userCredentials.user_role === "Manager" && (
+            {user?.userCredentials?.user_role === "Manager" && (
               <Tabs
                 value={value}
                 onChange={handleChange}
@@ -166,7 +166,7 @@ function Inventory({
         <Divider />
 
         {/* Different Panel Views  */}
-        {user.userCredentials.user_role === "Administrator" && (
+        {user?.userCredentials?.user_role === "Administrator" && (
           <>
             {allInventoryData ? (
               renderTabContent({
@@ -250,7 +250,7 @@ function Inventory({
           </>
         )}
 
-        {user.userCredentials.user_role === "Manager" && (
+        {user?.userCredentials?.user_role === "Manager" && (
           <>
             {dataArray[branch_id] ? (
               renderTabContent({
