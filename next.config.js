@@ -29,6 +29,8 @@ const withPWA = require('next-pwa')({
   module.exports = withPWA({
     // other Next.js configuration options here
     // nextConfig
+    // To avoid the error with 'Export'
+    transpilePackages: ['@mui/x-charts']
   });
 
   
