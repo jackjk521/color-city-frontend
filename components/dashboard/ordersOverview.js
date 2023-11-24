@@ -10,6 +10,9 @@ import {
 import BasicReactTable from "../utility/tables/basicReactTable";
 import ActionFormatter from "./actionFormatter";
 import { Skeleton } from "@mui/material";
+import MoveUpIcon from "@mui/icons-material/MoveUp";
+import TransferWithinAStationIcon from "@mui/icons-material/TransferWithinAStation";
+import FilterFramesIcon from '@mui/icons-material/FilterFrames';
 
 function OrdersOverview({ tableData, mutate, isLoading }) {
   // console.log(tableData.for_approval_orders);
@@ -21,12 +24,13 @@ function OrdersOverview({ tableData, mutate, isLoading }) {
         <Grid item xs={12} sx={{ display: 'flex', gap: '8px' }}>
           
           <Chip
-            icon={<FaceIcon />}
+            icon={<FilterFramesIcon />}
             label="Orders as of this week"
             variant="outlined"
           />
           <Chip
             label="Branch Orders"
+            icon={<TransferWithinAStationIcon/>}
             component={Link}
             href="/branch_orders"
             variant="outlined"
@@ -34,6 +38,7 @@ function OrdersOverview({ tableData, mutate, isLoading }) {
           />
           <Chip
             label="Supplier Orders"
+            icon={<MoveUpIcon/>}
             component={Link}
             href="/supplier_orders"
             variant="outlined"

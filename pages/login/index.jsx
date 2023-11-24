@@ -64,15 +64,18 @@ export default function LoginPage() {
         flexGrow: 1,
         height: "100vh",
         overflow: "auto",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
       }}>
       <Container maxWidth={"sm"}>
         <Grid container spacing={2} justifyContent="center" alignItems="center">
           {/* ADD YOUR IMAGE OR LOGO HERE */}
           <Grid item xs={12} textAlign="center">
             <Image
-              src="/images/icon-256x256.png"
+              src="/images/color_city_logo.png"
               alt="Logo"
-              width={200}
+              width={400}
               height={200}
             />
           </Grid>
@@ -109,8 +112,9 @@ export default function LoginPage() {
             </form>
           </Grid>
         </Grid>
+        <Footer sx={{ pt: 4 }} />
+
       </Container>
-      <Footer sx={{ pt: 4 }} />
 
       {/* <section class="text-gray-600 body-font">
         <div class="container px-5 py-24 mx-auto">

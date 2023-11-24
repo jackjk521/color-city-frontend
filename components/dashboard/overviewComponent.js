@@ -10,7 +10,7 @@ import {
   Card,
 } from "@mui/material";
 import Image from "next/image";
-import FaceIcon from "@mui/icons-material/Face";
+import SummarizeIcon from '@mui/icons-material/Summarize';
 import { OverviewCards } from "../utility/get_data";
 function OverviewComponent() {
   return (
@@ -18,7 +18,7 @@ function OverviewComponent() {
       {" "}
       <Grid container spacing={3} mb={4}>
         <Grid item xs={12}>
-          <Chip icon={<FaceIcon />} label="Overview" variant="outlined" />
+          <Chip icon={<SummarizeIcon />} label="Overview" variant="outlined" size="large"/>
         </Grid>
         {/* Get Data and Create Components  */}
         <OverviewCards />

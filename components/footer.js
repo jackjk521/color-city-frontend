@@ -12,9 +12,9 @@ export default function Footer({props}) {
         color="text.secondary"
         align="center"
         {...props}>
-        {"Copyright © "}
-        <Link color="inherit" href="https://mui.com/">
-          Your Website
+        {"©Copyright. All Rights Reserved. "}
+        <Link color="inherit" href="https://portfolio-mui-next.vercel.app/">
+          My Portfolio
         </Link>{" "}
         {new Date().getFullYear()}
         {"."}
